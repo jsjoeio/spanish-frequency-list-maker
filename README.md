@@ -1,20 +1,40 @@
 # Spanish Frequency List Maker
 
-Build a personal Spanish lemma frequency list from subtitle (`.srt`) or plain text (`.txt`) files. Useful for language learning apps, vocabulary prioritization, or tracking which words appear most in content you actually consume.
+Build a personal Spanish lemma frequency list from subtitle (`.srt`, `.vtt`) or plain text (`.txt`) files. Useful for language learning apps, vocabulary prioritization, or tracking which words appear most in content you actually consume.
+
+## Project Structure
+
+```
+spanish-frequency-list-maker/
+├── src/
+│   ├── process_files.py    # Lemmatize subtitle/text files into a frequency list
+│   ├── download_subs.py    # Download subtitles from URLs and update frequency.csv
+│   └── utils.py            # Shared processing helpers
+├── data/
+│   ├── frequency.csv       # Main frequency list (committed)
+│   └── sources.csv         # YouTube/podcast URLs to download
+├── subtitles/              # Downloaded subtitles (gitignored)
+│   └── raw/
+├── README.md
+└── requirements.txt
+```
+
+Subtitles are not stored in the repo. Only the code and the generated frequency list are committed.
 
 ## Features
 
-- Processes `.srt` and `.vtt` subtitle files (timestamps and sequence numbers are stripped automatically)
-- Processes plain `.txt` files
+- Downloads Spanish subtitles from URLs in `data/sources.csv` via `yt-dlp`
+- Processes `.srt`, `.vtt`, and `.txt` files
 - Lemmatizes words with [spaCy](https://spacy.io/) (`es_core_news_sm`)
 - Filters stop words and short tokens
-- Merges with an existing frequency CSV to accumulate counts over time
+- Merges with the existing frequency list to accumulate counts over time
 - Exports to CSV or JSON
 
 ## Requirements
 
 - Python 3.10+
 - spaCy Spanish model: `es_core_news_sm`
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) for downloading subtitles
 
 ## Setup
 
@@ -23,44 +43,66 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python -m spacy download es_core_news_sm
+pip install yt-dlp
 ```
 
 ## Usage
 
-Process one or more files:
+### Full pipeline: download and update frequency list
+
+Add URLs to `data/sources.csv`, then run:
 
 ```bash
-python frequency_maker.py podcast.srt interview.txt
+python -m src.download_subs
 ```
 
-Process every `.srt` and `.txt` file in a directory:
+This downloads subtitles into `subtitles/raw/` (gitignored), processes them, and updates `data/frequency.csv`.
+
+Reprocess existing downloads without re-downloading:
 
 ```bash
-python frequency_maker.py ./subtitles/
+python -m src.download_subs --skip-download
 ```
 
-Custom output path and format:
+### Process local files manually
 
 ```bash
-python frequency_maker.py ./subtitles/ -o my_list.csv
-python frequency_maker.py ./subtitles/ -o my_list.json --format json
+python -m src.process_files subtitles/raw/
+python -m src.process_files episode.srt notes.txt
 ```
 
-Merge with an existing frequency list:
+Merge with the existing list:
 
 ```bash
-python frequency_maker.py new_episode.srt --merge spanish_frequency.csv -o spanish_frequency.csv
+python -m src.process_files subtitles/raw/ --merge data/frequency.csv -o data/frequency.csv
 ```
 
-Show a different number of top lemmas (default: 50, use `0` to skip):
+Export as JSON:
 
 ```bash
-python frequency_maker.py episode.srt --top 100
+python -m src.process_files subtitles/raw/ -o data/frequency.json --format json
 ```
+
+Show more top lemmas after processing:
+
+```bash
+python -m src.process_files subtitles/raw/ --top 100
+```
+
+## Sources File
+
+`data/sources.csv` has one URL per row:
+
+```csv
+url,title
+https://www.youtube.com/watch?v=VIDEO_ID,optional label
+```
+
+Lines starting with `#` in the url column are ignored.
 
 ## Output
 
-CSV (default):
+`data/frequency.csv`:
 
 ```csv
 lemma,frequency
@@ -69,39 +111,13 @@ cosa,98
 ...
 ```
 
-JSON (`--format json`):
-
-```json
-[
-  {"lemma": "decir", "frequency": 142},
-  {"lemma": "cosa", "frequency": 98}
-]
-```
-
-## Test Data
-
-A sample Spanish subtitle file (`test_data/sample.es.vtt`) is included for quick testing:
-
-```bash
-python frequency_maker.py test_data/sample.es.vtt --top 20
-```
-
-To download subtitles from a YouTube video for your own testing:
-
-```bash
-curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp && chmod +x yt-dlp
-./yt-dlp --write-auto-sub --write-sub --sub-lang es --skip-download -o "test_data/%(title)s" "https://www.youtube.com/watch?v=VIDEO_ID"
-```
-
-The script accepts `.vtt` files directly, so no conversion step is required.
-
 ## How It Works
 
-1. Read input text (SRT markup is removed for subtitle files)
-2. Normalize text (lowercase, remove numbers and punctuation)
-3. Tokenize and lemmatize with spaCy
-4. Count lemmas, skipping stop words and tokens with 2 or fewer characters
-5. Sort by frequency and write the output file
+1. `download_subs.py` reads URLs from `data/sources.csv` and saves subtitles to `subtitles/raw/`
+2. Subtitle markup and timestamps are stripped
+3. Text is normalized (lowercase, numbers and punctuation removed)
+4. spaCy tokenizes and lemmatizes each file
+5. Lemma counts from all files in `subtitles/raw/` are written to `data/frequency.csv`
 
 ## License
 

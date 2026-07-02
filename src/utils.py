@@ -1,23 +1,28 @@
-#!/usr/bin/env python3
-"""Build a Spanish lemma frequency list from subtitle (.srt) or plain text (.txt) files."""
+"""Shared helpers for subtitle download and frequency processing."""
 
 from __future__ import annotations
 
-import argparse
 import csv
 import json
 import re
-import sys
 from collections import Counter
 from pathlib import Path
 
 import spacy
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+SUBTITLES_DIR = PROJECT_ROOT / "subtitles" / "raw"
+DEFAULT_FREQUENCY_CSV = DATA_DIR / "frequency.csv"
+DEFAULT_SOURCES_CSV = DATA_DIR / "sources.csv"
 
 TIMESTAMP_RE = re.compile(r"^\d{2}:\d{2}:\d{2}")
 HTML_TAG_RE = re.compile(r"<[^>]+>")
 VTT_INLINE_TAG_RE = re.compile(r"<\d{2}:\d{2}:\d{2}\.\d{3}>|<c>|</c>")
 NON_WORD_RE = re.compile(r"[^\w\s]", re.UNICODE)
 DIGIT_RE = re.compile(r"\d+")
+
+SUBTITLE_SUFFIXES = {".srt", ".vtt", ".txt"}
 
 
 def extract_subtitle_text(content: str) -> str:
@@ -78,8 +83,9 @@ def load_existing_frequencies(csv_path: Path) -> Counter[str]:
     return freq
 
 
-def save_frequency(freq_dict: Counter[str], output_path: Path, output_format: str) -> None:
+def save_frequency(freq_dict: Counter[str], output_path: Path, output_format: str = "csv") -> None:
     sorted_freq = sorted(freq_dict.items(), key=lambda item: item[1], reverse=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     if output_format == "json":
         payload = [{"lemma": lemma, "frequency": count} for lemma, count in sorted_freq]
@@ -93,14 +99,13 @@ def save_frequency(freq_dict: Counter[str], output_path: Path, output_format: st
     print(f"Saved {len(sorted_freq)} lemmas to {output_path}")
 
 
-def collect_input_files(paths: list[str]) -> list[Path]:
+def collect_input_files(paths: list[Path | str]) -> list[Path]:
     files: list[Path] = []
-    for path_str in paths:
-        path = Path(path_str)
+    for path_value in paths:
+        path = Path(path_value)
         if path.is_dir():
-            files.extend(sorted(path.glob("*.srt")))
-            files.extend(sorted(path.glob("*.vtt")))
-            files.extend(sorted(path.glob("*.txt")))
+            for suffix in SUBTITLE_SUFFIXES:
+                files.extend(sorted(path.glob(f"*{suffix}")))
         elif path.is_file():
             files.append(path)
         else:
@@ -108,90 +113,16 @@ def collect_input_files(paths: list[str]) -> list[Path]:
     return files
 
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Create a Spanish lemma frequency list from .srt or .txt files."
-    )
-    parser.add_argument(
-        "inputs",
-        nargs="+",
-        help="Input files or directories containing .srt/.txt files",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        default="spanish_frequency.csv",
-        help="Output file path (default: spanish_frequency.csv)",
-    )
-    parser.add_argument(
-        "--format",
-        choices=("csv", "json"),
-        default="csv",
-        help="Output format (default: csv)",
-    )
-    parser.add_argument(
-        "--merge",
-        metavar="CSV",
-        help="Merge counts with an existing frequency CSV before saving",
-    )
-    parser.add_argument(
-        "--model",
-        default="es_core_news_sm",
-        help="spaCy Spanish model name (default: es_core_news_sm)",
-    )
-    parser.add_argument(
-        "--top",
-        type=int,
-        default=50,
-        help="Number of top lemmas to print (default: 50, use 0 to skip)",
-    )
-    return parser.parse_args(argv)
+def load_spacy_model(model_name: str) -> spacy.Language:
+    return spacy.load(model_name)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-
-    try:
-        input_files = collect_input_files(args.inputs)
-    except FileNotFoundError as exc:
-        print(exc, file=sys.stderr)
-        return 1
-
-    if not input_files:
-        print("No .srt or .txt files found in the provided inputs.", file=sys.stderr)
-        return 1
-
-    try:
-        nlp = spacy.load(args.model)
-    except OSError:
-        print(
-            f"spaCy model '{args.model}' is not installed.\n"
-            f"Run: python -m spacy download {args.model}",
-            file=sys.stderr,
-        )
-        return 1
-
-    freq: Counter[str] = Counter()
-    if args.merge:
-        merge_path = Path(args.merge)
-        if merge_path.exists():
-            freq = load_existing_frequencies(merge_path)
-            print(f"Loaded {len(freq)} lemmas from {merge_path}")
-
-    for file_path in input_files:
-        print(f"Processing {file_path}...")
-        freq = process_file(file_path, nlp, freq)
-
-    output_path = Path(args.output)
-    save_frequency(freq, output_path, args.format)
-
-    if args.top > 0:
-        print(f"\nTop {args.top} lemmas:")
-        for lemma, count in freq.most_common(args.top):
-            print(f"{lemma}: {count}")
-
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+def read_source_urls(sources_path: Path) -> list[str]:
+    urls: list[str] = []
+    with sources_path.open(encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            url = row.get("url", "").strip()
+            if url and not url.startswith("#"):
+                urls.append(url)
+    return urls

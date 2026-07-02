@@ -3,6 +3,8 @@ __pycache__/
 .venv/
 venv/
 .env
+subtitles/
+yt-dlp
+test_data/
 spanish_frequency.csv
 spanish_frequency.json
-yt-dlp
