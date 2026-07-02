@@ -12,7 +12,7 @@ spanish-frequency-list-maker/
 │   └── utils.py            # Shared processing helpers
 ├── data/
 │   ├── frequency.csv       # Main frequency list (committed)
-│   └── sources.csv         # YouTube/podcast URLs to download
+│   └── sources.txt         # YouTube/podcast URLs to download (one per line)
 ├── subtitles/              # Downloaded subtitles (gitignored)
 │   └── raw/
 ├── README.md
@@ -23,7 +23,7 @@ Subtitles are not stored in the repo. Only the code and the generated frequency 
 
 ## Features
 
-- Downloads Spanish subtitles from URLs in `data/sources.csv` via `yt-dlp`
+- Downloads Spanish subtitles from URLs in `data/sources.txt` via `yt-dlp`
 - Processes `.srt`, `.vtt`, and `.txt` files
 - Lemmatizes words with [spaCy](https://spacy.io/) (`es_core_news_sm`)
 - Filters stop words and short tokens
@@ -50,7 +50,7 @@ pip install yt-dlp
 
 ### Full pipeline: download and update frequency list
 
-Add URLs to `data/sources.csv`, then run:
+Add URLs to `data/sources.txt` (one per line), then run:
 
 ```bash
 python -m src.download_subs
@@ -91,14 +91,14 @@ python -m src.process_files subtitles/raw/ --top 100
 
 ## Sources File
 
-`data/sources.csv` has one URL per row:
+`data/sources.txt` — paste one URL per line:
 
-```csv
-url,title
-https://www.youtube.com/watch?v=VIDEO_ID,optional label
+```text
+https://www.youtube.com/watch?v=VIDEO_ID
+https://www.youtube.com/watch?v=ANOTHER_ID
 ```
 
-Lines starting with `#` in the url column are ignored.
+Lines starting with `#` are treated as comments.
 
 ## Output
 
@@ -113,7 +113,7 @@ cosa,98
 
 ## How It Works
 
-1. `download_subs.py` reads URLs from `data/sources.csv` and saves subtitles to `subtitles/raw/`
+1. `download_subs.py` reads URLs from `data/sources.txt` and saves subtitles to `subtitles/raw/`
 2. Subtitle markup and timestamps are stripped
 3. Text is normalized (lowercase, numbers and punctuation removed)
 4. spaCy tokenizes and lemmatizes each file

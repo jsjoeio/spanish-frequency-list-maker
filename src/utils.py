@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 SUBTITLES_DIR = PROJECT_ROOT / "subtitles" / "raw"
 DEFAULT_FREQUENCY_CSV = DATA_DIR / "frequency.csv"
-DEFAULT_SOURCES_CSV = DATA_DIR / "sources.csv"
+DEFAULT_SOURCES_FILE = DATA_DIR / "sources.txt"
 
 TIMESTAMP_RE = re.compile(r"^\d{2}:\d{2}:\d{2}")
 HTML_TAG_RE = re.compile(r"<[^>]+>")
@@ -119,10 +119,8 @@ def load_spacy_model(model_name: str) -> spacy.Language:
 
 def read_source_urls(sources_path: Path) -> list[str]:
     urls: list[str] = []
-    with sources_path.open(encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        for row in reader:
-            url = row.get("url", "").strip()
-            if url and not url.startswith("#"):
-                urls.append(url)
+    for line in sources_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            urls.append(line)
     return urls

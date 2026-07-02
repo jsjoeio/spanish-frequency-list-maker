@@ -12,7 +12,7 @@ from pathlib import Path
 
 from src.utils import (
     DEFAULT_FREQUENCY_CSV,
-    DEFAULT_SOURCES_CSV,
+    DEFAULT_SOURCES_FILE,
     SUBTITLES_DIR,
     collect_input_files,
     load_spacy_model,
@@ -67,8 +67,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--sources",
-        default=str(DEFAULT_SOURCES_CSV),
-        help=f"CSV file with a url column (default: {DEFAULT_SOURCES_CSV})",
+        default=str(DEFAULT_SOURCES_FILE),
+        help=f"Text file with one URL per line (default: {DEFAULT_SOURCES_FILE})",
     )
     parser.add_argument(
         "--output-dir",
