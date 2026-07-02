@@ -15,8 +15,12 @@ DATA_DIR = PROJECT_ROOT / "data"
 SUBTITLES_DIR = PROJECT_ROOT / "subtitles" / "raw"
 DEFAULT_FREQUENCY_CSV = DATA_DIR / "frequency.csv"
 DEFAULT_SOURCES_FILE = DATA_DIR / "sources.txt"
+DEFAULT_LEMMA_GOAL = 15000
 
 TIMESTAMP_RE = re.compile(r"^\d{2}:\d{2}:\d{2}")
+TIMESTAMP_RANGE_RE = re.compile(
+    r"(\d{2}):(\d{2}):(\d{2})[.,](\d{1,3})\s*-->\s*(\d{2}):(\d{2}):(\d{2})[.,](\d{1,3})"
+)
 HTML_TAG_RE = re.compile(r"<[^>]+>")
 VTT_INLINE_TAG_RE = re.compile(r"<\d{2}:\d{2}:\d{2}\.\d{3}>|<c>|</c>")
 NON_WORD_RE = re.compile(r"[^\w\s]", re.UNICODE)
@@ -124,3 +128,79 @@ def read_source_urls(sources_path: Path) -> list[str]:
         if line and not line.startswith("#"):
             urls.append(line)
     return urls
+
+
+def _timestamp_part_to_seconds(hours: str, minutes: str, seconds: str, fraction: str) -> float:
+    milliseconds = int(fraction.ljust(3, "0")[:3])
+    return int(hours) * 3600 + int(minutes) * 60 + int(seconds) + milliseconds / 1000
+
+
+def get_subtitle_duration_seconds(file_path: Path) -> float:
+    if file_path.suffix.lower() not in {".srt", ".vtt"}:
+        return 0.0
+
+    max_end = 0.0
+    for match in TIMESTAMP_RANGE_RE.finditer(file_path.read_text(encoding="utf-8")):
+        *_, end_h, end_m, end_s, end_frac = match.groups()
+        max_end = max(max_end, _timestamp_part_to_seconds(end_h, end_m, end_s, end_frac))
+    return max_end
+
+
+def format_duration(seconds: float) -> str:
+    if seconds <= 0:
+        return "0m"
+
+    total_minutes = int(round(seconds / 60))
+    hours, minutes = divmod(total_minutes, 60)
+    if hours and minutes:
+        return f"{hours}h {minutes}m"
+    if hours:
+        return f"{hours}h"
+    return f"{minutes}m"
+
+
+def print_frequency_summary(
+    freq: Counter[str],
+    input_files: list[Path],
+    *,
+    goal: int = DEFAULT_LEMMA_GOAL,
+) -> None:
+    unique_lemmas = len(freq)
+    total_occurrences = sum(freq.values())
+
+    timed_files = [
+        (path, duration)
+        for path in input_files
+        if path.suffix.lower() in {".srt", ".vtt"}
+        for duration in [get_subtitle_duration_seconds(path)]
+        if duration > 0
+    ]
+    total_seconds = sum(duration for _, duration in timed_files)
+    video_count = len(timed_files)
+
+    print("\n--- Summary ---")
+    progress = min(unique_lemmas / goal, 1.0) if goal > 0 else 0.0
+    print(f"Unique lemmas: {unique_lemmas:,} (goal: {goal:,} — {progress:.1%})")
+    print(f"Total word occurrences: {total_occurrences:,}")
+
+    if video_count:
+        label = "video" if video_count == 1 else "videos"
+        print(f"Content processed: {format_duration(total_seconds)} across {video_count} {label}")
+
+    if goal > 0 and unique_lemmas >= goal:
+        print(f"Goal of {goal:,} unique lemmas reached.")
+        return
+
+    if total_seconds > 0 and unique_lemmas > 0 and goal > unique_lemmas:
+        lemmas_per_hour = unique_lemmas / (total_seconds / 3600)
+        seconds_needed = (goal - unique_lemmas) / lemmas_per_hour * 3600
+        print(f"Estimate to reach {goal:,} lemmas: ~{format_duration(seconds_needed)} more content")
+        if video_count > 0:
+            avg_seconds = total_seconds / video_count
+            videos_needed = max(1, int(round(seconds_needed / avg_seconds)))
+            print(
+                f"  (~{videos_needed} videos at ~{format_duration(avg_seconds)} each, "
+                f"{lemmas_per_hour:.0f} lemmas/hour)"
+            )
+    elif unique_lemmas > 0:
+        print("Add subtitle files with timestamps to get a time estimate toward your goal.")

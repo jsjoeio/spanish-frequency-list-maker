@@ -12,10 +12,12 @@ from pathlib import Path
 
 from src.utils import (
     DEFAULT_FREQUENCY_CSV,
+    DEFAULT_LEMMA_GOAL,
     DEFAULT_SOURCES_FILE,
     SUBTITLES_DIR,
     collect_input_files,
     load_spacy_model,
+    print_frequency_summary,
     process_file,
     read_source_urls,
     save_frequency,
@@ -101,6 +103,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=20,
         help="Number of top lemmas to print (default: 20, use 0 to skip)",
     )
+    parser.add_argument(
+        "--goal",
+        type=int,
+        default=DEFAULT_LEMMA_GOAL,
+        help=f"Target unique lemma count for progress estimate (default: {DEFAULT_LEMMA_GOAL})",
+    )
     return parser.parse_args(argv)
 
 
@@ -153,6 +161,8 @@ def main(argv: list[str] | None = None) -> int:
         freq = process_file(file_path, nlp, freq)
 
     save_frequency(freq, frequency_path)
+
+    print_frequency_summary(freq, input_files, goal=args.goal)
 
     if args.top > 0:
         print(f"\nTop {args.top} lemmas:")

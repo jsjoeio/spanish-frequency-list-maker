@@ -56,7 +56,7 @@ Add URLs to `data/sources.txt` (one per line), then run:
 python -m src.download_subs
 ```
 
-This downloads subtitles into `subtitles/raw/` (gitignored), processes them, and updates `data/frequency.csv`.
+This downloads subtitles into `subtitles/raw/` (gitignored), processes them, and updates `data/frequency.csv`. At the end it prints a summary with your unique lemma count, progress toward a 15,000-lemma goal, and a rough estimate of how much more content you need (hours/minutes and videos).
 
 Reprocess existing downloads without re-downloading:
 
