@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import csv
+import html
 import json
 import re
 from collections import Counter
 from pathlib import Path
 
 import spacy
+from spacy.tokens import Token
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
@@ -25,12 +27,27 @@ HTML_TAG_RE = re.compile(r"<[^>]+>")
 VTT_INLINE_TAG_RE = re.compile(r"<\d{2}:\d{2}:\d{2}\.\d{3}>|<c>|</c>")
 NON_WORD_RE = re.compile(r"[^\w\s]", re.UNICODE)
 DIGIT_RE = re.compile(r"\d+")
-
+CENSOR_PLACEHOLDER_RE = re.compile(r"\[&nbsp;__&nbsp;\]", re.IGNORECASE)
+ENCLITIC_SUFFIX_RE = re.compile(
+    r"(?:me|te|se|nos|os|lo|la|le|los|las|les)+$", re.IGNORECASE
+)
 SUBTITLE_SUFFIXES = {".srt", ".vtt", ".txt"}
+
+# spaCy es_core_news_sm attaches clitic pronouns to verb lemmas ("decir él" from decirle)
+CLITIC_PRONOUNS = frozenset({
+    "él", "ella", "yo", "me", "te", "se", "le", "lo", "la",
+    "los", "las", "nos", "os", "les",
+})
+
+# caption / markup junk that slips through tokenization
+LEMMA_BLOCKLIST = frozenset({"nbsp", "ner", "__"})
 
 
 def extract_subtitle_text(content: str) -> str:
     """Strip subtitle sequence numbers, timestamps, and markup; keep spoken text."""
+    content = html.unescape(content)
+    content = CENSOR_PLACEHOLDER_RE.sub(" ", content)
+
     lines: list[str] = []
     for raw_line in content.splitlines():
         line = raw_line.strip()
@@ -59,9 +76,62 @@ def read_input_text(file_path: Path) -> str:
 
 
 def clean_text(text: str) -> str:
+    text = html.unescape(text)
+    text = CENSOR_PLACEHOLDER_RE.sub(" ", text)
     text = DIGIT_RE.sub("", text)
     text = NON_WORD_RE.sub(" ", text)
     return text.lower().strip()
+
+
+def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
+    """return a clean single-word lemma, or None to skip this token."""
+    lemma = token.lemma_.lower().strip()
+    text = token.text.lower().strip()
+
+    if not lemma or not text:
+        return None
+
+    # spaCy attaches clitic pronouns to verb lemmas: "decir él" from decirle
+    if " " in lemma:
+        parts = lemma.split()
+        if len(parts) == 2 and parts[1] in CLITIC_PRONOUNS:
+            base = parts[0]
+            # "char él" from charla — spaCy mis-parses short stems as verb+clitic
+            if text == f"{base}la" and len(base) < 5:
+                lemma = text
+            else:
+                lemma = base
+        else:
+            return None
+
+    # recover from -elir artifacts (dáselir, ponelir) by re-lemmatizing the stem
+    if lemma.endswith("elir") and lemma != text:
+        stem = ENCLITIC_SUFFIX_RE.sub("", text)
+        if stem and stem != text:
+            stem_lemma = nlp(stem)[0].lemma_.lower()
+            if (
+                stem_lemma
+                and " " not in stem_lemma
+                and not stem_lemma.endswith("elir")
+                and len(stem_lemma) >= 3
+            ):
+                lemma = stem_lemma
+            else:
+                return None
+        else:
+            return None
+
+    if lemma in LEMMA_BLOCKLIST:
+        return None
+
+    # short -ción fragments from broken captions (e.g. "sción" from "ascensión")
+    if lemma.endswith("ción") and len(lemma) < 6:
+        return None
+
+    if len(lemma) <= 2:
+        return None
+
+    return lemma
 
 
 def process_file(file_path: Path, nlp: spacy.Language, freq_dict: Counter[str]) -> Counter[str]:
@@ -69,8 +139,11 @@ def process_file(file_path: Path, nlp: spacy.Language, freq_dict: Counter[str]) 
     doc = nlp(text)
 
     for token in doc:
-        if token.is_alpha and not token.is_stop and len(token.lemma_) > 2:
-            freq_dict[token.lemma_.lower()] += 1
+        if not token.is_alpha or token.is_stop:
+            continue
+        lemma = normalize_lemma(token, nlp)
+        if lemma:
+            freq_dict[lemma] += 1
 
     return freq_dict
 
