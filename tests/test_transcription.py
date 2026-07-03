@@ -1,6 +1,13 @@
 """Tests for Whisper transcription helpers."""
 
-from src.transcription import format_vtt_timestamp, segments_to_vtt
+from pathlib import Path
+
+from src.transcription import (
+    format_vtt_timestamp,
+    get_video_id,
+    prefer_whisper_transcripts,
+    segments_to_vtt,
+)
 
 
 def test_format_vtt_timestamp_zero():
@@ -28,3 +35,22 @@ def test_segments_to_vtt_skips_empty_segments():
     assert "hola" in vtt
     assert "mundo" in vtt
     assert vtt.count("-->") == 2
+
+
+def test_get_video_id_from_watch_url():
+    assert (
+        get_video_id("https://www.youtube.com/watch?v=Wqn7OlSW4yY")
+        == "Wqn7OlSW4yY"
+    )
+
+
+def test_prefer_whisper_transcripts_drops_caption_duplicates():
+    files = [
+        Path("subtitles/raw/Wqn7OlSW4yY.vtt"),
+        Path("subtitles/raw/Wqn7OlSW4yY.es.vtt"),
+        Path("subtitles/raw/WLOn6QPlEds.es.vtt"),
+    ]
+    assert prefer_whisper_transcripts(files) == [
+        Path("subtitles/raw/Wqn7OlSW4yY.vtt"),
+        Path("subtitles/raw/WLOn6QPlEds.es.vtt"),
+    ]

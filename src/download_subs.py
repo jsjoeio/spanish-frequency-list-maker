@@ -8,7 +8,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from src.transcription import download_captions, transcribe_urls
+from src.transcription import download_captions, prefer_whisper_transcripts, transcribe_urls
 from src.utils import (
     DEFAULT_FREQUENCY_CSV,
     DEFAULT_LEMMA_GOAL,
@@ -133,7 +133,7 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     try:
-        input_files = collect_input_files([output_dir])
+        input_files = prefer_whisper_transcripts(collect_input_files([output_dir]))
     except FileNotFoundError as exc:
         print(exc, file=sys.stderr)
         return 1

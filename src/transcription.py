@@ -2,19 +2,31 @@
 
 from __future__ import annotations
 
+import re
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
 from src.utils import PROJECT_ROOT
+
+YOUTUBE_ID_RE = re.compile(
+    r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})"
+)
+CAPTION_VTT_RE = re.compile(r"\.[a-z]{2}\.vtt$", re.IGNORECASE)
+YOUTUBE_EXTRACTOR_ARGS = "youtube:player_client=android"
 
 
 def find_ffmpeg() -> str:
     binary = shutil.which("ffmpeg")
     if binary:
         return binary
+
+    project_binary = PROJECT_ROOT / "bin" / "ffmpeg"
+    if project_binary.is_file():
+        return str(project_binary)
 
     raise FileNotFoundError(
         "ffmpeg not found. Install it with your system package manager "
@@ -39,6 +51,10 @@ def find_yt_dlp() -> str:
 
 
 def get_video_id(url: str) -> str:
+    match = YOUTUBE_ID_RE.search(url)
+    if match:
+        return match.group(1)
+
     yt_dlp = find_yt_dlp()
     result = subprocess.run(
         [yt_dlp, "--print", "id", url],
@@ -56,6 +72,19 @@ def get_video_id(url: str) -> str:
     return video_id
 
 
+def _yt_dlp_base_args() -> list[str]:
+    return [
+        find_yt_dlp(),
+        "--no-playlist",
+        "--extractor-args",
+        YOUTUBE_EXTRACTOR_ARGS,
+        "--sleep-interval",
+        "2",
+        "--max-sleep-interval",
+        "5",
+    ]
+
+
 def download_audio(url: str, audio_dir: Path, video_id: str) -> Path:
     find_ffmpeg()
 
@@ -63,11 +92,10 @@ def download_audio(url: str, audio_dir: Path, video_id: str) -> Path:
     output_template = str(audio_dir / f"{video_id}.%(ext)s")
 
     command = [
-        find_yt_dlp(),
+        *_yt_dlp_base_args(),
         "-x",
         "--audio-format",
         "mp3",
-        "--no-playlist",
         "-o",
         output_template,
         url,
@@ -113,7 +141,19 @@ def load_whisper_model(model_name: str) -> Any:
         ) from exc
 
     print(f"Loading Whisper model '{model_name}'...")
-    return whisper.load_model(model_name)
+    try:
+        return whisper.load_model(model_name)
+    except RuntimeError as exc:
+        if "SHA256 checksum" not in str(exc):
+            raise
+
+        cache_dir = Path.home() / ".cache" / "whisper"
+        corrupted = cache_dir / f"{model_name}.pt"
+        if corrupted.exists():
+            print(f"Removing corrupted Whisper cache at {corrupted}", file=sys.stderr)
+            corrupted.unlink()
+        print(f"Retrying Whisper model download for '{model_name}'...", file=sys.stderr)
+        return whisper.load_model(model_name)
 
 
 def transcribe_audio(
@@ -131,15 +171,30 @@ def transcribe_audio(
     return output_path
 
 
+def prefer_whisper_transcripts(files: list[Path]) -> list[Path]:
+    whisper_ids = {
+        path.stem
+        for path in files
+        if path.suffix.lower() == ".vtt" and not CAPTION_VTT_RE.search(path.name)
+    }
+    return [
+        path
+        for path in files
+        if not (
+            CAPTION_VTT_RE.search(path.name)
+            and path.name.split(".", 1)[0] in whisper_ids
+        )
+    ]
+
+
 def download_captions(urls: list[str], output_dir: Path, lang: str = "es") -> None:
-    yt_dlp = find_yt_dlp()
     output_dir.mkdir(parents=True, exist_ok=True)
     output_template = str(output_dir / "%(id)s")
 
     for url in urls:
         print(f"Downloading subtitles for {url}...")
         command = [
-            yt_dlp,
+            *_yt_dlp_base_args(),
             "--write-auto-sub",
             "--write-sub",
             "--sub-lang",
@@ -186,3 +241,5 @@ def transcribe_urls(
             transcribe_audio(model, audio_path, transcript_path, language=language)
         except (RuntimeError, OSError) as exc:
             print(f"Warning: failed to transcribe {url}: {exc}", file=sys.stderr)
+        else:
+            time.sleep(3)
