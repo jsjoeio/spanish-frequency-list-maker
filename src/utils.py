@@ -46,6 +46,9 @@ LEMMA_BLOCKLIST = frozenset({"nbsp", "ner", "__"})
 LEMMA_CORRECTIONS: dict[str, str] = {
     "hablé": "hablar",
     "habler": "hablar",
+    "charler": "charlar",
+    "charlo": "charlar",
+    "char": "charlar",
     "imaginé": "imaginar",
     "imaginer": "imaginar",
     "imagino": "imaginar",
@@ -59,13 +62,58 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "tenia": "tener",
     "escucho": "escuchar",
     "cholar": "chola",
+    "veíar": "ver",
+    "veiar": "ver",
+    "veía": "ver",
+    "veer": "ver",
+    "vear": "ver",
+    "sentíar": "sentir",
+    "sentí": "sentir",
+    "sentís": "sentir",
+    "senter": "sentir",
+    "servís": "servir",
+    "necesitemos": "necesitar",
+    "necesit": "necesitar",
+    "saqué": "sacar",
+    "saquar": "sacar",
+    "saqu": "sacar",
+    "saqer": "sacar",
+    "saqar": "sacar",
+    "arreglatir": "arreglar",
+    "arreglé": "arreglar",
+    "caístir": "caer",
+    "usastar": "usar",
+    "cesárear": "cesárea",
+    "cesáreo": "cesárea",
+    "cesáreir": "cesárea",
+    "nacés": "nacer",
+    "sebir": "servir",
+    "vezar": "ver",
+    "reduelar": "doler",
+    "incluyo": "incluir",
 }
 
 # common ASR mistakes in auto-generated youtube captions
 ASR_CONFUSIONS: dict[str, str] = {
     "pacer": "hacer",  # valid word, but almost always "hacer" in this corpus
     "parí": "para",
+    "tetra": "teta",
+    "reduela": "duele",
+    "reduele": "duele",
 }
+
+# proper names that appear in this corpus and should not be lemmas
+NAME_BLOCKLIST = frozenset({"mari", "aus", "redue"})
+
+# short but valid Spanish infinitives that must not be filtered as fragments
+KNOWN_SHORT_INFINITIVES = frozenset({"ver", "ser", "ir", "dar"})
+
+# prefer these when spaCy validates multiple bogus-stem candidates (e.g. veer vs ver)
+PREFERRED_INFINITIVES = frozenset({
+    "ver", "ser", "ir", "dar", "hacer", "tener", "venir", "poder", "decir",
+    "saber", "querer", "poner", "salir", "venir", "caer", "valer", "doler",
+    "sentir", "sacar", "charlar", "necesitar", "nacer", "servir", "usar",
+})
 
 INFINITIVE_RE = re.compile(r"^.+(ar|er|ir)$")
 CONSONANT_CLUSTER_RE = re.compile(r"[^aeiouáéíóúüñ]{3,}")
@@ -74,6 +122,20 @@ GERUND_ENDINGS = (
     ("ando", "ar"),
     ("iendo", "er"),
     ("íendo", "ir"),
+)
+
+# spaCy invents these suffixes from conjugated / voseo forms
+BOGUS_LEMMA_SUFFIXES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("elir", ("ar", "er", "ir")),
+    ("eir", ("ar", "er", "ir")),
+    ("astar", ("ar", "er", "ir")),
+    ("ístir", ("ir", "er", "ar")),
+    ("istir", ("ir", "er", "ar")),
+    ("atir", ("ar", "er", "ir")),
+    ("íar", ("er", "ir", "ar")),
+    ("lear", ("ar",)),
+    ("uelar", ("ar", "er", "ir")),
+    ("uar", ("ar", "er", "ir")),
 )
 
 
@@ -134,15 +196,46 @@ def _validate_infinitive(candidate: str, nlp: spacy.Language) -> bool:
     return token.lemma_.lower() == candidate and token.pos_ in {"VERB", "AUX"}
 
 
-def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | None:
-    """recover infinitive when spaCy keeps the conjugated surface form as lemma."""
-    stem = ENCLITIC_SUFFIX_RE.sub("", text)
+def _stem_variants(stem: str) -> list[str]:
+    """stem variants with trailing accent stripped first (veí → ve, veí)."""
+    if stem and stem[-1] in "áéíóú":
+        return [stem[:-1], stem]
+    return [stem]
 
+
+def _pick_best_infinitive(candidates: list[str]) -> str | None:
+    if not candidates:
+        return None
+    corrected = [LEMMA_CORRECTIONS.get(c, c) for c in candidates]
+    preferred = [c for c in corrected if c in PREFERRED_INFINITIVES]
+    if preferred:
+        return min(preferred, key=len)
+    return min(corrected, key=len)
+
+
+def recover_from_bogus_lemma(lemma: str, nlp: spacy.Language) -> str | None:
+    """strip known spaCy bogus suffixes and validate a recovered infinitive."""
+    for suffix, endings in BOGUS_LEMMA_SUFFIXES:
+        if lemma.endswith(suffix) and len(lemma) > len(suffix) + 1:
+            root = lemma[: -len(suffix)]
+            matches: list[str] = []
+            for variant in _stem_variants(root):
+                for ending in endings:
+                    candidate = variant + ending
+                    if _validate_infinitive(candidate, nlp):
+                        matches.append(candidate)
+            picked = _pick_best_infinitive(matches)
+            if picked:
+                return LEMMA_CORRECTIONS.get(picked, picked)
+    return None
+
+
+def _guess_from_stem(stem: str, nlp: spacy.Language) -> str | None:
     gerund = gerund_to_infinitive(stem)
     if gerund and _validate_infinitive(gerund, nlp):
         return gerund
 
-    # preterite: hablé → hablar
+    # preterite: hablé → hablar, charló → charlar
     if re.search(r"[éó]$", stem) and len(stem) > 3:
         root = stem[:-1]
         for ending in ("ar", "er", "ir"):
@@ -150,9 +243,41 @@ def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | No
             if _validate_infinitive(candidate, nlp):
                 return candidate
 
-    # imperfect: tenía / tenías → tener (-er/-ir before -ar to avoid false tenar)
+    # preterite tú: usaste → usar, caíste → caer
+    for suffix in ("aste", "iste"):
+        if stem.endswith(suffix) and len(stem) > len(suffix) + 1:
+            root = stem[: -len(suffix)]
+            for ending in ("ar", "er", "ir"):
+                candidate = root + ending
+                if _validate_infinitive(candidate, nlp):
+                    return candidate
+
+    # imperfect: tenía / tenías / veíamos → tener / ver
     for suffix in ("íamos", "íais", "ías", "ía"):
+        if stem.endswith(suffix) and len(stem) > len(suffix):
+            root = stem[: -len(suffix)]
+            matches: list[str] = []
+            for variant in _stem_variants(root):
+                for ending in ("er", "ir", "ar"):
+                    candidate = variant + ending
+                    if _validate_infinitive(candidate, nlp):
+                        matches.append(candidate)
+            picked = _pick_best_infinitive(matches)
+            if picked:
+                return picked
+
+    # subjunctive present: necesitemos → necesitar
+    for suffix in ("emos", "áis", "an"):
         if stem.endswith(suffix) and len(stem) > len(suffix) + 2:
+            root = stem[: -len(suffix)]
+            for ending in ("ar", "er", "ir"):
+                candidate = root + ending
+                if _validate_infinitive(candidate, nlp):
+                    return candidate
+
+    # voseo present: nacés → nacer, sentís → sentir, mirás → mirar
+    for suffix in ("és", "ás", "ís"):
+        if stem.endswith(suffix) and len(stem) > len(suffix) + 1:
             root = stem[: -len(suffix)]
             for ending in ("er", "ir", "ar"):
                 candidate = root + ending
@@ -170,9 +295,21 @@ def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | No
     return None
 
 
+def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | None:
+    """recover infinitive when spaCy keeps the conjugated surface form as lemma."""
+    # try the full form first so verb endings (-emos, -aste) are not eaten as clitics
+    for stem in (text, ENCLITIC_SUFFIX_RE.sub("", text)):
+        if not stem:
+            continue
+        guessed = _guess_from_stem(stem, nlp)
+        if guessed:
+            return guessed
+    return None
+
+
 def is_garbage_lemma(lemma: str) -> bool:
     """reject obvious caption/ASR junk that should not appear in a frequency list."""
-    if lemma in LEMMA_BLOCKLIST:
+    if lemma in LEMMA_BLOCKLIST or lemma in NAME_BLOCKLIST:
         return True
     if not re.search(r"[aeiouáéíóúü]", lemma):
         return True
@@ -183,6 +320,13 @@ def is_garbage_lemma(lemma: str) -> bool:
     # short -ción fragments from broken captions (e.g. "sción" from "ascensión")
     if lemma.endswith("ción") and len(lemma) < 6:
         return True
+    # caption fragments from truncated verbs (e.g. "pid" from "pide/piden")
+    if (
+        len(lemma) <= 3
+        and lemma not in KNOWN_SHORT_INFINITIVES
+        and lemma.endswith(("id", "ir", "ar", "er"))
+    ):
+        return True
     if len(lemma) <= 2:
         return True
     return False
@@ -190,6 +334,14 @@ def is_garbage_lemma(lemma: str) -> bool:
 
 def apply_lemma_corrections(lemma: str, text: str) -> str:
     return LEMMA_CORRECTIONS.get(lemma) or LEMMA_CORRECTIONS.get(text) or lemma
+
+
+def _looks_conjugated_verb(text: str) -> bool:
+    """detect finite verb surface forms spaCy often mis-tags as ADJ/NOUN."""
+    return bool(
+        re.search(r"[éó]", text)
+        or re.search(r"(íamos|íais|ías|emos|áis|ís|ás|és|aste|iste|aba|aban)$", text)
+    )
 
 
 def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
@@ -200,14 +352,38 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
     if not lemma or not text:
         return None
 
+    if text in NAME_BLOCKLIST:
+        return None
+
+    # short proper names from subtitles (Mari, Aus, etc.)
+    if (
+        token.pos_ == "PROPN"
+        and len(text) <= 5
+        and not _looks_conjugated_verb(text)
+    ):
+        return None
+
     # spaCy attaches clitic pronouns to verb lemmas: "decir él" from decirle
     if " " in lemma:
         parts = lemma.split()
         if len(parts) == 2 and parts[1] in CLITIC_PRONOUNS:
             base = parts[0]
-            # "char él" from charla — spaCy mis-parses short stems as verb+clitic
+            # "char él" from charla/charlo — spaCy mis-parses short stems as verb+clitic
             if text == f"{base}la" and len(base) < 5:
                 lemma = text
+            elif text == f"{base}lo" and len(base) < 6:
+                if _validate_infinitive(base, nlp):
+                    lemma = base
+                else:
+                    # charlo → char él: stem is charl, not char
+                    stem = text[:-2]
+                    for ending in ("ar", "er", "ir"):
+                        candidate = stem + ending
+                        if _validate_infinitive(candidate, nlp):
+                            lemma = candidate
+                            break
+                    else:
+                        lemma = base
             else:
                 lemma = base
         else:
@@ -238,8 +414,18 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
         if gerund:
             lemma = gerund
 
-    # finite verb forms spaCy fails on: hablé, tenías, imaginé, etc.
-    if token.pos_ in {"VERB", "AUX"} and not INFINITIVE_RE.match(lemma):
+    # recover bogus spaCy lemmas (veíar, sentíar, caístir, charler, etc.)
+    if not INFINITIVE_RE.match(lemma) or lemma == text:
+        recovered = recover_from_bogus_lemma(lemma, nlp)
+        if recovered:
+            lemma = recovered
+
+    # finite verb forms spaCy fails on: hablé, tenías, nacés, saqué, etc.
+    needs_guess = not INFINITIVE_RE.match(lemma) or lemma == text
+    can_guess = token.pos_ in {"VERB", "AUX"} or (
+        token.pos_ in {"ADJ", "NOUN", "PROPN"} and _looks_conjugated_verb(text)
+    )
+    if needs_guess and can_guess:
         guessed = guess_infinitive_from_conjugated(text, nlp)
         if guessed:
             lemma = guessed
@@ -248,6 +434,8 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
 
     # ASR confusion pairs from auto-captions
     lemma = ASR_CONFUSIONS.get(lemma, lemma)
+    lemma = ASR_CONFUSIONS.get(text, lemma)
+    lemma = apply_lemma_corrections(lemma, text)
 
     if is_garbage_lemma(lemma):
         return None
