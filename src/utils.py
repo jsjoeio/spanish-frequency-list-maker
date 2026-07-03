@@ -42,6 +42,40 @@ CLITIC_PRONOUNS = frozenset({
 # caption / markup junk that slips through tokenization
 LEMMA_BLOCKLIST = frozenset({"nbsp", "ner", "__"})
 
+# spaCy es_core_news_sm returns bad lemmas for conjugated rioplatense forms
+LEMMA_CORRECTIONS: dict[str, str] = {
+    "hablé": "hablar",
+    "habler": "hablar",
+    "imaginé": "imaginar",
+    "imaginer": "imaginar",
+    "imagino": "imaginar",
+    "imaginaba": "imaginar",
+    "imaginabas": "imaginar",
+    "imaginastar": "imaginar",
+    "imaginaste": "imaginar",
+    "imaginábar": "imaginar",
+    "tenía": "tener",
+    "tenías": "tener",
+    "tenia": "tener",
+    "escucho": "escuchar",
+    "cholar": "chola",
+}
+
+# common ASR mistakes in auto-generated youtube captions
+ASR_CONFUSIONS: dict[str, str] = {
+    "pacer": "hacer",  # valid word, but almost always "hacer" in this corpus
+    "parí": "para",
+}
+
+INFINITIVE_RE = re.compile(r"^.+(ar|er|ir)$")
+CONSONANT_CLUSTER_RE = re.compile(r"[^aeiouáéíóúüñ]{3,}")
+GERUND_ENDINGS = (
+    ("ándo", "ar"),
+    ("ando", "ar"),
+    ("iendo", "er"),
+    ("íendo", "ir"),
+)
+
 
 def extract_subtitle_text(content: str) -> str:
     """Strip subtitle sequence numbers, timestamps, and markup; keep spoken text."""
@@ -83,6 +117,81 @@ def clean_text(text: str) -> str:
     return text.lower().strip()
 
 
+def gerund_to_infinitive(text: str) -> str | None:
+    """mirándolo → mirar; strip clitics first, then undo gerund ending."""
+    stem = ENCLITIC_SUFFIX_RE.sub("", text)
+    for gerund, ending in GERUND_ENDINGS:
+        if stem.endswith(gerund):
+            return stem[: -len(gerund)] + ending
+    return None
+
+
+def _validate_infinitive(candidate: str, nlp: spacy.Language) -> bool:
+    parsed = nlp(candidate)
+    if not parsed:
+        return False
+    token = parsed[0]
+    return token.lemma_.lower() == candidate and token.pos_ in {"VERB", "AUX"}
+
+
+def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | None:
+    """recover infinitive when spaCy keeps the conjugated surface form as lemma."""
+    stem = ENCLITIC_SUFFIX_RE.sub("", text)
+
+    gerund = gerund_to_infinitive(stem)
+    if gerund and _validate_infinitive(gerund, nlp):
+        return gerund
+
+    # preterite: hablé → hablar
+    if re.search(r"[éó]$", stem) and len(stem) > 3:
+        root = stem[:-1]
+        for ending in ("ar", "er", "ir"):
+            candidate = root + ending
+            if _validate_infinitive(candidate, nlp):
+                return candidate
+
+    # imperfect: tenía / tenías → tener (-er/-ir before -ar to avoid false tenar)
+    for suffix in ("íamos", "íais", "ías", "ía"):
+        if stem.endswith(suffix) and len(stem) > len(suffix) + 2:
+            root = stem[: -len(suffix)]
+            for ending in ("er", "ir", "ar"):
+                candidate = root + ending
+                if _validate_infinitive(candidate, nlp):
+                    return candidate
+
+    # present: escucho → escuchar
+    if stem.endswith("o") and len(stem) > 3:
+        root = stem[:-1]
+        for ending in ("ar", "er", "ir"):
+            candidate = root + ending
+            if _validate_infinitive(candidate, nlp):
+                return candidate
+
+    return None
+
+
+def is_garbage_lemma(lemma: str) -> bool:
+    """reject obvious caption/ASR junk that should not appear in a frequency list."""
+    if lemma in LEMMA_BLOCKLIST:
+        return True
+    if not re.search(r"[aeiouáéíóúü]", lemma):
+        return True
+    if CONSONANT_CLUSTER_RE.search(lemma):
+        return True
+    if lemma.endswith("ubar"):  # youtubar, etc.
+        return True
+    # short -ción fragments from broken captions (e.g. "sción" from "ascensión")
+    if lemma.endswith("ción") and len(lemma) < 6:
+        return True
+    if len(lemma) <= 2:
+        return True
+    return False
+
+
+def apply_lemma_corrections(lemma: str, text: str) -> str:
+    return LEMMA_CORRECTIONS.get(lemma) or LEMMA_CORRECTIONS.get(text) or lemma
+
+
 def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
     """return a clean single-word lemma, or None to skip this token."""
     lemma = token.lemma_.lower().strip()
@@ -121,14 +230,26 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
         else:
             return None
 
-    if lemma in LEMMA_BLOCKLIST:
-        return None
+    lemma = apply_lemma_corrections(lemma, text)
 
-    # short -ción fragments from broken captions (e.g. "sción" from "ascensión")
-    if lemma.endswith("ción") and len(lemma) < 6:
-        return None
+    # gerund + clitic: mirándolo → mirar
+    if lemma == text or not INFINITIVE_RE.match(lemma):
+        gerund = gerund_to_infinitive(text)
+        if gerund:
+            lemma = gerund
 
-    if len(lemma) <= 2:
+    # finite verb forms spaCy fails on: hablé, tenías, imaginé, etc.
+    if token.pos_ in {"VERB", "AUX"} and not INFINITIVE_RE.match(lemma):
+        guessed = guess_infinitive_from_conjugated(text, nlp)
+        if guessed:
+            lemma = guessed
+        else:
+            lemma = apply_lemma_corrections(lemma, text)
+
+    # ASR confusion pairs from auto-captions
+    lemma = ASR_CONFUSIONS.get(lemma, lemma)
+
+    if is_garbage_lemma(lemma):
         return None
 
     return lemma
