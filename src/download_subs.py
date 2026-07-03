@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Download Spanish subtitles from source URLs and update the frequency list."""
+"""Download or transcribe Spanish speech from source URLs and update the frequency list."""
 
 from __future__ import annotations
 
 import argparse
-import shutil
-import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
 
+from src.transcription import download_captions, transcribe_urls
 from src.utils import (
     DEFAULT_FREQUENCY_CSV,
     DEFAULT_LEMMA_GOAL,
     DEFAULT_SOURCES_FILE,
+    PROJECT_ROOT,
     SUBTITLES_DIR,
     collect_input_files,
     load_spacy_model,
@@ -23,49 +23,15 @@ from src.utils import (
     save_frequency,
 )
 
-
-def find_yt_dlp() -> str:
-    binary = shutil.which("yt-dlp")
-    if binary:
-        return binary
-
-    project_binary = Path(__file__).resolve().parent.parent / "yt-dlp"
-    if project_binary.is_file():
-        return str(project_binary)
-
-    raise FileNotFoundError(
-        "yt-dlp not found. Install it with: pip install yt-dlp\n"
-        "Or download the binary: "
-        "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp"
-    )
-
-
-def download_subtitles(urls: list[str], output_dir: Path, lang: str = "es") -> None:
-    yt_dlp = find_yt_dlp()
-    output_dir.mkdir(parents=True, exist_ok=True)
-    output_template = str(output_dir / "%(id)s")
-
-    for url in urls:
-        print(f"Downloading subtitles for {url}...")
-        command = [
-            yt_dlp,
-            "--write-auto-sub",
-            "--write-sub",
-            "--sub-lang",
-            lang,
-            "--skip-download",
-            "-o",
-            output_template,
-            url,
-        ]
-        result = subprocess.run(command, check=False)
-        if result.returncode != 0:
-            print(f"Warning: yt-dlp failed for {url} (exit code {result.returncode})", file=sys.stderr)
+AUDIO_DIR = PROJECT_ROOT / "subtitles" / "audio"
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Download subtitles from source URLs and update data/frequency.csv."
+        description=(
+            "Download or transcribe speech from source URLs and update data/frequency.csv. "
+            "By default, audio is extracted with yt-dlp and transcribed with Whisper."
+        )
     )
     parser.add_argument(
         "--sources",
@@ -75,7 +41,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=str(SUBTITLES_DIR),
-        help=f"Directory for downloaded subtitles (default: {SUBTITLES_DIR})",
+        help=f"Directory for transcripts/subtitles (default: {SUBTITLES_DIR})",
+    )
+    parser.add_argument(
+        "--audio-dir",
+        default=str(AUDIO_DIR),
+        help=f"Directory for downloaded audio files (default: {AUDIO_DIR})",
     )
     parser.add_argument(
         "--frequency",
@@ -83,9 +54,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help=f"Frequency CSV to update (default: {DEFAULT_FREQUENCY_CSV})",
     )
     parser.add_argument(
+        "--method",
+        choices=("whisper", "captions"),
+        default="whisper",
+        help="Acquisition method: whisper (default) or YouTube captions",
+    )
+    parser.add_argument(
+        "--whisper-model",
+        default="medium",
+        help="Whisper model size (default: medium)",
+    )
+    parser.add_argument(
         "--lang",
         default="es",
-        help="Subtitle language code (default: es)",
+        help="Language code for Whisper or captions (default: es)",
     )
     parser.add_argument(
         "--model",
@@ -95,7 +77,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--skip-download",
         action="store_true",
-        help="Only reprocess subtitles already in the output directory",
+        help="Only reprocess transcripts already in the output directory",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-download and re-transcribe even if a transcript already exists",
     )
     parser.add_argument(
         "--top",
@@ -116,6 +103,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     sources_path = Path(args.sources)
     output_dir = Path(args.output_dir)
+    audio_dir = Path(args.audio_dir)
     frequency_path = Path(args.frequency)
 
     if not args.skip_download:
@@ -129,8 +117,18 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
         try:
-            download_subtitles(urls, output_dir, lang=args.lang)
-        except FileNotFoundError as exc:
+            if args.method == "whisper":
+                transcribe_urls(
+                    urls,
+                    output_dir,
+                    audio_dir,
+                    whisper_model_name=args.whisper_model,
+                    language=args.lang,
+                    force=args.force,
+                )
+            else:
+                download_captions(urls, output_dir, lang=args.lang)
+        except (FileNotFoundError, ImportError) as exc:
             print(exc, file=sys.stderr)
             return 1
 

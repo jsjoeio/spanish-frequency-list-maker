@@ -1,17 +1,14 @@
 # Future plans
 
-## Whisper transcription
+## Whisper transcription (implemented)
 
-YouTube auto-generated subtitles are often low quality — they produce broken words (`ner`, `sción`), mistranscriptions (`parí` for `para`), and inconsistent verb forms.
+The default pipeline now downloads audio with `yt-dlp` and transcribes with [Whisper](https://github.com/openai/whisper) (`medium` by default). Use `--method captions` to fall back to YouTube subtitles.
 
-A better long-term pipeline:
+Possible follow-ups:
 
-1. Download audio from source videos
-2. Transcribe with [Whisper](https://github.com/openai/whisper) (large-v3 or fine-tuned Spanish model)
-3. Optionally fine-tune on rioplatense parenting content for better accuracy
-4. Feed clean transcripts into the existing lemma frequency pipeline
-
-This would reduce reliance on caption-specific heuristics and improve lemma quality across the board.
+- Try `large-v3` or a fine-tuned Spanish model for higher accuracy
+- Fine-tune on rioplatense parenting content
+- Trim caption-specific heuristics once Whisper transcripts prove stable
 
 ## Lemmatizer alternatives (evaluated, not switched)
 
