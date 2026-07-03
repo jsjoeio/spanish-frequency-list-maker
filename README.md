@@ -2,6 +2,30 @@
 
 Build a personal Spanish lemma frequency list from subtitle (`.srt`, `.vtt`) or plain text (`.txt`) files. Useful for language learning apps, vocabulary prioritization, or tracking which words appear most in content you actually consume.
 
+## Quickstart
+
+**One-time setup:**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m spacy download es_core_news_sm
+```
+
+**Every time you have new videos:**
+
+1. Paste YouTube URLs into `data/sources.txt` (one per line)
+2. Run:
+
+```bash
+python -m src.download_subs
+```
+
+3. Check `data/frequency.csv` for your updated list
+
+The script downloads Spanish subtitles, processes them, and prints a summary at the end (unique lemma count, progress toward 15k, and a rough time estimate).
+
 ## Project Structure
 
 ```
@@ -27,7 +51,7 @@ Subtitles are not stored in the repo. Only the code and the generated frequency 
 - Processes `.srt`, `.vtt`, and `.txt` files
 - Lemmatizes words with [spaCy](https://spacy.io/) (`es_core_news_sm`)
 - Filters stop words and short tokens
-- Merges with the existing frequency list to accumulate counts over time
+- Rebuilds the frequency list from all downloaded subtitles each run
 - Exports to CSV or JSON
 
 ## Requirements
