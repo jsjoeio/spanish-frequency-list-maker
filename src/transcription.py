@@ -217,7 +217,7 @@ def transcribe_urls(
     output_dir: Path,
     audio_dir: Path,
     *,
-    whisper_model_name: str = "medium",
+    whisper_model_name: str = "small",
     language: str = "es",
     force: bool = False,
 ) -> None:

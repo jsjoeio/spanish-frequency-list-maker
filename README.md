@@ -86,9 +86,10 @@ python -m src.download_subs
 
 This downloads audio into `subtitles/audio/`, saves Whisper transcripts as VTT files in `subtitles/raw/` (both gitignored), processes them, and updates `data/frequency.csv`. At the end it prints a summary with your unique lemma count, progress toward a 15,000-lemma goal, and a rough estimate of how much more content you need (hours/minutes and videos).
 
-Use a different Whisper model:
+The default Whisper model is `small` (good balance for CPU). Use a larger model if you have a GPU:
 
 ```bash
+python -m src.download_subs --whisper-model medium
 python -m src.download_subs --whisper-model large-v3
 ```
 

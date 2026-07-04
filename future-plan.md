@@ -2,7 +2,7 @@
 
 ## Whisper transcription (implemented)
 
-The default pipeline now downloads audio with `yt-dlp` and transcribes with [Whisper](https://github.com/openai/whisper) (`medium` by default). Use `--method captions` to fall back to YouTube subtitles.
+The default pipeline now downloads audio with `yt-dlp` and transcribes with [Whisper](https://github.com/openai/whisper) (`small` by default for CPU; use `medium`/`large-v3` with a GPU). Use `--method captions` to fall back to YouTube subtitles.
 
 Possible follow-ups:
 

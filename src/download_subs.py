@@ -61,8 +61,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--whisper-model",
-        default="medium",
-        help="Whisper model size (default: medium)",
+        default="small",
+        help="Whisper model size (default: small; use medium/large-v3 if you have a GPU)",
     )
     parser.add_argument(
         "--lang",
