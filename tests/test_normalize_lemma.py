@@ -320,3 +320,239 @@ def test_bottom_100_garbage_rejected():
 
 def test_paulo_rejected():
     assert lemma_for("paulo") is None
+
+
+# ============================================================
+# Bottom-500 lemma improvements (issue #6)
+# ============================================================
+
+
+# --- bogus spaCy verb stems (-ir/-er/-ar endings on non-infinitives) ---
+
+
+def test_acomodir_to_acomodar():
+    assert lemma_for("acomodir") == "acomodar"
+
+
+def test_acompañer_to_acompañar():
+    assert lemma_for("acompañer") == "acompañar"
+
+
+def test_animir_to_animar():
+    assert lemma_for("animir") == "animar"
+
+
+def test_auténticar_to_autenticar():
+    assert lemma_for("auténticar") == "autenticar"
+
+
+def test_busquar_busquer_to_buscar():
+    assert lemma_for("busquar") == "buscar"
+    assert lemma_for("busquer") == "buscar"
+
+
+def test_banquar_to_bancar():
+    assert lemma_for("banquar") == "bancar"
+
+
+def test_cociner_to_cocinar():
+    assert lemma_for("cociner") == "cocinar"
+
+
+def test_contamir_to_contaminar():
+    assert lemma_for("contamir") == "contaminar"
+
+
+def test_escucher_to_escuchar():
+    assert lemma_for("escucher") == "escuchar"
+
+
+def test_esperser_to_esperar():
+    assert lemma_for("esperser") == "esperar"
+
+
+def test_estarer_to_estar():
+    assert lemma_for("estarer") == "estar"
+
+
+def test_festegir_to_festejar():
+    assert lemma_for("festegir") == "festejar"
+
+
+def test_fíjatar_to_fijar():
+    assert lemma_for("fíjatar") == "fijar"
+
+
+def test_guardir_to_guardar():
+    assert lemma_for("guardir") == "guardar"
+
+
+def test_hacar_hagar_to_hacer():
+    assert lemma_for("hacar") == "hacer"
+    assert lemma_for("hagar") == "hacer"
+
+
+def test_irer_to_ir():
+    assert lemma_for("irer") == "ir"
+
+
+def test_jodar_to_joder():
+    assert lemma_for("jodar") == "joder"
+
+
+def test_juzguir_to_juzgar():
+    assert lemma_for("juzguir") == "juzgar"
+
+
+def test_querrir_to_querer():
+    assert lemma_for("querrir") == "querer"
+
+
+def test_sigar_to_seguir():
+    assert lemma_for("sigar") == "seguir"
+
+
+def test_uner_to_unir():
+    assert lemma_for("uner") == "unir"
+
+
+# --- enclitic / reflexive surface forms ---
+
+
+def test_corregidme_to_corregir():
+    assert lemma_for("corregidme") == "corregir"
+
+
+def test_definirte_to_definir():
+    assert lemma_for("definirte") == "definir"
+
+
+def test_despidiéndotar_to_despedir():
+    assert lemma_for("despidiéndotar") == "despedir"
+
+
+def test_decilar_to_decir():
+    assert lemma_for("decilar") == "decir"
+
+
+def test_dormirmir_to_dormir():
+    assert lemma_for("dormirmir") == "dormir"
+
+
+def test_hagámoslo_to_hacer():
+    assert lemma_for("hagámoslo") == "hacer"
+
+
+def test_mirate_to_mirar():
+    assert lemma_for("mirate") == "mirar"
+
+
+def test_preguntándotar_to_preguntar():
+    assert lemma_for("preguntándotar") == "preguntar"
+
+
+def test_pruébalar_to_probar():
+    assert lemma_for("pruébalar") == "probar"
+
+
+def test_sacárselo_to_sacar():
+    assert lemma_for("sacárselo") == "sacar"
+
+
+def test_tirame_to_tirar():
+    assert lemma_for("tirame") == "tirar"
+
+
+def test_vincularno_to_vincular():
+    assert lemma_for("vincularno") == "vincular"
+
+
+# --- irregular conjugated forms ---
+
+
+def test_eche_to_echar():
+    """eche (subjunctive/imperative of echar) → echar."""
+    assert lemma_for("eche") == "echar"
+
+
+def test_elegí_to_elegir():
+    assert lemma_for("elegí") == "elegir"
+
+
+def test_levantabar_to_levantar():
+    assert lemma_for("levantabar") == "levantar"
+
+
+def test_logre_to_lograr():
+    assert lemma_for("logre") == "lograr"
+
+
+def test_naciero_to_nacer():
+    assert lemma_for("naciero") == "nacer"
+
+
+def test_ofrezcar_to_ofrecer():
+    assert lemma_for("ofrezcar") == "ofrecer"
+
+
+def test_tuvierar_to_tener():
+    assert lemma_for("tuvierar") == "tener"
+
+
+# --- wrong gender ---
+
+
+def test_lactancio_to_lactancia():
+    assert lemma_for("lactancio") == "lactancia"
+
+
+def test_neofobio_to_neofobia():
+    assert lemma_for("neofobio") == "neofobia"
+
+
+# --- garbage / noise forms rejected ---
+
+
+def test_bottom_500_garbage_rejected():
+    assert lemma_for("achir") is None       # spaCy bogus lemma from ache (noise)
+    assert lemma_for("arbolitar") is None   # not a real verb
+    assert lemma_for("blancir") is None     # unclear/not standard
+    assert lemma_for("callera") is None     # not a word
+    assert lemma_for("dábir") is None       # unclear bogus form
+    assert lemma_for("dej") is None         # fragment
+    assert lemma_for("dido") is None        # not a Spanish word
+    assert lemma_for("diciéndar") is None   # unclear bogus form
+    assert lemma_for("díado") is None       # bogus form
+    assert lemma_for("direr") is None       # unclear
+    assert lemma_for("ehh") is None         # noise
+    assert lemma_for("helicópterar") is None  # not a real verb
+    assert lemma_for("macame") is None      # unclear
+    assert lemma_for("maner") is None       # unclear
+    assert lemma_for("matetar") is None     # not a real verb
+    assert lemma_for("moody") is None       # English
+    assert lemma_for("neurólogar") is None  # not a real verb
+    assert lemma_for("purro") is None       # unclear/not standard
+    assert lemma_for("redificiil") is None  # ASR noise (garbled "difícil")
+    assert lemma_for("stickers") is None    # English plural
+    assert lemma_for("sunami") is None      # misspelling
+    assert lemma_for("tattoar") is None     # spaCy bogus lemma from tattoo
+    assert lemma_for("tattoo") is None      # English
+    assert lemma_for("terapiar") is None    # not a real verb
+    assert lemma_for("terapéuticar") is None  # not a real verb
+    assert lemma_for("vivar") is None       # not standard
+    assert lemma_for("wonder") is None      # English
+    assert lemma_for("anónimar") is None    # not a real verb
+    assert lemma_for("contact") is None     # English
+
+
+# --- proper names rejected ---
+
+
+def test_bottom_500_names_rejected():
+    assert lemma_for("catalina") is None
+    assert lemma_for("chacón") is None
+    assert lemma_for("fikri") is None
+    assert lemma_for("freud") is None
+    assert lemma_for("lorenzo") is None
+    assert lemma_for("machado") is None
+    assert lemma_for("urquiza") is None
