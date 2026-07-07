@@ -177,3 +177,142 @@ def test_guess_infinitive_from_conjugated():
     assert guess_infinitive_from_conjugated("necesitemos", nlp) == "necesitar"
     assert guess_infinitive_from_conjugated("nacés", nlp) == "nacer"
     assert guess_infinitive_from_conjugated("veíamos", nlp) == "ver"
+
+
+# ============================================================
+# Bottom-100 lemma improvements (issue #4)
+# ============================================================
+
+
+# --- bogus suffix forms ---
+
+
+def test_astir_bogus_suffix_recovery():
+    """soldastir and similar -astir forms are recovered to their infinitive."""
+    assert lemma_for("soldastir") == "soldar"
+
+
+def test_ayudser_to_ayudar():
+    assert lemma_for("ayudser") == "ayudar"
+
+
+def test_trasladir_to_trasladar():
+    assert lemma_for("trasladir") == "trasladar"
+
+
+def test_discutar_to_discutir():
+    assert lemma_for("discutar") == "discutir"
+
+
+# --- reflexive / enclitic surface forms ---
+
+
+def test_tirarno_to_tirar():
+    assert lemma_for("tirarno") == "tirar"
+
+
+def test_involucrarte_to_involucrar():
+    assert lemma_for("involucrarte") == "involucrar"
+
+
+def test_infinitive_plus_clitic():
+    """normalize_lemma strips infinitive+clitic: involucrarte → involucrar."""
+    assert lemma_for("involucrarte") == "involucrar"
+    assert lemma_for("prepararme") == "preparar"
+
+
+# --- irregular paradigm forms ---
+
+
+def test_pudar_to_poder():
+    assert lemma_for("pudar") == "poder"
+
+
+def test_intuyo_to_intuir():
+    assert lemma_for("intuyo") == "intuir"
+
+
+def test_choqué_to_chocar():
+    assert lemma_for("choqué") == "chocar"
+
+
+# --- conjugated / subjunctive forms kept by spaCy ---
+
+
+def test_mire_to_mirar():
+    assert lemma_for("mire") == "mirar"
+
+
+def test_agarra_to_agarrar():
+    assert lemma_for("agarra") == "agarrar"
+    assert lemma_in_sentence("ella agarra el libro", "agarra") == "agarrar"
+
+
+def test_desespera_to_desesperar():
+    assert lemma_for("desespera") == "desesperar"
+    assert lemma_in_sentence("me desespera todo", "desespera") == "desesperar"
+
+
+def test_enseñas_to_enseñar():
+    assert lemma_for("enseñas") == "enseñar"
+    assert lemma_in_sentence("enseñas muy bien", "enseñas") == "enseñar"
+
+
+def test_intente_to_intentar():
+    assert lemma_for("intente") == "intentar"
+
+
+# --- past-participle adjectives → verb infinitive ---
+
+
+def test_past_participle_adjectives_to_infinitive():
+    assert lemma_for("comparado") == "comparar"
+    assert lemma_for("superado") == "superar"
+    assert lemma_for("reflejado") == "reflejar"
+    assert lemma_in_sentence("estaba reconciliado con su pasado", "reconciliado") == "reconciliar"
+    assert lemma_in_sentence("comparado con antes era mejor", "comparado") == "comparar"
+
+
+# --- wrong accentuation / spelling ---
+
+
+def test_incómodar_to_incomodar():
+    assert lemma_for("incómodar") == "incomodar"
+
+
+def test_genuín_to_genuino():
+    assert lemma_for("genuín") == "genuino"
+
+
+def test_algun_to_alguno():
+    assert lemma_for("algun") == "alguno"
+
+
+# --- wrong grammatical gender ---
+
+
+def test_zanahorio_to_zanahoria():
+    assert lemma_for("zanahorio") == "zanahoria"
+
+
+def test_tierro_to_tierra():
+    assert lemma_for("tierro") == "tierra"
+
+
+# --- garbage forms rejected ---
+
+
+def test_bottom_100_garbage_rejected():
+    assert lemma_for("sti") is None
+    assert lemma_for("rós") is None
+    assert lemma_for("vwer") is None
+    assert lemma_for("tremeo") is None
+    assert lemma_for("ahoritir") is None
+    assert lemma_for("paular") is None
+
+
+# --- proper names rejected ---
+
+
+def test_paulo_rejected():
+    assert lemma_for("paulo") is None
