@@ -216,8 +216,7 @@ def test_involucrarte_to_involucrar():
 
 
 def test_infinitive_plus_clitic():
-    """normalize_lemma strips infinitive+clitic: involucrarte → involucrar."""
-    assert lemma_for("involucrarte") == "involucrar"
+    """normalize_lemma strips infinitive+clitic via LEMMA_CORRECTIONS safety net."""
     assert lemma_for("prepararme") == "preparar"
 
 
@@ -234,6 +233,7 @@ def test_intuyo_to_intuir():
 
 def test_choqué_to_chocar():
     assert lemma_for("choqué") == "chocar"
+    assert lemma_for("choquar") == "chocar"
 
 
 # --- conjugated / subjunctive forms kept by spaCy ---
@@ -245,11 +245,14 @@ def test_mire_to_mirar():
 
 def test_agarra_to_agarrar():
     assert lemma_for("agarra") == "agarrar"
+    assert lemma_for("agarrir") == "agarrar"
     assert lemma_in_sentence("ella agarra el libro", "agarra") == "agarrar"
 
 
 def test_desespera_to_desesperar():
     assert lemma_for("desespera") == "desesperar"
+    assert lemma_for("desespero") == "desesperar"
+    assert lemma_for("desesperir") == "desesperar"
     assert lemma_in_sentence("me desespera todo", "desespera") == "desesperar"
 
 
@@ -307,6 +310,7 @@ def test_bottom_100_garbage_rejected():
     assert lemma_for("rós") is None
     assert lemma_for("vwer") is None
     assert lemma_for("tremeo") is None
+    assert lemma_for("tremear") is None
     assert lemma_for("ahoritir") is None
     assert lemma_for("paular") is None
 

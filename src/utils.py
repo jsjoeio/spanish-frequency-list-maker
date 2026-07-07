@@ -114,6 +114,7 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     # reflexive/enclitic surface forms kept as-is by spaCy
     "tirarno": "tirar",
     "involucrarte": "involucrar",
+    "prepararme": "preparar",
     # conjugated/subjunctive/imperative forms where spaCy keeps surface lemma
     "mire": "mirar",
     "agarra": "agarrar",
