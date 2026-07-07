@@ -48,6 +48,41 @@ LEMMA_BLOCKLIST = frozenset({
     "vwer",
     # bogus verb stems that escape correction (not real infinitives)
     "tremeo", "tremear", "ahoritir", "paular",
+    # ---- bottom-500 blocklist additions (issue #6) ----
+    # spaCy bogus lemmas that look like real infinitives
+    "achir",         # bogus lemma from ache (noise/non-Spanish)
+    "tattoar",       # bogus lemma from tattoo
+    # not real Spanish verbs
+    "arbolitar",     # diminutive noun wrongly converted to verb
+    "blancir",       # unclear/non-standard
+    "helicópterar",  # not a verb
+    "matetar",       # not a verb
+    "neurólogar",    # not a verb
+    "terapiar",      # not a verb
+    "terapéuticar",  # not a verb
+    "anónimar",      # not a verb
+    # noise / fragments / unclear
+    "callera",       # not a word
+    "dábir",         # unclear bogus form
+    "dej",           # fragment
+    "diciéndar",     # unclear bogus form
+    "díado",         # unclear bogus form
+    "direr",         # unclear mapping
+    "ehh",           # noise
+    "macame",        # unclear
+    "maner",         # unclear
+    "purro",         # non-standard/unclear
+    "redificiil",    # ASR noise (garbled "difícil")
+    "rijar",         # unclear mapping
+    "sunami",        # misspelling of tsunami
+    "vivar",         # non-standard
+    # English words / loanwords not established in this corpus
+    "contact",
+    "dido",          # not a Spanish word
+    "moody",
+    "stickers",      # English plural form
+    "tattoo",
+    "wonder",
 })
 
 # spaCy es_core_news_sm returns bad lemmas for conjugated rioplatense forms
@@ -137,6 +172,58 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     # wrong grammatical gender
     "zanahorio": "zanahoria",
     "tierro": "tierra",
+    # ---- bottom-500 lemma improvements (issue #6) ----
+    # bogus spaCy verb stems: -ir/-er/-ar endings on non-infinitive bases
+    "acomodir": "acomodar",
+    "acompañer": "acompañar",
+    "animir": "animar",
+    "auténticar": "autenticar",
+    "banqar": "bancar",      # spaCy's intermediate lemma from banquar
+    "banquar": "bancar",
+    "busqer": "buscar",      # spaCy's intermediate lemma from busquer
+    "busquar": "buscar",
+    "busquer": "buscar",
+    "cociner": "cocinar",
+    "contamir": "contaminar",
+    "eche": "echar",         # subjunctive/imperative of echar
+    "echir": "echar",        # spaCy's bogus lemma for eche
+    "escucher": "escuchar",
+    "esperser": "esperar",
+    "estarer": "estar",
+    "festegir": "festejar",
+    "fíjatar": "fijar",
+    "guardir": "guardar",
+    "hacar": "hacer",
+    "hagar": "hacer",
+    "irer": "ir",
+    "jodar": "joder",
+    "juzguir": "juzgar",
+    "levantabar": "levantar",
+    "ofrezcar": "ofrecer",
+    "querrir": "querer",
+    "sigar": "seguir",
+    "tuvierar": "tener",
+    "uner": "unir",
+    # enclitic / reflexive surface forms
+    "corregidme": "corregir",
+    "decilar": "decir",
+    "definirte": "definir",
+    "despidiéndotar": "despedir",
+    "dormirmir": "dormir",
+    "hagámoslo": "hacer",
+    "mirate": "mirar",
+    "preguntándotar": "preguntar",
+    "pruébalar": "probar",
+    "sacárselo": "sacar",
+    "tirame": "tirar",
+    "vincularno": "vincular",
+    # irregular conjugated forms not recovered by the guess pipeline
+    "elegí": "elegir",
+    "logre": "lograr",
+    "naciero": "nacer",   # truncated/ASR form of nacieron (preterite of nacer)
+    # wrong grammatical gender
+    "lactancio": "lactancia",
+    "neofobio": "neofobia",
 }
 
 # common ASR mistakes in auto-generated youtube captions
@@ -149,7 +236,11 @@ ASR_CONFUSIONS: dict[str, str] = {
 }
 
 # proper names that appear in this corpus and should not be lemmas
-NAME_BLOCKLIST = frozenset({"mari", "aus", "redue", "paulo"})
+NAME_BLOCKLIST = frozenset({
+    "mari", "aus", "redue", "paulo",
+    # ---- bottom-500 name additions (issue #6) ----
+    "catalina", "chacón", "fikri", "freud", "lorenzo", "machado", "urquiza",
+})
 
 # short but valid Spanish infinitives that must not be filtered as fragments
 KNOWN_SHORT_INFINITIVES = frozenset({"ver", "ser", "ir", "dar"})
@@ -375,7 +466,7 @@ def is_garbage_lemma(lemma: str) -> bool:
         and lemma.endswith(("id", "ir", "ar", "er"))
     ):
         return True
-    if len(lemma) <= 2:
+    if len(lemma) <= 2 and lemma not in KNOWN_SHORT_INFINITIVES:
         return True
     return False
 
