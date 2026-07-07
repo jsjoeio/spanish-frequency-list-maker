@@ -11,6 +11,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python -m spacy download es_core_news_sm
+# ffmpeg is required for audio extraction and Whisper (e.g. sudo apt install ffmpeg)
 ```
 
 **Every time you have new videos:**
@@ -24,7 +25,7 @@ python -m src.download_subs
 
 3. Check `data/frequency.csv` for your updated list
 
-The script downloads Spanish subtitles, processes them, and prints a summary at the end (unique lemma count, progress toward 15k, and a rough time estimate).
+The script downloads audio from each URL, transcribes it with Whisper, processes the transcripts, and prints a summary at the end (unique lemma count, progress toward 15k, and a rough time estimate).
 
 ## Project Structure
 
@@ -37,17 +38,19 @@ spanish-frequency-list-maker/
 ├── data/
 │   ├── frequency.csv       # Main frequency list (committed)
 │   └── sources.txt         # YouTube/podcast URLs to download (one per line)
-├── subtitles/              # Downloaded subtitles (gitignored)
-│   └── raw/
+├── subtitles/              # Downloaded transcripts and audio (gitignored)
+│   ├── raw/                # Whisper VTT transcripts (or caption files)
+│   └── audio/              # Extracted MP3 files
 ├── README.md
 └── requirements.txt
 ```
 
-Subtitles are not stored in the repo. Only the code and the generated frequency list are committed.
+Transcripts and audio are not stored in the repo. Only the code and the generated frequency list are committed.
 
 ## Features
 
-- Downloads Spanish subtitles from URLs in `data/sources.txt` via `yt-dlp`
+- Transcribes Spanish speech from URLs in `data/sources.txt` via `yt-dlp` + Whisper (default)
+- Falls back to YouTube captions with `--method captions`
 - Processes `.srt`, `.vtt`, and `.txt` files
 - Lemmatizes words with [spaCy](https://spacy.io/) (`es_core_news_sm`)
 - Filters stop words and short tokens
@@ -58,7 +61,9 @@ Subtitles are not stored in the repo. Only the code and the generated frequency 
 
 - Python 3.10+
 - spaCy Spanish model: `es_core_news_sm`
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) for downloading subtitles
+- [ffmpeg](https://ffmpeg.org/) for audio extraction and Whisper
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) for downloading audio
+- [Whisper](https://github.com/openai/whisper) (`openai-whisper`) for transcription
 
 ## Setup
 
@@ -67,12 +72,11 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python -m spacy download es_core_news_sm
-pip install yt-dlp
 ```
 
 ## Usage
 
-### Full pipeline: download and update frequency list
+### Full pipeline: transcribe and update frequency list
 
 Add URLs to `data/sources.txt` (one per line), then run:
 
@@ -80,12 +84,31 @@ Add URLs to `data/sources.txt` (one per line), then run:
 python -m src.download_subs
 ```
 
-This downloads subtitles into `subtitles/raw/` (gitignored), processes them, and updates `data/frequency.csv`. At the end it prints a summary with your unique lemma count, progress toward a 15,000-lemma goal, and a rough estimate of how much more content you need (hours/minutes and videos).
+This downloads audio into `subtitles/audio/`, saves Whisper transcripts as VTT files in `subtitles/raw/` (both gitignored), processes them, and updates `data/frequency.csv`. At the end it prints a summary with your unique lemma count, progress toward a 15,000-lemma goal, and a rough estimate of how much more content you need (hours/minutes and videos).
 
-Reprocess existing downloads without re-downloading:
+The default Whisper model is `small` (good balance for CPU). Use a larger model if you have a GPU:
+
+```bash
+python -m src.download_subs --whisper-model medium
+python -m src.download_subs --whisper-model large-v3
+```
+
+Fall back to YouTube captions instead of Whisper:
+
+```bash
+python -m src.download_subs --method captions
+```
+
+Reprocess existing transcripts without re-downloading:
 
 ```bash
 python -m src.download_subs --skip-download
+```
+
+Force re-transcription of URLs that already have a transcript:
+
+```bash
+python -m src.download_subs --force
 ```
 
 ### Process local files manually
@@ -137,7 +160,7 @@ cosa,98
 
 ## How It Works
 
-1. `download_subs.py` reads URLs from `data/sources.txt` and saves subtitles to `subtitles/raw/`
+1. `download_subs.py` reads URLs from `data/sources.txt`, extracts audio with `yt-dlp`, transcribes with Whisper, and saves VTT transcripts to `subtitles/raw/`
 2. Subtitle markup and timestamps are stripped
 3. Text is normalized (lowercase, numbers and punctuation removed)
 4. spaCy tokenizes and lemmatizes each file
