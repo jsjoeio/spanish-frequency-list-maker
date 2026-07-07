@@ -264,15 +264,17 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "togar": "toga",
     "tóxicar": "tóxico",
     "verduleer": "verdulería",
-    "verdulerer": "verdulería",  # secondary bogus form produced by guesser after verduleer→verdulería
+    "verdulerer": "verdulería",  # secondary bogus form from guess_infinitive_from_conjugated after verduleer→verdulería
     "videollamado": "videollamada",
     # clitic / diminutive artifacts
     "criaturitir": "criatura",
     "nán": "nana",
     "peluch": "peluche",
     "repetirtar": "repetir",
-    # guesser artefacts: produced when the corrected noun is re-fed into guess pipeline
-    "defectar": "defecto",       # produced from defecto (VERB-tagged by spaCy)
+    # artifacts from guess_infinitive_from_conjugated: spaCy mis-tags these nouns as VERB,
+    # so after the first correction brings lemma back to the noun text,
+    # the guesser produces a spurious infinitive that needs to be corrected back
+    "defectar": "defecto",       # spaCy tags defecto as VERB; guesser produces defectar
     # gender / form corrections (text-level: feminine noun ≠ masculine adj)
     "bronca": "bronca",      # Rioplatense noun for anger (≠ adj bronco)
     "herida": "herida",      # noun for wound (≠ adj herido = injured)
@@ -286,8 +288,10 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "estabir": "estar",
     "estuvistar": "estar",
     "jodiar": "joder",
-    "minimiza": "minimizar",  # 3rd person singular → spaCy lemma is minimizo
-    "minimizo": "minimizar",  # spaCy bogus/intermediate lemma for minimiza
+    # spaCy incorrectly lemmatizes minimiza (3rd-person singular present) as minimizo;
+    # both keys are mapped so the correction works whether the lemma or text is matched
+    "minimiza": "minimizar",
+    "minimizo": "minimizar",
     "podiar": "poder",
     "represente": "representar",
     "respondar": "responder",
