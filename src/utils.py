@@ -40,7 +40,15 @@ CLITIC_PRONOUNS = frozenset({
 })
 
 # caption / markup junk that slips through tokenization
-LEMMA_BLOCKLIST = frozenset({"nbsp", "ner", "__"})
+LEMMA_BLOCKLIST = frozenset({
+    "nbsp", "ner", "__",
+    # short non-words from ASR/caption noise
+    "sti", "rós",
+    # OCR/typing errors
+    "vwer",
+    # bogus verb stems that escape correction (not real infinitives)
+    "tremeo", "tremear", "ahoritir", "paular",
+})
 
 # spaCy es_core_news_sm returns bad lemmas for conjugated rioplatense forms
 LEMMA_CORRECTIONS: dict[str, str] = {
@@ -91,6 +99,44 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "vezar": "ver",
     "reduelar": "doler",
     "incluyo": "incluir",
+    # ---- bottom-100 lemma improvements (issue #4) ----
+    # bogus spaCy suffixes not caught by BOGUS_LEMMA_SUFFIXES patterns
+    "soldastir": "soldar",
+    "ayudser": "ayudar",
+    "trasladir": "trasladar",
+    # stem-change irregulars where _guess_from_stem can't recover the infinitive
+    # c→qu spelling in preterite (choqué→chocar); also covers spaCy phantom infinitives
+    "choqué": "chocar",
+    "choquar": "chocar",
+    # wrong infinitive form generated from conjugated base
+    "discutar": "discutir",
+    "pudar": "poder",
+    "intuyo": "intuir",
+    # reflexive/enclitic surface forms kept as-is by spaCy
+    "tirarno": "tirar",
+    "involucrarte": "involucrar",
+    "prepararme": "preparar",
+    # conjugated/subjunctive/imperative forms where spaCy keeps surface lemma
+    "mire": "mirar",
+    "agarra": "agarrar",
+    "agarrir": "agarrar",
+    "desespera": "desesperar",
+    "desespero": "desesperar",
+    "desesperir": "desesperar",
+    "enseñas": "enseñar",
+    "intente": "intentar",
+    # past-participle adjective forms that should map to the verb infinitive
+    "comparado": "comparar",
+    "superado": "superar",
+    "reflejado": "reflejar",
+    "reconciliado": "reconciliar",
+    # wrong accentuation / spelling produced by ASR
+    "incómodar": "incomodar",
+    "genuín": "genuino",
+    "algun": "alguno",
+    # wrong grammatical gender
+    "zanahorio": "zanahoria",
+    "tierro": "tierra",
 }
 
 # common ASR mistakes in auto-generated youtube captions
@@ -103,7 +149,7 @@ ASR_CONFUSIONS: dict[str, str] = {
 }
 
 # proper names that appear in this corpus and should not be lemmas
-NAME_BLOCKLIST = frozenset({"mari", "aus", "redue"})
+NAME_BLOCKLIST = frozenset({"mari", "aus", "redue", "paulo"})
 
 # short but valid Spanish infinitives that must not be filtered as fragments
 KNOWN_SHORT_INFINITIVES = frozenset({"ver", "ser", "ir", "dar"})
@@ -126,6 +172,8 @@ GERUND_ENDINGS = (
 
 # spaCy invents these suffixes from conjugated / voseo forms
 BOGUS_LEMMA_SUFFIXES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    # -astir: from preterite tú forms like "soldaste" → spaCy produces "soldastir"
+    ("astir", ("ar", "er", "ir")),
     ("elir", ("ar", "er", "ir")),
     ("eir", ("ar", "er", "ir")),
     ("astar", ("ar", "er", "ir")),
