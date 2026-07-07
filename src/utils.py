@@ -104,7 +104,8 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "soldastir": "soldar",
     "ayudser": "ayudar",
     "trasladir": "trasladar",
-    # stem-change irregulars (c→qu, etc.) that _guess_from_stem can't recover
+    # stem-change irregulars where _guess_from_stem can't recover the infinitive
+    # c→qu spelling in preterite (choqué→chocar); also covers spaCy phantom infinitives
     "choqué": "chocar",
     "choquar": "chocar",
     # wrong infinitive form generated from conjugated base
@@ -171,6 +172,7 @@ GERUND_ENDINGS = (
 
 # spaCy invents these suffixes from conjugated / voseo forms
 BOGUS_LEMMA_SUFFIXES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    # -astir: from preterite tú forms like "soldaste" → spaCy produces "soldastir"
     ("astir", ("ar", "er", "ir")),
     ("elir", ("ar", "er", "ir")),
     ("eir", ("ar", "er", "ir")),
