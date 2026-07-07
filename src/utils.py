@@ -83,6 +83,23 @@ LEMMA_BLOCKLIST = frozenset({
     "stickers",      # English plural form
     "tattoo",
     "wonder",
+    # ---- bottom-500 additional blocklist additions (issue #8) ----
+    # bogus or unclear verb forms
+    "encir",          # bogus verb, not a real Spanish word
+    "rarir",          # bogus lemma, not standard
+    "tientar",        # non-standard; tentar is the correct infinitive
+    "odar",           # unclear form, not established
+    # non-existent / noise words
+    "chipiado",       # unclear/non-standard
+    "evertido",       # not a real Spanish word
+    "figonar",        # unclear/noise
+    "organicémar",    # ASR/noise garbage
+    "sirito",         # unclear/noise
+    "superpoderós",   # noise/neologism
+    "tailandio",      # wrong form (tailandés is the correct adjective)
+    "tapamo",         # noise fragment
+    # English words not established in this corpus
+    "sticker",        # English (singular; stickers already blocked above)
 })
 
 # spaCy es_core_news_sm returns bad lemmas for conjugated rioplatense forms
@@ -224,6 +241,60 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     # wrong grammatical gender
     "lactancio": "lactancia",
     "neofobio": "neofobia",
+    # ---- bottom-500 additional lemma improvements (issue #8) ----
+    # bogus spaCy verb derivations from genuine nouns / adjectives
+    "ahoritar": "ahorita",
+    "atmósferar": "atmósfera",
+    "bocín": "bocina",
+    "defectir": "defecto",
+    "dicotomir": "dicotomía",
+    "duraznar": "durazno",
+    "ingesto": "ingesta",
+    "irar": "ira",
+    "karmar": "karma",
+    "kilómetrar": "kilómetro",
+    "lupar": "lupa",
+    "melancolir": "melancolía",
+    "parámetrar": "parámetro",
+    "pedagógicar": "pedagógico",
+    "psicólogar": "psicólogo",
+    "psicológicar": "psicológico",
+    "quietar": "quieto",
+    "terapisto": "terapista",
+    "togar": "toga",
+    "tóxicar": "tóxico",
+    "verduleer": "verdulería",
+    "verdulerer": "verdulería",  # secondary bogus form from guess_infinitive_from_conjugated after verduleer→verdulería
+    "videollamado": "videollamada",
+    # clitic / diminutive artifacts
+    "criaturitir": "criatura",
+    "nán": "nana",
+    "peluch": "peluche",
+    "repetirtar": "repetir",
+    # artifacts from guess_infinitive_from_conjugated: spaCy mis-tags these nouns as VERB,
+    # so after the first correction brings lemma back to the noun text,
+    # the guesser produces a spurious infinitive that needs to be corrected back
+    "defectar": "defecto",       # spaCy tags defecto as VERB; guesser produces defectar
+    # gender / form corrections (text-level: feminine noun ≠ masculine adj)
+    "bronca": "bronca",      # Rioplatense noun for anger (≠ adj bronco)
+    "herida": "herida",      # noun for wound (≠ adj herido = injured)
+    "mordida": "mordida",    # Rioplatense noun for bite/bribe (≠ adj mordido)
+    "triada": "triada",      # tríada is feminine; triado doesn't exist
+    # wrong masculine form of a feminine noun
+    "crianzo": "crianza",
+    # bogus conjugated forms not recovered by the guess pipeline
+    "abracer": "abrazar",
+    "acomoda": "acomodar",
+    "estabir": "estar",
+    "estuvistar": "estar",
+    "jodiar": "joder",
+    # spaCy incorrectly lemmatizes minimiza (3rd-person singular present) as minimizo;
+    # both keys are mapped so the correction works whether the lemma or text is matched
+    "minimiza": "minimizar",
+    "minimizo": "minimizar",
+    "podiar": "poder",
+    "represente": "representar",
+    "respondar": "responder",
 }
 
 # common ASR mistakes in auto-generated youtube captions
@@ -240,6 +311,8 @@ NAME_BLOCKLIST = frozenset({
     "mari", "aus", "redue", "paulo",
     # ---- bottom-500 name additions (issue #6) ----
     "catalina", "chacón", "fikri", "freud", "lorenzo", "machado", "urquiza",
+    # ---- bottom-500 name additions (issue #8) ----
+    "pérez",
 })
 
 # short but valid Spanish infinitives that must not be filtered as fragments
