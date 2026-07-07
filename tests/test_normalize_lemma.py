@@ -556,3 +556,206 @@ def test_bottom_500_names_rejected():
     assert lemma_for("lorenzo") is None
     assert lemma_for("machado") is None
     assert lemma_for("urquiza") is None
+
+
+# ============================================================
+# Bottom-500 additional fixes (issue #8)
+# ============================================================
+
+
+# --- bogus spaCy verb derivations from genuine nouns/adjectives ---
+
+
+def test_karma_preserved():
+    assert lemma_for("karma") == "karma"
+
+
+def test_kilómetro_preserved():
+    assert lemma_for("kilómetro") == "kilómetro"
+
+
+def test_parámetro_preserved():
+    assert lemma_for("parámetro") == "parámetro"
+
+
+def test_ira_preserved():
+    assert lemma_for("ira") == "ira"
+
+
+def test_ingesta_preserved():
+    assert lemma_for("ingesta") == "ingesta"
+
+
+def test_verdulería_preserved():
+    assert lemma_for("verdulería") == "verdulería"
+
+
+def test_durazno_preserved():
+    assert lemma_for("durazno") == "durazno"
+
+
+def test_bocina_preserved():
+    assert lemma_for("bocina") == "bocina"
+
+
+def test_psicólogo_preserved():
+    assert lemma_for("psicólogo") == "psicólogo"
+
+
+def test_psicológico_preserved():
+    assert lemma_for("psicológico") == "psicológico"
+
+
+def test_pedagógico_preserved():
+    assert lemma_for("pedagógico") == "pedagógico"
+
+
+def test_terapista_preserved():
+    assert lemma_for("terapista") == "terapista"
+
+
+def test_quieto_preserved():
+    assert lemma_for("quieto") == "quieto"
+
+
+def test_ahorita_preserved():
+    assert lemma_for("ahorita") == "ahorita"
+
+
+def test_atmósfera_preserved():
+    assert lemma_for("atmósfera") == "atmósfera"
+
+
+def test_lupa_preserved():
+    assert lemma_for("lupa") == "lupa"
+
+
+def test_defecto_preserved():
+    assert lemma_for("defecto") == "defecto"
+
+
+def test_tóxico_preserved():
+    assert lemma_for("tóxico") == "tóxico"
+
+
+def test_toga_preserved():
+    assert lemma_for("toga") == "toga"
+
+
+def test_videollamada_preserved():
+    assert lemma_for("videollamada") == "videollamada"
+
+
+def test_melancolía_preserved():
+    assert lemma_for("melancolía") == "melancolía"
+
+
+def test_dicotomía_preserved():
+    assert lemma_for("dicotomía") == "dicotomía"
+
+
+def test_criaturita_to_criatura():
+    assert lemma_for("criaturita") == "criatura"
+
+
+# --- gender / word-form corrections ---
+
+
+def test_triada_preserved():
+    assert lemma_for("triada") == "triada"
+
+
+def test_nana_preserved():
+    assert lemma_for("nana") == "nana"
+
+
+def test_peluche_from_peluches():
+    assert lemma_for("peluches") == "peluche"
+
+
+def test_bronca_preserved():
+    """bronca (Rioplatense for anger) is distinct from adj bronco."""
+    assert lemma_for("bronca") == "bronca"
+
+
+def test_herida_preserved():
+    """herida (wound, noun) is distinct from adj herido (injured)."""
+    assert lemma_for("herida") == "herida"
+
+
+def test_mordida_preserved():
+    """mordida (bite/bribe, Rioplatense noun) is distinct from adj mordido."""
+    assert lemma_for("mordida") == "mordida"
+
+
+# --- verb form corrections ---
+
+
+def test_represente_to_representar():
+    assert lemma_for("represente") == "representar"
+
+
+def test_minimiza_to_minimizar():
+    assert lemma_for("minimiza") == "minimizar"
+
+
+def test_acomoda_to_acomodar():
+    assert lemma_for("acomoda") == "acomodar"
+
+
+def test_crianzo_to_crianza():
+    assert lemma_for("crianzo") == "crianza"
+
+
+def test_repetirte_to_repetir():
+    assert lemma_for("repetirte") == "repetir"
+
+
+def test_abracer_to_abrazar():
+    assert lemma_for("abracer") == "abrazar"
+
+
+def test_jodiar_to_joder():
+    assert lemma_for("jodiar") == "joder"
+
+
+def test_estabir_to_estar():
+    assert lemma_for("estabir") == "estar"
+
+
+def test_estuvistar_to_estar():
+    assert lemma_for("estuvistar") == "estar"
+
+
+def test_podiar_to_poder():
+    assert lemma_for("podiar") == "poder"
+
+
+def test_respondar_to_responder():
+    assert lemma_for("respondar") == "responder"
+
+
+# --- garbage / noise forms rejected ---
+
+
+def test_issue8_garbage_rejected():
+    assert lemma_for("chipiado") is None       # unclear/non-standard
+    assert lemma_for("encir") is None          # bogus verb form
+    assert lemma_for("evertido") is None       # not a real Spanish word
+    assert lemma_for("figonar") is None        # unclear/noise
+    assert lemma_for("odar") is None           # unclear form
+    assert lemma_for("organicémar") is None    # ASR/noise garbage
+    assert lemma_for("rarir") is None          # bogus lemma
+    assert lemma_for("sirito") is None         # unclear/noise
+    assert lemma_for("sticker") is None        # English (plural stickers already blocked)
+    assert lemma_for("superpoderós") is None   # noise/neologism
+    assert lemma_for("tailandio") is None      # wrong form (tailandés is correct)
+    assert lemma_for("tapamo") is None         # noise/fragment
+    assert lemma_for("tientar") is None        # non-standard form
+
+
+# --- proper name rejected ---
+
+
+def test_pérez_rejected():
+    assert lemma_for("pérez") is None
