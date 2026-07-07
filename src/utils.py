@@ -286,7 +286,8 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "estabir": "estar",
     "estuvistar": "estar",
     "jodiar": "joder",
-    "minimizo": "minimizar",
+    "minimiza": "minimizar",  # 3rd person singular → spaCy lemma is minimizo
+    "minimizo": "minimizar",  # spaCy bogus/intermediate lemma for minimiza
     "podiar": "poder",
     "represente": "representar",
     "respondar": "responder",
