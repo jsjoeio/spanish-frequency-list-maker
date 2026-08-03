@@ -100,6 +100,11 @@ LEMMA_BLOCKLIST = frozenset({
     "tapamo",         # noise fragment
     # English words not established in this corpus
     "sticker",        # English (singular; stickers already blocked above)
+    # ---- bottom-400 blocklist additions (issue #10) ----
+    "anaiboa",        # unknown word / ASR noise
+    "coner",          # spurious output from voseo-guess on "conés"
+    "presar",         # non-standard / unclear mapping
+    "preponir",       # not a real Spanish infinitive
 })
 
 # spaCy es_core_news_sm returns bad lemmas for conjugated rioplatense forms
@@ -295,6 +300,21 @@ LEMMA_CORRECTIONS: dict[str, str] = {
     "podiar": "poder",
     "represente": "representar",
     "respondar": "responder",
+    # ---- bottom-400 lemma improvements (issue #10) ----
+    # verb forms the pipeline fails to recover
+    "ando": "andar",           # 1st-person present; spaCy gives bogus "ar" which is blocked
+    "apaleo": "apalear",       # 1st-person present; spaCy tags as NOUN
+    "caigo": "caer",           # 1st-person present; spaCy tags as NOUN
+    "copie": "copiar",         # present subjunctive; spaCy tags as NOUN
+    "encaramos": "encarar",    # 1st-person plural; not handled by pipeline
+    "lloro": "llorar",         # 1st-person present; spaCy tags as ADJ
+    "necesite": "necesitar",   # present subjunctive; spaCy tags as NOUN
+    "respondí": "responder",   # 1st-person preterite; no -í rule in pipeline
+    # bogus verb derived from noun
+    "estéticar": "estética",   # spaCy invents infinitive from estética
+    # gender / form preservation (spaCy collapses to wrong masculine form)
+    "patita": "patita",        # little paw/leg (≠ patito = little duck)
+    "bebita": "bebita",        # baby girl (≠ bebito = baby boy)
 }
 
 # common ASR mistakes in auto-generated youtube captions

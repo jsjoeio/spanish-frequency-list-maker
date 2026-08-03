@@ -759,3 +759,82 @@ def test_issue8_garbage_rejected():
 
 def test_pérez_rejected():
     assert lemma_for("pérez") is None
+
+
+# ============================================================
+# Bottom-400 lemma improvements (issue #10)
+# ============================================================
+
+
+# --- verb form corrections (pipeline gaps) ---
+
+
+def test_ando_to_andar():
+    """ando (1st-person present of andar) — spaCy gives bogus lemma 'ar' which is blocked."""
+    assert lemma_for("ando") == "andar"
+
+
+def test_apaleo_to_apalear():
+    """apaleo (1st-person present of apalear) — spaCy tags as NOUN, pipeline skips it."""
+    assert lemma_for("apaleo") == "apalear"
+
+
+def test_caigo_to_caer():
+    """caigo (1st-person present of caer) — spaCy tags as NOUN."""
+    assert lemma_for("caigo") == "caer"
+
+
+def test_copie_to_copiar():
+    """copie (present subjunctive of copiar) — spaCy tags as NOUN."""
+    assert lemma_for("copie") == "copiar"
+
+
+def test_encaramos_to_encarar():
+    """encaramos (1st-person plural of encarar) — not handled by pipeline."""
+    assert lemma_for("encaramos") == "encarar"
+
+
+def test_lloro_to_llorar():
+    """lloro (1st-person present of llorar) — spaCy tags as ADJ, pipeline skips it."""
+    assert lemma_for("lloro") == "llorar"
+
+
+def test_necesite_to_necesitar():
+    """necesite (present subjunctive of necesitar) — spaCy tags as NOUN."""
+    assert lemma_for("necesite") == "necesitar"
+
+
+def test_respondí_to_responder():
+    """respondí (1st-person preterite of responder) — no -í preterite rule in pipeline."""
+    assert lemma_for("respondí") == "responder"
+
+
+# --- bogus verb derived from noun ---
+
+
+def test_estéticar_to_estética():
+    """estéticar is a bogus infinitive spaCy invents from estética."""
+    assert lemma_for("estéticar") == "estética"
+
+
+# --- gender / form preservation ---
+
+
+def test_patita_preserved():
+    """patita (little paw/leg) is distinct from patito (little duck); preserve feminine."""
+    assert lemma_for("patita") == "patita"
+
+
+def test_bebita_preserved():
+    """bebita (baby girl) is distinct from bebito (baby boy); preserve feminine."""
+    assert lemma_for("bebita") == "bebita"
+
+
+# --- garbage / noise forms rejected ---
+
+
+def test_bottom_400_garbage_rejected():
+    assert lemma_for("anaiboa") is None    # unknown word / ASR noise
+    assert lemma_for("coner") is None      # spurious output from voseo-guess on conés
+    assert lemma_for("preponir") is None   # not a real Spanish infinitive
+    assert lemma_for("presar") is None     # non-standard / unclear mapping
