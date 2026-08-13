@@ -521,7 +521,7 @@ def test_bottom_500_garbage_rejected():
     assert lemma_for("dábir") is None       # unclear bogus form
     assert lemma_for("dej") is None         # fragment
     assert lemma_for("dido") is None        # not a Spanish word
-    assert lemma_for("diciéndar") is None   # unclear bogus form
+    assert lemma_for("diciéndar") == "decir"  # gerund stem + invented -ar
     assert lemma_for("díado") is None       # bogus form
     assert lemma_for("direr") is None       # unclear
     assert lemma_for("ehh") is None         # noise
@@ -838,3 +838,75 @@ def test_bottom_400_garbage_rejected():
     assert lemma_for("coner") is None      # spurious output from voseo-guess on conés
     assert lemma_for("preponir") is None   # not a real Spanish infinitive
     assert lemma_for("presar") is None     # non-standard / unclear mapping
+
+
+# ============================================================
+# Failed-lemma batch (asiguiente / jodeir / tenar / ...)
+# ============================================================
+
+
+def test_asiguiente_to_siguiente():
+    """caption mash of 'a siguiente'."""
+    assert lemma_for("asiguiente") == "siguiente"
+    assert lemma_in_sentence("lo asiguiente que te digo", "asiguiente") == "siguiente"
+
+
+def test_jodeir_to_joder():
+    """spaCy -eir invention from joder; already covered by BOGUS_LEMMA_SUFFIXES."""
+    assert recover_from_bogus_lemma("jodeir", nlp) == "joder"
+    assert lemma_for("jodeir") == "joder"
+
+
+def test_tené_and_tenar_to_tener():
+    """voseo imperative tené: spaCy lemma tenar, a bogus -ar of tener."""
+    assert lemma_for("tenar") == "tener"
+    assert lemma_for("tené") == "tener"
+    assert lemma_in_sentence("tené paciencia", "tené") == "tener"
+
+
+def test_pidiéndar_to_pedir():
+    """gerund pidiendo turned into a bogus -ar infinitive."""
+    assert recover_from_bogus_lemma("pidiéndar", nlp) == "pedir"
+    assert lemma_for("pidiéndar") == "pedir"
+    assert lemma_in_sentence("está pidiéndar ayuda", "pidiéndar") == "pedir"
+
+
+def test_pidiéndolo_to_pedir():
+    """clitic gerund uses iéndo, which was missing from GERUND_ENDINGS."""
+    assert gerund_to_infinitive("pidiéndolo", nlp) == "pedir"
+    assert lemma_for("pidiéndolo") == "pedir"
+    assert lemma_in_sentence("está pidiéndolo ahora", "pidiéndolo") == "pedir"
+
+
+def test_hicar_rejected():
+    assert lemma_for("hicar") is None
+
+
+def test_galletita_to_galleta():
+    assert lemma_for("galletita") == "galleta"
+    assert lemma_for("galletitas") == "galleta"
+    assert lemma_for("galletitar") == "galleta"
+    assert lemma_in_sentence("comió una galletita", "galletita") == "galleta"
+
+
+def test_valentino_rejected():
+    assert lemma_for("valentino") is None
+    assert lemma_in_sentence("valentino no quiere comer", "valentino") is None
+
+
+def test_pensár_to_pensar():
+    assert lemma_for("pensár") == "pensar"
+    assert lemma_in_sentence("hay que pensár bien", "pensár") == "pensar"
+
+
+def test_viví_to_vivir():
+    assert lemma_for("viví") == "vivir"
+    assert lemma_in_sentence("yo viví eso", "viví") == "vivir"
+
+
+def test_vetamadre_rejected():
+    assert lemma_for("vetamadre") is None
+
+
+def test_obse_rejected():
+    assert lemma_for("obse") is None
