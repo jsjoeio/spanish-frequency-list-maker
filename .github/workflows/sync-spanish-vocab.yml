@@ -1,0 +1,88 @@
+# Opens a PR in jsjoeio/spanish-vocab when the frequency list lands on main.
+#
+# Requires repo secret SPANISH_VOCAB_TOKEN: a fine-grained PAT with
+# Contents (read/write) and Pull requests (read/write) on jsjoeio/spanish-vocab.
+name: Sync frequency list to spanish-vocab
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - data/frequency.csv
+  workflow_dispatch:
+
+concurrency:
+  group: sync-spanish-vocab
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require SPANISH_VOCAB_TOKEN
+        env:
+          TOKEN: ${{ secrets.SPANISH_VOCAB_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Add repo secret SPANISH_VOCAB_TOKEN (fine-grained PAT with Contents and Pull requests write on jsjoeio/spanish-vocab)."
+            exit 1
+          fi
+
+      - name: Checkout frequency list
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Checkout spanish-vocab
+        uses: actions/checkout@v4
+        with:
+          repository: jsjoeio/spanish-vocab
+          token: ${{ secrets.SPANISH_VOCAB_TOKEN }}
+          path: spanish-vocab
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Copy and convert frequency list
+        id: convert
+        run: |
+          cp data/frequency.csv spanish-vocab/frequency.csv
+          lemma_count=$(tail -n +2 data/frequency.csv | wc -l | tr -d ' ')
+          echo "lemma_count=${lemma_count}" >> "$GITHUB_OUTPUT"
+          (cd spanish-vocab && bun scripts/convert-frequency.ts)
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.SPANISH_VOCAB_TOKEN }}
+          path: spanish-vocab
+          commit-message: |
+            chore: sync frequency list from spanish-frequency-list-maker
+
+            Source: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          branch: chore/update-frequency-list
+          delete-branch: true
+          title: "chore: update frequency list (${{ steps.convert.outputs.lemma_count }} lemmas)"
+          body: |
+            Syncs the rioplatense parenting frequency list from [spanish-frequency-list-maker](${{ github.server_url }}/${{ github.repository }}).
+
+            - Source commit: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+            - Lemmas: ${{ steps.convert.outputs.lemma_count }}
+            - Copied `frequency.csv` and regenerated `public/data/rioplatense-parenting.json` with `bun scripts/convert-frequency.ts`
+          add-paths: |
+            frequency.csv
+            public/data/rioplatense-parenting.json
+
+      - name: Show pull request
+        if: ${{ steps.cpr.outputs.pull-request-url && steps.cpr.outputs.pull-request-operation != 'none' }}
+        env:
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          PR_OPERATION: ${{ steps.cpr.outputs.pull-request-operation }}
+        run: echo "::notice::${PR_URL} was ${PR_OPERATION}."
