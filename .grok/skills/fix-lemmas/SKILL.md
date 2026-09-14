@@ -33,14 +33,25 @@ Leé estas secciones de `src/utils.py` (es la única fuente de verdad; no asumas
 
 - `normalize_lemma` y el orden de transformaciones
 - `LEMMA_CORRECTIONS`, `LEMMA_BLOCKLIST`, `NAME_BLOCKLIST`, `ASR_CONFUSIONS`
-- `BOGUS_LEMMA_SUFFIXES`
-- `recover_from_bogus_lemma`, `guess_infinitive_from_conjugated`, `_guess_from_stem`, `gerund_to_infinitive`, `is_garbage_lemma`, `apply_lemma_corrections`, `_looks_conjugated_verb`
+- `BOGUS_LEMMA_SUFFIXES`, `PREFERRED_INFINITIVES`
+- `recover_from_bogus_lemma`, `guess_infinitive_from_conjugated`, `_guess_from_stem`, `_pick_confident_infinitive`, `_pick_best_infinitive`
+- `gerund_to_infinitive`, `is_garbage_lemma`, `apply_lemma_corrections`, `_looks_conjugated_verb`
+- `prefer_irregular_theme`, `unaccent_infinitive`, `diminutive_base`
 
 También leé `tests/test_normalize_lemma.py` para no romper cobertura existente.
 
+Setup si hace falta (desde el root del repo):
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m spacy download es_core_news_sm
+```
+
 ## Paso 2 — Reproducir cada fallo
 
-Para cada lema, corré `normalize_lemma` en aislamiento y en una oración corta rioplatense. Usá el venv del repo:
+Para cada lema, corré `normalize_lemma` en aislamiento **y** en una oración corta rioplatense (el POS de spaCy cambia y decide si corre el guesser). Usá el venv del repo:
 
 ```bash
 .venv/bin/python -c "
@@ -59,35 +70,47 @@ def show(word, sentence=None):
                 break
     print(f'{word!r}: spaCy={tok.lemma_!r}/{tok.pos_} isolated={isolated!r} context={ctx!r}')
 
-show('VISTE', 'viste lo que pasó')
+show('contame', 'contame qué pasó')
+show('descubrí', 'yo descubrí algo')
+show('esperabas', 'vos no esperabas eso')
 "
 ```
 
 Anotá: superficie, `token.lemma_` / `pos_` de spaCy, resultado de `normalize_lemma`, y dónde se corta el pipeline (clíticos, bogus suffix, guess, corrections, ASR, garbage).
 
+**Importante:** hipótesis del issue (`tenéi → tener?`) no son verdad — verificá siempre con reproducción. Algunos “fallos” ya están resueltos (`quemastar` vía `-astar`, `repetirte` vía corrections) o son lemas válidos (`arder`, `combo`).
+
 ## Paso 3 — Diagnosticar patrones
 
 Agrupá los fallos en clases, no en casos sueltos. Prestá especial atención a:
 
-- voseo (`-ás`, `-és`, `-ís`, imperativos)
-- clíticos y lemas con espacio (`decir él`)
-- inventos de spaCy con sufijos raros (`-íar`, `-astir`, `-istir`, `-elir`)
-- ASR de YouTube (`pacer`/`hacer`, recortes, confusiones)
-- género/número colapsado al masculino
-- nombres propios y basura de captions
-- formas finitas que spaCy tagea como `NOUN`/`ADJ` y el guesser no corre
+- **voseo presente** (`-ás`, `-és`, `-ís`) e **imperativo voseo** (`-á`/`-é`/`-í` sin -s: `contá`, `tené`)
+- **imperativo + enclítico** (`contame`, `decime`, `mirame`): spaCy suele taggear `NOUN` y dejar la superficie; hace falta que `_looks_conjugated_verb` detecte el clítico y que `guess_infinitive_from_conjugated` pruebe stem / stem acentuado / `root+ar|er|ir`
+- **infinitivo + clítico** (`repetirte`, `definirte`): strip de enclítico → infinitivo válido
+- **pretérito 1sg `-í`**: spaCy inventa pares `descubrer`/`descubrir`; `_pick_confident_infinitive` debe romper el empate (PREFERRED o tipología de stem `-br/-r/-b`)
+- **pretérito/presente 1pl** (`-amos` → preferir `-ar`; `-imos` → er/ir confiable)
+- **imperfecto `-ar`** (`-aba/-abas/-aban/...`): no solo `-ía/-ías`
+- **ASR sobre voseo** (`tenéi` = `tené` + `-i` espurio)
+- **lemas bogus con diptongo de cambio vocálico** (`devuelvar`, `arrepientir`): el infinitivo real no lleva `ue`/`ie`; suelen ir a `LEMMA_CORRECTIONS` (un undo general `ue→o`/`ie→e` rompe `frecuentar` porque spaCy “valida” casi todo)
+- inventos de spaCy con sufijos raros (`-íar`, `-astir`, `-istar`, `-istir`, `-elir`, `-astar`)
+- ASR de YouTube (`pacer`/`hacer`, recortes, confusiones `j`/`g`)
+- género/número colapsado; adjetivos truncados (`ansiós` → `ansioso`)
+- nombres propios, marcas, productos (`picasso`, `xiaomi`, `siri`, `twitter`) → `NAME_BLOCKLIST`
+- inglés / neologismos / ruido (`mapping`, `sharenting`, `cheno`) → `LEMMA_BLOCKLIST`
+- formas finitas que spaCy tagea como `NOUN`/`ADJ` y el guesser no corre sin `_looks_conjugated_verb`
+- **no tocar** verbos reales ni préstamos asentados solo porque aparecieron en la lista (`arder`, `combo`)
 
 ## Paso 4 — Proponer (este orden)
 
 Preferí la solución más general que sea segura:
 
-1. Heurísticas / funciones de recovery (`_guess_from_stem`, `_looks_conjugated_verb`, orden en `normalize_lemma`)
+1. Heurísticas / funciones de recovery (`_guess_from_stem`, `guess_infinitive_from_conjugated`, `_looks_conjugated_verb`, `_pick_confident_infinitive`, `PREFERRED_INFINITIVES`)
 2. Nuevos patrones en `BOGUS_LEMMA_SUFFIXES` (o regla equivalente)
 3. Entradas en `LEMMA_CORRECTIONS`
 4. Entradas en `LEMMA_BLOCKLIST` / `NAME_BLOCKLIST` / `ASR_CONFUSIONS`
 5. Rediseño del orden de `normalize_lemma` solo si el orden actual causa fallos sistemáticos
 
-Un parche de dict está bien cuando el caso es irregular de verdad (p. ej. `pacer` → `hacer` en este corpus) o el falso positivo de una heurística sería peor.
+Un parche de dict está bien cuando el caso es irregular de verdad (p. ej. `traigo` → `traer`, `pacer` → `hacer`) o el falso positivo de una heurística sería peor (p. ej. undo `ue→o` sobre `frecuentar`, o regla `-á` con `len≤4` que convierte `mamá`→`mamar`).
 
 Para cada propuesta:
 
@@ -108,6 +131,7 @@ Al implementar:
 - no dupliques keys que ya existen; extendé el mecanismo dueño del patrón
 - no toques `data/frequency.csv` a menos que el usuario lo pida
 - corré `.venv/bin/python -m pytest tests/test_normalize_lemma.py -q`
+- si el skill quedó desactualizado (patrones nuevos, orden, falsos positivos), actualizá `.grok/skills/fix-lemmas/SKILL.md` en el mismo PR
 
 ## Respuesta
 
