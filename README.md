@@ -37,13 +37,15 @@ spanish-frequency-list-maker/
 ├── data/
 │   ├── frequency.csv       # Main frequency list (committed)
 │   └── sources.txt         # YouTube/podcast URLs to download (one per line)
-├── subtitles/              # Downloaded subtitles (gitignored)
-│   └── raw/
+├── subtitles/
+│   ├── spotify/            # Spotify transcripts (committed; rebuild corpus)
+│   ├── raw/                # YouTube subtitles (gitignored)
+│   └── audio/              # local audio (gitignored)
 ├── README.md
 └── requirements.txt
 ```
 
-Subtitles are not stored in the repo. Only the code and the generated frequency list are committed.
+Spotify transcripts in `subtitles/spotify/` are committed so the frequency list can be rebuilt on another machine. YouTube downloads and MP3s stay local.
 
 ## Features
 

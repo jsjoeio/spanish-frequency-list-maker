@@ -1,0 +1,1223 @@
+[0:02]
+Bueno seba.
+
+Muchas gracias por estar.
+
+[0:04]
+Un placer, un placer.
+
+[0:06]
+Un placer de verdad sos un tipazo tamos hablando recién antes de que empecemos a grabar y.
+
+Está muy bueno hablar con seba, te engancha.
+
+De hecho, al momento, dijo che flaco, tengo un turno médico, vamos a arrancar, tener razón en algo, hay que trabajar, pero escúchame, sos especialista en tecnología y seguridad informática, apasionado por la educación y la divulgación, fue 1 de los fundadores y presidente de la ONG Argentina cibersegura, a través de charlas y conferencias en El País y alrededor del mundo, se ha convertido en un referente por su trabajo de concientización sobre el buen uso de las tecnologías.
+
+[0:38]
+Es autor de guía para la crianza en un mundo digital.
+
+[0:43]
+¿Sí, sí, el tema de El sí, el tema de que soy es un tema que me persigue, para eso te vas a 40, como que cuando son más pibe y ahora me amigué con que soy un poquito de todo, cuando era más chico, lo sigue como hasta sufrir, porque sentía que no sabía lo que era y al momento me amigué con con algunos cosas que 1 va leyendo, conoces?
+
+[1:03]
+Y bueno, hay gente que le gusta mucho, soy muy inquieto, hay algo en la confluencia entre tecnología y educación que claramente me encuentra en el fondo, yo me sigo sintiendo un informático, o sea, yo estoy ingeniera en sistemas, sé programar y hacer cosas técnicas.
+
+Y, aunque cada vez estoy más lejos, más cerca de la educación y más lejos de eso, como que todavía no me saco que siento que mi mi formación de bases, que sé de tecnología.
+
+[1:24]
+Escúchame creciste con tecnología.
+
+[1:26]
+Sí, sí sí vieja si esto o sea yo en el año 91 tenía 6, 7 años y mi vieja daba clase de computación en el quincho de casa, entonces yo tengo fotos con 6 años con 4 x t que no sé si te acuerdas las compu que usaba en ese momento, con lo cual tuvo 111 estímulo de de de la computación se decía en ese momento.
+
+[1:49]
+La clase de computación.
+
+[1:50]
+Claro, tuve un estímulo de la PC.
+
+[1:53]
+Como un cambio a informática.
+
+[1:54]
+Exactamente, yo me siento un informático, yo tuve un estímulo que creo que gente mira, yo tuve 41 años, no, no tuvo en general de una relación con las pantallas que para los que o sea yo tuve un celular a los 20 años, entonces mucha gente de mi generación no tenía una computadora a los 5 o 6 años yo tenía cuatro, se la rompí a mi vieja, mi vieja se recontra enojaba porque tenía que dar clases con eso y o sea yo ya ahí ya yo me acuerdo la cantidad de que le rompía las computadoras a mi vieja,
+
+[2:18]
+pues me gustaba tocar los archivos, entonces ya es muy pibe, empezó la curiosidad.
+
+Lo que años después, 1 lo reconvierte en esa esa cultura del hacking, del del buen sentido, de la palabra, de de, de de indagar, de ir a fondo, entender cómo funciona algo.
+
+Y ahora me acuerdo de mi vieja a los gritos de que le rompió la computadora que la tenía que usar el otro día para dar clases y yo tenía, no sé, estoy un poquito más grande, 8910 años, entonces hay un estímulo muy fuerte de la computación en mi vida.
+
+[2:43]
+¿Cuando te referís a la cultura de hacking que a qué te referís?
+
+[2:46]
+Como que viste que como que el hacking hay como dos dos.
+
+[2:50]
+¿Sabes hackear cosas?
+
+[2:51]
+Cedear cosas, pues laurenzo muchos años, pero es una palabra que tiene una acepción muy negativa.
+
+Es en el hacker en el que te robo y tal que es algo malo, pero también tiene una visión positiva.
+
+Vamos a hackear la educación, vamos a hackear la medicina que es vamos a barajar y dar de vuelta.
+
+Vamos a intentar en el fondo ambos lo pasa que el hacking se puso para el bien o para el mal.
+
+[3:11]
+En el fondo, ambos tienen algo en común que es el origen del hacking.
+
+A final de acá de 70 por 1.
+
+Poco antes es esas primeras declaraciones de quienes empezaron a usar la palabra hablaban de una cultura positiva, que es una cultura de la curiosidad.
+
+Los primeros hackers decían que Todo empezó si mal, no recuerdo que había una impresora en una Universidad que había que tener un código para imprimir.
+
+[3:30]
+Y esa persona dijo, no, yo quiero ver cómo hago para imprimir sin sin sin serlo de las personas autorizadas, entonces, aunque obviamente está mal en términos, no, no, no.
+
+Ha habido un sentido del delito, sino un sentido de quiero hacer algo que no me dejan hacer, casi como una travesura, no exacto.
+
+Entonces hacking puede derivar desde ese lado hasta un cibercriminal, hasta esto que alguien te dice, che no, yo vengo a entender cómo funciona esto a barajar y dar de vuelta a darlo vuelta.
+
+[3:54]
+Entonces la cultura hacker para mí es una cultura asociada a la curiosidad y yo creo que es otra de mi, de mis vetamadre, o sea, es algo que me acompañó en cada cosa que hice hace 22 años que laburo.
+
+Y yo lo que no me el sombrero que nunca me saco el sombrero de la curiosidad.
+
+[4:08]
+Escúchame se va profundísimos en algo que creo que nos compete a todos los padres, que es la tecnología.
+
+Los niños y la seguridad, pero hagamos.
+
+[4:20]
+Que ahí me encontré con esas 3 cosas, no de golpe me llegaron.
+
+[4:22]
+¿Exacto porque?
+
+¿Eh bueno, es que la seguridad es muy importante, pero primero hablemos de la tecnología, qué onda con con?
+
+¿Recién hablábamos en otra nota que yo le decía pantallas y pantalla, no?
+
+Y me decía otra vez, la pregunta es que yo estoy obligado a.
+
+[4:38]
+Preguntarle porque es una de las grandes preguntas de crianza hoy.
+
+[4:41]
+Y te lo pregunta.
+
+[4:42]
+¿Vos no es que yo bueno yo o sea yo yo tengo pensado esta pregunta hace 15 años, con lo cual no, no, no estoy improvisando en la respuesta y básicamente el problema es que está en que la pregunta no es pantalla sido pantallas no, sino a qué edad, en qué contexto el cómo hay?
+
+[4:59]
+¿Hay dos preguntas que me hacen mucho respecto a las pantallas, que cuándo cuándo lo dejo mirar?
+
+¿No sé youtube, cuándo le doy un celular?
+
+¿Cuándo puedo acceder a las redes sociales?
+
+¿Cuándo?
+
+El segundo es cuánto, cuánto tiempo por día puede traer las pantallas y esas dos preguntas me las hacen todo el tiempo bien de.
+
+[5:15]
+De esas dos hay una que me parece más relevante que otra, ahora tengo que estar, pero la que me hacen poco es cómo.
+
+¿No, entonces, cómo hacemos que lleguen las tecnologías?
+
+¿Y la la palabra clave que por ahí nos va a regir?
+
+Gran parte de la conversación y de todo lo que tiene que ver con la crianza digital, como le digo yo.
+
+[5:31]
+¿En es la progresividad, entonces pantalla ha sido pantalla, no asume que todo pasa de de 0 a 1 no para este tipo?
+
+No, no, no, no, no, no celular, no celular, no celular.
+
+Bueno, ahora lo tienes hacer lo que quieras, no redes sociales, redes sociales.
+
+Bueno, ahora tenés redes sociales, haz lo que quieras, sí y si trabaja poco con lo que yo creo que es el eje de que la tecnología impacte positivamente en la infancia, que es la progresividad, entonces no es youtube sí.
+
+[5:54]
+Yo creo que ni casi casi ni se.
+
+[5:55]
+¿Trabaja?
+
+No no, no que es.
+
+Yo creo que es la es es el gran enfoque que tenemos que llevar porque todo está reducido así o no que ese sí o no, por supuesto.
+
+Hay una temporalidad, yo debo decir 1 n 4 no tienes celular y un n 14 sí.
+
+[6:08]
+¿Pero por qué crees que no se trabaja por comodidad?
+
+[6:10]
+Es un tema muy nuevo, o sea, insisto, ahora yo hace, yo fui yo, yo fui un niño hace 30 años y no existía esta problemática.
+
+Alguien que fue niño hace 15 apenas y hoy, o sea ponerle hace 20, apenas no había tantos estímulos como hoy en día, entonces lo primero es que es nuevo, entonces hay que amigarnos con quien algo nuevo no tenemos todas las respuestas que es angustiante porque nosotros nos toca transmitir la la maternidad de hoy, entonces el chino yo quiero hoy la respuesta, no las quiero dentro de 30 años por dentro de 30 años mi hijo va a ser grande y yo no voy a tener ese problema, pero no tenemos que hacer
+
+[6:41]
+cargo que nos toca hacer.
+
+Las primeras dos generaciones y probablemente las únicas dos generaciones que estamos lidiando con este problema muy nuevo, que es que los los chicos nacen y hay una cantidad de estímulos alrededor que aparecieron todos los últimos 20 años, porque encima toda la tecnología que nosotros usamos hoy estamos recontra acostumbrados y hace 20 años los celulares no populares.
+
+[7:01]
+Hace 20 años Instagram no existía hace 20 años Facebook y así Twitter no entonces ni hablar de snapchat ni hablar los reales ni hablar tweets ni hablar del streaming.
+
+Entonces nos parece que está todo hace un montón de tiempo y todo salió ayer.
+
+En realidad nos falta como una pena, mira, viste demás de perspectiva histórica, es decir, esto es nuevo.
+
+[7:20]
+Entonces es tan nuevo que no tenemos todas las respuestas, con lo cual yo de ese lado también con Dolores, porque a veces me gustaría.
+
+También tengo un, tengo un hijo, con lo cual a través de esto como divulgador, pero también lo atravieso como padre y creo que el el el lo primero que digo en todas mis charlas hace 15 años que hablo con chicos y unos 8 o 9 que habló con familias.
+
+[7:39]
+He sa mirémonos con que nos toca vivir una etapa de aprendizaje y transición, por lo tanto, no tenemos todas las respuestas tal no sé sobre el alimentación saludable, estamos hablando de decenas y decenas y decenas de años de estudios está.
+
+Digamos la medicina y la pediatría tienen un montón de años.
+
+[7:56]
+Bueno, la crianza digital es algo nuevo, pues no sé cómo impacta el exceso de pantallas en la primera infancia.
+
+Estamos empezando a ver los primeros estudios los últimos 10 años.
+
+Las redes sociales en la adolescencia es todo nuevo esto y la ciencia lamentablemente requiere tiempo para tener respuestas, entonces tenemos que amigarnos, pero yo creo que el gran quiebre va a ser introducir la progresividad.
+
+[8:16]
+Vos, así como lo mencionas, lo llevaste a cabo.
+
+[8:20]
+Sí, sí, sí, lo digo con con con total sinceridad, o sea porque así lo llevas, lo llevo, lo llevo a cabo, pero digo, no aplica el en casa de río cuchillo de palo en mi casa fui muy, pero porque soy negro, entonces yo soy obsesionado de mis temas.
+
+YY no soy tan bueno en la alimentación de mi hijo, en otros temas HP, pero en este tema como es el mío, yo soy bastante obse hh YY, al menos en estos primeros 5 años mi hijo tiene 5 años y medio fui, fui bastante.
+
+[8:49]
+Bastante exigente, pero el punto de vista de exigente con cumplir con mi playbook que mi playbook incluye flexibilidad se entiende, o sea, yo no pienso que hay que ser extremadamente exigente, pero pienso que hay 2 o 3 cosas que hay que ser muy cuidadoso, entonces fui y respete bastante por aparte con 1,1, particularidad que para mí fue un desafío muy grande que yo empecé con esto los 25 años, entonces de golpe a mí me pasó y tenía 26 años y estaba en un colegio y tenía 50 familias pidiéndome
+
+[9:15]
+consejos de crianza o si quién soy, o sea, pero era para la familia, no me lo decía a mí yo me lo auto decía, o sea.
+
+Me lo han dicho 3 veces en en 15 años, o sea, pero era como un desafío decir che un poco el famoso.
+
+[9:27]
+¿Siempre papá no y entonces?
+
+[9:29]
+Claro cuando me preguntan vos su papá me lo preguntan poco, o sea, me siento un afortunado y agradecido.
+
+¿Habrá algo de mérito?
+
+También, por supuesto, pero digo, no ha sido un problema, pero las pocas veces que me apareció era un desafío para mí, pero a mí me pasó que cuando nació mi hijo yo ya tenía un recorrido muchos años de estudiar estos temas, entonces claro, me paso, o sea yo nosotros le mandamos un mensaje a nuestra familia sobre si publicar o no publicar fotos de nuestro hijo antes que nazca.
+
+[9:54]
+Entonces claro, si llegamos con un, llegamos con unos recorridos YY para mí está siendo el aprendizaje hermoso.
+
+A mí me pasó que estoy, estoy releyendo mi libro y estoy haciendo una pequeña actualización y me encuentro con que.
+
+Yo escribí el libro con mi mujer embarazada, o sea, mi hijo no había nacido.
+
+[10:13]
+Y me encuentro con que no lo quiero cambiar tanto, o sea, estoy bastante contento desde el lo quiero las cosas quiero cambiar, son por contexto, no la inteligencia artificial y cosas que pasaron 5 años, pero me encuentro con es el te estoy adelantando, te estoy contando el epílogo en mi libro el epílogo milo llama ser padre y hoy es un poco habló del desafío de escribir ese libro con sin ser padre y el significado emocional que tenía para mí escribirlo mientras mi mujer le crecía la panza yo te
+
+[10:37]
+conté que estuve 10 meses escribiendo el libro antes de empezar a grabar el embarazo, son 9 meses, yo literal Vito a ese proceso, con lo cual fue muy emocional.
+
+Pero estaba ese desafío presente y a mí me quedó un aprendizaje de 1, de de, de de de de las personas que me han influenciado mucho en mi vida, que shawky, que hay un par de de de actividad que hice con el que habla de cómo hacer la innovación, tiene que venir desde afuera y como al principio sentí un síndrome del impostor y después me di cuenta que para mí fue una gran ventaja poder pensar esto sin ser padre, por ser padre, es un quilombo ser padre es un lío tipo todos los días, un desafío
+
+[11:07]
+nuevo, los primeros años son durísimos, entonces en algunos en algunos aprendizajes y algunas historias que que me transmitió Jerry de de cómo la innovación a veces viene de outsiders.
+
+Bueno, yo creo que fui un sadier de la paternidad y fue un privilegio, aunque me costó muchos años darme cuenta.
+
+[11:24]
+Poder pensar todo esto sin tener al nene ahí llorando y gritando, no fue un privilegio que me permitió cuando llegó ese momento.
+
+O sea, tenía un montón de ideas precargadas en mi memoria de che esto hay que hacerlo así y me doy cuenta que aprenderlo durante es un bardo.
+
+O sea, es muy difícil.
+
+[11:38]
+¿Para escúchame esto se va por por qué dijiste que no, que no le saque tantas fotos a tu hijo antes de que naciera a tu familia?
+
+[11:46]
+Excelente.
+
+Bueno, no, no, no, no es que dije que no les literalmente eso.
+
+El tema de la exposición de los chicos en la primera infancia, cuando digamos, no pueden.
+
+Decidir sobre su privacidad su tema se llama salentein esto de compartir y parenting no o sea, viste que de golpe nos encontramos con una sobreexposición de los chicos y con que cuando sos papá o mamá como que tus redes lo más importante, tus redes es que muestres como crece tu hijo y hay como una no sé si impresión, pero hay como una moto, no sé si cómo llamarlo, pero un poco de todo eso de golpe estamos todos bastante acostumbrados a ver que si la gente tiene un bebé lo tiene que mostrar en
+
+[12:20]
+las redes, eso se llama sharenting.
+
+Nosotros lo que le pedimos a nuestra familia son dos.
+
+[12:24]
+Cosas la cultura.
+
+[12:26]
+¿Es una cultura?
+
+Sí, es una cultura y yo creo, creo que va a ser una cultura pasajera.
+
+¿Esa es mi sensación?
+
+Sí, yo creo que sí, ojalá, ojalá no me.
+
+[12:33]
+¿Equivoque, pero qué va a durar años?
+
+[12:35]
+Sí pasajera de nuevo de una perspectiva histórica por ir 30 o 40 años, pero digamos quizá más también, pero yo creo que que más o menos por ahí un ejemplo que doy siempre y ahora voy a hacer ahora que volvamos a chanting es el tema del cigarrillo, o sea, si tipo oye, hoy nos parece una locura que no sé que estemos en este lugar cerrado fumando un cigarrillo y hace 20 años era totalmente normal sin yo creo que sobre exponer a los chicos de bebés YY hacer un show desde su crecimiento es algo que
+
+[13:01]
+va a quedar limitado a ciertas personas que por y por su.
+
+¿Me acuerdo en su momento me llamaron para un documental, no me acuerdo, no salió de mirko, el hijo de Marley, y me llamaron para ver Que clase yo decía, bueno para una cosa, cuando un tipo con una exposición pública elige compatibilizar su paternidad con su con su carrera y otra cosa que todos nos quedamos Marley, entonces para mí hay una línea que volviste, me preguntaban cómo bueno, cuáles son los riesgos?
+
+[13:24]
+Bueno para tomarla y tiene una capacidad de entender lo que significa la exposición, que el show y cualquier tipo normal no tiene.
+
+Entonces ojo también con pensar que no es lo mismo decir, bueno, no es tan grave que él, que tiene un perfil público, pero de golpe hay una cosa de las redes que todos queremos ser como famosos.
+
+[13:42]
+Y todos como que publicamos como si fuéramos celebrities y no somos celebrity.
+
+Somos gente que publica entonces desde ese lado y el mensaje a nuestra familia, lo que decía las dos cosas.
+
+Lo primero era que no queríamos hacer un show del crecimiento de nuestros hijos de nuestro hijo.
+
+Entonces le pedíamos que sean moderados al momento de sacar las fotos por y había dos cuestiones.
+
+[14:02]
+La primera es que para nosotros lo más importante era que.
+
+¿La conexión con con con el ser humano no?
+
+Entonces sacas el celular, le sacas una foto si estás 2 horas con con un bebé y están las 2:00 h sacándole fotos, te perdiste una forma de conectar libre de pantallas donde se potencian un montón de cosas desde la mirada.
+
+[14:19]
+Lo gestual.
+
+De hecho, desde el momento en que tengo un celular pierdo el 50% de de 1 de mis sentidos, o sea, tengo dos manos cuando yo elijo ponerme un celular en una y encima me lo pongo frente a la vista, ya eliminé una mano dos ojos, entonces estoy quitándole un montón de de de de sentimiento.
+
+[14:39]
+Se llaman sentido, le estoy quitando sentimiento a esa conexión, entonces lo que nosotros dijimos es le quieres sacar un par de fotos.
+
+Sácaselas, pero porfa que no sea el eje central por el que vienen a verlo te sacan un par de fotos o al celular conectamos, lo tocamos, lo acariciamos, lo miramos le.
+
+[14:54]
+Hablamos, qué interesante.
+
+[14:55]
+Esto es porque nosotros no nos damos cuenta, nos damos cuenta uh.
+
+[14:59]
+Me recalcularlo, soy un padre de mierda, pero a veces me la dio.
+
+[15:03]
+No me mata, pues me pasa un montón, eso no, pero no es la intención.
+
+[15:06]
+¿A veces no, no, no, pero está bueno, no se cuenta igual también, eh?
+
+Porque a ver.
+
+Voy a ser mío, me habló un poco de de mí, pero digo a veces cuando cuando estamos con el celular nos damos cuenta de que te das cuenta si.
+
+[15:22]
+¿Ay, estoy con insultar y la nena me está mostrando un libro hace más de 1 minuto seguido, entendés?
+
+Y voy, decís, tengamos.
+
+[15:29]
+Todo embobado con el.
+
+[15:30]
+Celular también que a veces el trabajo no se absorbe y tenemos que terminar de hacer un trabajo.
+
+Eso sí, sin duda, pero hay momentos que no estás trabajando, que sí porque estoy con esto con usted puede estar con lo más importante en mi vida.
+
+[15:41]
+Bueno, 1 de los grandes descubrimientos, creo yo sí.
+
+[15:43]
+Perdón, se viene una cosa más, pero qué importante es cuando viene el invitado a tu casa y el invitado que quiere ver a tu hija no la ve, no la ve porque están todo el tiempo con el celu.
+
+¿Haciendo un video porque?
+
+Porque en los nenes no mi hija, todos los nenes tienen ese carisma, ese nos, ese es esa, esa ternura, esa inocencia que todo lo que hacen es lindo, es divertido y nadie se conecta.
+
+[16:08]
+Entendés todo se conectan detrás de esto.
+
+¿Un ejemplo muy boludo cuando vas a Disney o bueno cuando vas a Disney que qué?
+
+Qué problemón el tuyo cuando, pero cuando vas a cualquier lugar que te gusta y lo filmas todo el tiempo y no mirás.
+
+[16:23]
+¿Viste que?
+
+[16:24]
+Tuvo para mostrar.
+
+[16:25]
+Te voy a decir de nuevo.
+
+Para que te quede en el recuerdo.
+
+[16:27]
+Que volvamos al mensaje porque había una segunda parte, pero hace poco se hizo viral un una situación de Bunbury, el músico, el músico español que se hinchó los huevos en el medio del recital porque hay un flaco en primera fila que estuvo todo el recital con el celular en la mano grabando y el momento luego le dijo, che tenés un asiento privilegiado, necesito mirarte a la cara, necesito mirarte a los ojos porque.
+
+[16:46]
+¿Para un músico las personas la primera fila son importantes y vos tuviste todo?
+
+Estaba enojado todo el puto recital con el celular en la mano.
+
+Después de poner el PIB no sé cómo funciona esto YY me cansé, viste me y el loco se calentó y frenó el recital.
+
+[16:59]
+Bueno pasó algo así con con Lucho mellera hace poco.
+
+[17:02]
+Puede ser.
+
+[17:04]
+Mediante, creo que está.
+
+Contador, entonces creo que hay algo de la calidad de las conexiones y me pasa a mí con entre adultos.
+
+O sea que de golpe estamos acá en la previa y yo estaba atado el celular hay.
+
+Hay un tema que hay.
+
+Hay un gran descubrimiento de este de estas de de estas épocas, el tema de la adicción al celular y de cómo podemos mejorar nuestra relación.
+
+[17:21]
+¿Que yo creo que se está instalando a poquito, que es que el verdadero hack es no tenerlo cerca, verdad?
+
+Yo por ejemplo, estoy trabajando en sacármelo el bolsillo.
+
+De hecho, ninguno de los dos tiene el bolsillo, lo dejamos en unas mesas y aún así podría estar aún más lejos.
+
+Lo podría haber dejado en la mochila aún más.
+
+[17:36]
+Lejos a ver si tenemos la respuesta que.
+
+[17:37]
+Yo porque están empezando a aparecer los estudios, digamos neuro científico, es decir que que están leyéndole el cerebro a la gente, que el hecho de tenerlo cerca te genera distracciones, está bien incluso.
+
+[17:48]
+Me gana la ansiedad.
+
+No, pero a mí me pasó otra que empezar una charla y me había olvidado sacar de la vibración y me y me miró y le dije, che disculpen.
+
+Le saqué la liberación porque yo no puedo estar 1:30 h hablando con una vibración en el bolsillo y eso claro, en el día a día que está charlando con alguien.
+
+¿Esa persona no se da cuenta, pero vos sabés que te viera pensar che qué onda será el?
+
+[18:05]
+Me están llamando del jardín de mi hijo que tengo que ir a buscar o me están pidiendo que entregue esto que estoy demorado con la entrega y estás hablando con alguien y perdemos calidad humana.
+
+Mira, te voy a contar otra historia, bien, yo me voy por las ramas o avisar, yo ya me voy un evento en una charla nos pasó con una Combi a las 5:00 h de la mañana en la en hace unos meses la Carlota Córdoba una una ciudad al sur de la provincia de Córdoba y entonces de golpe arrancamos la red temprano, nos subimos a la Combi, no dormía, moviste eran eran las 5:00 h de la mañana A mí me tocó el último asiento, solo no había mucha charla en la Combi tipo 7 7:30 h ya se puso de día.
+
+[18:35]
+El chofer frena y se echan a un cafecito y seguimos.
+
+Entonces nos bajamos, éramos todos desconocidos tipo justos podía conocer a alguien, pero éramos 6 personas, 5 oradores y un chófer.
+
+Nos bajamos nada en la estación de servicio de la ruta, cada 1 se compraba su cafecito con su media luna y nos íbamos entrando en una mesa grande.
+
+[18:51]
+Se siente al primero, sienta el segundo, se me siento yo no vamos sentando y qué hacíamos cada 1 de nosotros cuando nos sentábamos sacamos el celular y cae el último.
+
+Y sección dejé el celular en la Combi, me voy a aburrir con ustedes.
+
+Por suerte tuvimos todos una buena reacción que fue guardada en una de bolsillo y charlamos 15 minutos y charlamos cosas re lindas.
+
+[19:10]
+Nos dimos cuenta.
+
+Yo me di cuenta que una una voladora que yo no conocía, conocí una prima de mi viejo y otro se dio cuenta que tenía esto en común y otra vivía cerca de casa.
+
+Y me acuerdo, me subí a la Combi pensando si no fuera por este tipo, si este tipo hubiera bajado el celular, hubiéramos estado 15 minutos en silencio difícil.
+
+[19:27]
+¿Y qué nos estamos convirtiendo?
+
+Eran 15 minutos.
+
+Yo me subí a la Combi, volví a tener mi celular, no, no es que agarre el celular para porque soy neurocirujano, estoy salvando un paciente que se muera, hubiera me hubiera puesto a mirar riels.
+
+[19:39]
+¿Para ir hablando de esto de de de celular porque no te vas de la rama me traes a pregunta que tengo que hacer, cuándo?
+
+[19:46]
+¿Cuándo le darías un celular a tu hijo?
+
+[19:50]
+O hoy, hoy lo ideal es que sean la adolescencia, o sea, cuanto más cerca de la adolescencia, mejor entre 12 y 14 años en el cole secundario.
+
+[20:00]
+En el secundario.
+
+Sí, sí, sí, sí, sí, sí o.
+
+[20:02]
+¿Sea por qué es un?
+
+[20:03]
+Sí, sí, sí, De hecho justo mira el no sé cuándo va a salir esto, pero publiqué en estos días un riel de una campaña que hicieron Estados Unidos.
+
+Te muestra un poco el es un nene que se va a dormir y vale, vale va a dar un beso buenas noches y le dice, buenas noches, hijo le está con celular a la mano, le dice, acuérdate que ahí en esa mesa tenés toda la pornografía del mundo.
+
+[20:22]
+Hay una pila de pornografía.
+
+Acá tenés a tus compañeras del colegio que va a estar mirando todos los que hagas te van a estar criticando acá tenés un hacker ruso y un hacker ruso sentado al lado del pibe.
+
+Además, ahí tenés un formulario por si quieres comprar drogas o cosas ilegales, como que le va mostrando todo lo que tiene en el celular, pero está todo físicamente en la habitación del pibe te pone la piel de gallina, la campaña está muy bien hecha, sí está muy bien hecha, le sigue Estados Unidos la subtitulé porque quiero que la gente haga disfrute y la publiqué en mi Instagram y realmente la.
+
+[20:52]
+Lo que estamos viendo es que los estímulos que te da el celular básicamente no estamos preparados para procesarlos previo a la adolescencia y te voy a dar la mejor analogía del mundo.
+
+Sí, vos un poquito más joven que yo, pero a qué edad fuimos a bailar a boliches 121314.
+
+[21:05]
+Bueno, sofi un poquito más grande amigo boludo.
+
+[21:07]
+Pero más sí más.
+
+[21:08]
+Grande ya lo 16.
+
+[21:09]
+Listo mejor.
+
+Apoya aún más mi tesis.
+
+Yo calculo que nuestra familia viste el momento en que nos íbamos a la noche a bailar un momento crítico para nuestros padres, porque era una sesión por primera vez le huele a cualquier hora, va a estar en un lugar lleno de desconocidos, en un contexto donde va a haber alcohol, donde va a haber desinhibición, donde va a haber aversión a los riesgos.
+
+[21:29]
+Yo siempre me imagino toda esa situación que en mi casa fue un momento importante.
+
+¿Si yo hubiera ido a bailar a los 10 años saquemos que no hubieran dejado entrar al boliche, me dejan entrar lo pensás que es una locura?
+
+Sí, bueno, lo mismo pasado.
+
+O sea eso esos dan un celular temprano es dar una herramienta que simplemente no estáis dispuesto a manejar.
+
+[21:47]
+Yo no, yo no saldría a decir los boliches son malos, la gente va a los boliches abierta, a mí no me gustan, pero la gente va a los boliches, se divierte, baila, no son malos, ahora no son malos a determinada edad, entonces lo mismo pasa con el celular, los estímulos que nos da el celular.
+
+Son estímulos para, en el mejor de los casos adolescentes y todavía no tenemos quizás van a llegar.
+
+[22:08]
+A ese celular una vez que todo esto que mide la publicidad Estados Unidos.
+
+¿Lo charlaste con él?
+
+[22:13]
+Lo charlé con él no no y tiene.
+
+La capacidad de manejarlo porque mi viejo podría hablado conmigo los 7 y.
+
+[22:19]
+La conciencia de entender que es cada cosa.
+
+[22:21]
+También hay hay cuestiones de neurodesarrollo, de Desarrollo Social, de desarrollo emocional, que no es lo mismo tener un nene que ser un adolescente.
+
+Por algo llamó mi infancia y lo llama adolescencia.
+
+Sí.
+
+De hecho el otro día escuchaba a 1 a 1 psicóloga que contaba que por más que el cerebro humano se desarrolla muy fuerte, los primeros 1000 días, obviamente sigue en desarrollo durante toda la infancia y la adolescencia y hay una instancia muy importante que es el cerebro analítico que aparece alrededor de los 12 años.
+
+[22:45]
+El cerebro analítico es el que te permite cuestionar lo que te están diciendo.
+
+Datos es por algo los adolescentes empiezan a decir que ya no estoy tan de acuerdo con esto que dicen papá y mamá, si yo pido a los 8 años le digo lo que yo pienso políticamente, mi hijo a decir a mi papá lo que piensa el papá, lo mejor a los 14 ya los pies empiezan a cuestionar noche, papá, vos sos de izquierda, yo soy de derecha, vos de echo, yo soy de izquierda porque aparece esta aparece la pregunta de si lo que me están diciendo está bueno o no.
+
+[23:10]
+Entonces, si eso aparece a los 12 años, no deberíamos darle nada ante los 12 años que requiera esa capacidad de cuestionarse lo que estás procesando, entonces los chicos no pueden procesar.
+
+Por ejemplo, si un comentario agresivo en redes viene de una persona malintencionada o no tiene razón o no, y entonces un chico a los 8 años que alguien le dice en whatsapp.
+
+[23:29]
+Sos un no sé, sos un tonto, se puede crear tranquilamente que es un tonto porque no tiene la capacidad de de ver como sí lo va a tener a la adolescencia en la adultez che no para me dijeron que soy un tonto, pero quizá no soy un tonto claro, entonces nos volvemos locos toda la crianza.
+
+Ustedes haber tenido 1000 entrevistas, yo sigo lo que hacen desde que salieron de no etiquetar a los pibes no sé qué, pero después dejamos que otros los etiqueten y les damos una herramienta que un montón de gente le va a poder.
+
+[23:55]
+Consumo temprano, pornografía o sea, pensar esto lo vamos a contar la edad ni vos ni yo, pero seguro no fue a los 8 ni vos ni yo ni en pedo ya los 8 a los 8 no tienes ni idea de lo que era el sexo entender, o sea ni pero ni se me pasaba por la cabeza.
+
+Y no solo eso te haría, por ejemplo, la guita ahora está todo el tema de él, la adolescencia, la guita.
+
+[24:12]
+Pero para mí, porque porque nos está invadiendo este mundo tecnológico.
+
+[24:16]
+Por pero hay que demorarlo en la infancia, hay que.
+
+[24:18]
+Demorarlo que es mi miedo, un miedo que un poco te saco para volvamos a esto de lo del de la tecnología de Del celular porque hay un montón de cosas de seguridad que quiero hablar también.
+
+Sabes que es mi miedo con todo esto de de la tecnología que nos invade, que desaparezcan de a poco los clubes.
+
+[24:34]
+No que, pero es que ya está pasando.
+
+[24:36]
+Es bravísimo.
+
+[24:37]
+Yo.
+
+[24:38]
+Mi infancia increíble fue en el club donde iba y me enamoraba donde iba y me peleaba con mi.
+
+[24:42]
+Amigo di mi primer beso en el club.
+
+[24:44]
+Yo también me bueno en la casa un amigo, pero me me me jugábamos al fútbol, me lastimaba hoy.
+
+[24:51]
+No se lastiman lo.
+
+[24:52]
+Jugaba la burra sabe lo que es la burra la Mancha que vos te escondes.
+
+¿Pues sí que dónde está todo?
+
+[24:57]
+Eso mira yo yo soy una persona optimista y debo decir que algunas cosas que están pasando en El Mundo, que me están quitando el optimismo, pero.
+
+Pero en general, intento mantener ese espíritu, mi visión optimista de todo esto es que los celulares no, no celulares, lo que ha pasado en los últimos 20 años, pues no me gusta pensar nada como unicausal.
+
+[25:15]
+Yo estudio el impacto de la tecnología, pero nada es causado por una sola cosa.
+
+Hay un ecosistema y un entramado social.
+
+Está, pero lo que pasó los últimos 20 años, potenciado por la tecnología.
+
+Yo creo que la tecnología más ha potenciado algunos, algunas cuestiones sociales más que las ha causado.
+
+[25:31]
+Pero yo tengo la esperanza de que lo que está pasando hoy que estamos empezando a ver, o sea, hoy estamos viviendo una crisis de salud mental global.
+
+Está ya a esta altura, es innegable.
+
+Hace 1015 años la podíamos discutir.
+
+A esta altura es innegable.
+
+Esa crisis está profundizada en la adolescencia.
+
+[25:46]
+O sea, todas las estadísticas de aumento de ansiedad, de aumento de depresión.
+
+De aumento de suicidio, de aumento de consumos problemáticos que estamos viendo en la adultez se ve mayormente estadísticamente.
+
+O sea, si la ansiedad creció 200% entre adulto creció 400 entre adolescente, entonces si a esta altura sería negar, sería de necio negar que estamos viendo una crisis de salud mental.
+
+[26:07]
+Bueno, a veces viste que tenía que tocar fondo para mejorar, entonces yo tengo la esperanza de que esta crisis.
+
+[26:13]
+¿Que está tocando fondo?
+
+[26:14]
+Sí y de qué esta crisis que estamos viviendo de salud mental, que es una crisis de bienestar.
+
+Hoy tenemos una crisis de bienestar como no veíamos.
+
+¿Quizás nunca, o al menos en en los tiempos contemporáneos, en los últimos 100 años, no eh?
+
+Especialmente, digamos por el contexto en el que vivimos, entonces tengo la esperanza de, por ejemplo, reaparezcan esto de los clubes, o sea, yo estoy viendo, por ejemplo, yo trabajo mucho con colegios, tengo una empresa de educación laburo dando charlas y yo, por ejemplo, creo que 1 de los grandes cambios que se vienen en El Mundo educativo o es una visión muy personal.
+
+[26:46]
+Pero yo tengo la esperanza de que los colegios empiecen a absorber una parte de eso que deje de ser el pie todo el día en el aula.
+
+Y los empiecen a solo una parte porque estamos empezando a ver la importancia de que los chicos simplemente estén entre ellos, jueguen y se conecten y nos estamos dando cuenta que tenerlos 8 horas por día dentro de un aula escuchando y de información.
+
+[27:05]
+¿Es irrelevante es negativo entonces?
+
+[27:07]
+Bueno.
+
+La ojalá yo me crié en club, me crié jugando a la pelota.
+
+[27:12]
+Muy antigua la educación también hay muchas cosas.
+
+Es verdad que es verdad que estaría muy bueno que en las escuelas se empiecen a hacerse como un poco de clubes, como un poco también de Deportes de actividades.
+
+[27:23]
+Sí, nosotros vamos 4:05 h al colegio.
+
+Hay un contexto que hace que muchos y me incluyo, necesitamos que nuestros hijos vayan a jornada completa, cosa que todavía es de las grandes ciudades en el interior no es tan así, pero hay necesidad que está apareciendo.
+
+O sea, hoy la familia tipo laburan todos y ya no lo los chicos de citan cubrir por lo menos 7:08 h de de escolaridad y la respuesta.
+
+[27:43]
+¿Inicial de algún colegio que está innovando a decir, pero yo te hablo de la generalidad, no?
+
+La respuesta inicial fue bueno, en lugar de 4 horas de noche en el colegio, entonces se extendió entonces ahora son bilingües y tiene más actividades, pero en lugar de pensar que por isten, sigan teniendo 4 horas de educación.
+
+El otro acusado, una charla de de mati wolosky, un emprendedor argentino que está con un proyecto educativo muy lindo en.
+
+[28:04]
+En ahí en Punta del Este.
+
+De hecho, lo después te paso el contacto porque una persona muy interesante y él hablaba de que hay estudios que te marcan, que los conocimientos base del colegio, la alfabetización básica con 2 horas por día alcanza y los pies van 8 al colegio.
+
+[28:19]
+¿Entonces qué hacemos las otras 6?
+
+Esa es una pregunta que yo creo que El Mundo educativo se va a empezar a, o sea se está preguntando y vamos a empezar a encontrar que la respuesta no es que tenga 6 horas más de clase, es que tenga 6 horas más de otras cosas y en este en este momento con la cantidad de información que hay online con la inteligencia artificial, hay una crisis educativa que.
+
+[28:38]
+Se viene hablando hace muchos años, pero yo siento que estamos realmente empezando a vivir la etapa de cambio de la educación.
+
+Alguno me dirá, la educación está cambiando, siempre es cierto, pero yo creo que se vienen cambios profundos y que tienen mucho que ver con este ecosistema de que se están perdiendo voceas, los golpes, o sea a mí, algo que yo soy muy de plaza con mi hijo, no yo vivo acá en la ciudad, vivo en Vicente López en un barrio común, entonces transitamos mucho la plaza, todavía un edificio, no tengo verde en mi casa, es un espacio, le dedicamos mucho tiempo y algo que me chocó y me vive shockeando es.
+
+[29:10]
+La reacción de la familia cuando los pies se caen, pero no cuando un pie se cae y se se quebró un dedo cuando pie simplemente se cae y está llorando porque se cayó, no tiene un golpe, no tiene sangre, no tiene nada y vuelve la reacción, la sobreprotección.
+
+[29:25]
+Jonathan Hyde, el psicólogo que escribió la generación.
+
+[29:27]
+Ansiosa.
+
+[29:28]
+Es terrible, o sea, una de las cosas que me gustó.
+
+Yo vengo estudiando hace mucho esto de que los chicos están muy solos en El Mundo digital y hace poco salió un libro, la generación ansiosa, que es un best seller es que probablemente sea el el best seller más importante de estos temas y el tipo plantea algo que a mí me encantó que es.
+
+No solo los pies están muy desprotegidos en El Mundo digital, sino que los estamos sobreprotegiendo en El Mundo analógico.
+
+[29:49]
+Sí, y esa combinación es muy peligrosa porque los pies tiene un matete bárbaro en la cabeza, no saben si digamos para qué estamos y estamos para que no se golpeen o estamos para que hagan lo que quieran y no importa lo que hagan.
+
+Entonces, ni siquiera somos coherentes entre lo que pasa en El Mundo analógico y el digital, y esta sobreprotección del mundo analógico.
+
+[30:05]
+Yo creo que profundiza ese esa crisis del espacio digital, pero a más nos están quitando un montón de estímulos porque golpeaste.
+
+Es importante la vida, o sea ayer que.
+
+Pedía una publicación y la compartí de una pediatra que hablaba de él, se está perdiendo el juegos rudo, la peleíta el tirano.
+
+[30:21]
+El otro día estuve en la playa con mi hijo y estábamos jugando en la playa con dos espadas de juguete en morondanga a a 1 batalla y yo veía que había gente que nos miraba mal como diciendo esto violento, jugando a un dibujito animado a mi hijo.
+
+Es la persona menos violenta del mundo.
+
+De hecho, lo discutía con un amigo, le decía no lo los los chicos no son violentos por jugar a a jugar a la violencia es una forma exagerada.
+
+[30:41]
+Sí, los chicos eventos si ven violencia.
+
+[30:43]
+Ahí es un terreno en el que todos los todas las personas.
+
+Ajenas a nuestra paternidad.
+
+O a la maternidad hablando de la mamá, son todos opinologos.
+
+[30:52]
+Especulares bueno, es que la es un mal de la época, como todos opiniones.
+
+[30:56]
+¿Suma de la época son todos realmente los padres ejemplares?
+
+El nene no puede en absoluto estar jugando con una espada ni con un arma.
+
+Hoy en día tener un arma para un nene el nene se va a ser delincuente para otra persona.
+
+O sea, hay muchas cosas que que que sí que son, que son un poco que se van un poco de mambo.
+
+[31:14]
+Perdón vos aiguiente dos temas que son parte del mal de la época y que creo que también tiene que ver con la crianza porque tenemos que intentar que nuestros hijos no digamos.
+
+Tenemos la cambiar El Mundo parece exagerado lo que estoy diciendo, pero es yo creo que un intenta criar para que los chicos sean buena gente.
+
+[31:30]
+YYYY sean felices, pero además intentar que las cosas estén mejor y vos que dos variables que que que las tiraste al boleo, pero creo que es un mal de la época.
+
+¿Opinó logo y el absolutismo?
+
+O sea, no solo opino porque yo podría opinar sin ser absoluto y se hace un montón.
+
+[31:46]
+¿Está tipo el Che, sabes que no sé por qué, desde mi perspectiva hay algo ahí que me hizo ruido?
+
+No, no es eso está mal.
+
+O sea encima que opino de todo, opino con una taxatividad y eso es un mal de la época porque los comentarios en las redes nos llevan a eso.
+
+Es estás invitado a comentar todo lo que quieras, pero además tu comentario tiene que ser blanco o negro porque tu comentario gris a nadie le interesa.
+
+[32:06]
+Cualquier cosa, o sea es un termo.
+
+[32:08]
+Claro claro, o ahora te dice, eso es un tibio.
+
+Te dicen tibio, eso es un tibio.
+
+Le dicen tipo no es un tibio dudo, no estoy seguro de poco o por ejemplo vos a tu hijo le da de comer a yo te cuento che yo no se lo doy porque a mí me parece que no estoy tan convencido, quizás dentro de 2 años yo me arrepiento.
+
+[32:23]
+Es como que te obligan a tener un una postura, una postura extrema en todo igual no creo que sea solamente en la crianza.
+
+[32:30]
+Eh te obligan a tener una postura extrema y en todo hay un desgaste en nuestra capacidad para dialogar con el que piensa distinto.
+
+Sí que es muy heavy, es muy heavy.
+
+Está vista este pie en las redes que va subiendo los grupos de whatsapp, de mamis y papis lo tienen.
+
+Y vos ves la intolerancia que hay viste a mí me pasó, espero que no lo vea la la mamá y el papá del jardín, pero a mí me pasó hace un tiempo cuando se empezaron a hacer los cumpleaños.
+
+[32:53]
+Tan me pasé un momento que.
+
+Juntar plata para los cumpleaños, no, sí.
+
+Y os cuando cuando los pibes empezaron a invitar al cumpleaños, eso me pasó, me daron 1 año que tampoco era el mejor año económico, pero el momento no sé, mi hijo fue el primero y pusimos fue el segundo y el tercero no iba, pues no estábamos, no sé qué.
+
+[33:12]
+¿Y yo veía, viste que no todos ponían y entonces preguntaban, qué vas a poner?
+
+Y yo puse, no, no, no, no vamos, y no sé no, pues estuve mal, no lo sé, pero eso no salió como que el regalo es algo que bueno caes con las manos vacías, un lugar eh, y yo siempre veía que me digo que poníamos los que íbamos, pero se ve que había 3 o 4 que ponían igual, aunque no iban, yo lo puse, no sé, me salió ponerlo, pero además porque se estaban quejando, que tipo tenías que poner si si se suma al regalo y como chef faltan respuesta todo yo puse che nosotros no vamos y entonces no, bueno
+
+[33:41]
+si no vas tenés que poner igual porque todos los chicos tienen derecho un regalo, De hecho el regalo estaban, no estaba en juegos porque iba a recibir un regalo, esa persona Igual me parece, me parece.
+
+Yo terminé hablando con mi mujer que está bien o está mal, que no pongamos, pero me contestaron con una violencia tipo de cheno.
+
+Tenés que poner igual porque los chicos, bueno, te conté por qué no ponía vos exigías una respuesta por estoy equivocado, pero no me no te enojes, o sea de tipo contarme lo que te parece un enojo, un nivel de enojo, un nivel de taxatividad.
+
+[34:09]
+Distrito con esta palabra que si bueno quizás hay alguien que no quiere poner, y De hecho yo había dado la cara, pero se veía que había una proporción entre los chicos que iban y la gente que ponía para el Real o con lo cual yo había contestado algo que se veía que yo no era el único.
+
+Claro que igual me hizo reflexionar y De hecho después terminamos poniendo todos los cumpleaños de los chalecos.
+
+[34:26]
+Mi mujer y fue uy, no sé, nosotros la habíamos pensado, es de no quedar con las manos vacías y por ahí está bueno colaborar con todos los cumpleaños lo cambiamos, no pasa nada.
+
+Lo que sí pasa es la incapacidad para aceptar que esta persona piensa que es que hay que poner cuando vas y esta piensa ve que todos los que hay que poner siempre.
+
+[34:42]
+Por ahí los dos están por ahí, no hay 1 que esté en lo correcto, claro, por eso me puedo sentir más a gusto con una opinión o a la otra.
+
+De hecho, yo cambié de opinión, pero no hay una correcta y una incorrecta.
+
+No podemos vivir todo como que hay una barda en un lugar está la el bien y en otro lugar está el mal es es es bastante agotador y hay un desgaste general que nos impactan los adultos y que también le impacta a los chicos porque todo esto potencia años después la incapacidad para relacionarse.
+
+[35:07]
+O sea, todos hablamos de la crisis de salud mental en la adolescencia, pero tenemos que hablar todo el ecosistema alrededor y un eco y una sociedad intolerante.
+
+Fomenta, o sea, baja el bienestar.
+
+No me parece casualidad que estemos en una crisis de bienestar.
+
+[35:20]
+Qué me contó ese vide de de la de como decíamos al principio de la seguridad con respecto a a a a los niños y niñas con con el celular, con el celular y con la tecnología, en realidad, por eso la computadora también sucede.
+
+[35:33]
+Es que yo hoy bueno como te contaba hace 15 años que hablo de esto y ahora viste, tengo una visión mucho más amplia porque la seguridad y la salud, o sea el bienestar es como tú, un combo que que se ve todo junto.
+
+De hecho, la bajada de mi libro es como educar para un uso sano y seguro.
+
+¿La tecnología no, pero la seguridad como yo entré a esta problemática, yo trabajaba en hacking, seguridad, informática o en ciberseguridad?
+
+[35:55]
+Y en donde trabajaba sencillo de.
+
+[35:56]
+Seguridad y trabajé en una empresa llamada eset un antivirus eslovaco.
+
+El hotel viejo no 32 por y lo conocen y después trabajé en una startup Argentina.
+
+Se llamaba psis y laburé casi 17 años en en seguridad informática haciendo consultorías YY producto.
+
+Yo entré por el lado de navegación segura en internet y sobre todo el gran tema que a mí me atrapa y hoy termino y acá hablando es el grooming, no los adultos captando menores a través de internet.
+
+[36:18]
+Este tema a mí me atrapa en el año 2011 me atrapa en el sentido de que empiezo a estudiar, lo empiezo a ver víctimas.
+
+Y me empiezo a dar cuenta que hay que hay que hablar del tema, no o sea, me me atrapa el punto de vista de que yo veía un dolor social y un tema que poca gente hablaba y cuando empecé a conocer familias de víctimas.
+
+[36:33]
+Habla mucho de grooming.
+
+[36:35]
+No, no se habla bastante, se habla más casi 15 años, pero no, no hay, hay mucho más por decir y aparte sigue habiendo víctimas.
+
+¿O sea, Ah las últimas semanas vimos víctimas en roblox hubo otra víctima en en en no sé qué otra plataforma, o sea, es algo constante por las dudas para que nos están escuchando el grooming es cuando un adulto capta un menor a través de la tecnología con fines de índole sexual, no?
+
+[36:56]
+Entonces obviamente la tengo muy, es muy heavy porque la tecnología le generó a todos estos perversos, pedófilos una capacidad, o sea cuando nosotros éramos pibes que te decían, cuidado si te hablo un adulto a la salida del colegio.
+
+Pero el adulto ese ese delincuente, tenía una una exposición, o sea, cuando iba a buscar a captar un chico, corría el riesgo de que la atrape y lo sé, lo que van a atrapar o lo llames a la policía.
+
+[37:20]
+Hoy en día se ponen a hacer una cuenta de lo que fuera roblox o Instagram o lo que bueno tik tok y se pone a chatear y de golpe están chateando, o sea, yo me acuerdo, hay muchos casos.
+
+Bueno, ahora has visto si trabajaste ahora has visto también, pero yo los casos que me han que que he visto de cerca, tengo muchos amigos que trabajó la policía en el Poder Judicial en peritajes y te van contando historias cuando yo hice la charla TX de grooming.
+
+[37:42]
+¿Me acercaron alguna?
+
+Algunas informaciones de expedientes reales y vos ves que los tipos, estos groomers, estos pedófilos, cuando los atrapan, estaban chateando con cientos o miles de pibes y pibas al mismo tiempo, entonces eso no existía antes en El Mundo.
+
+[37:56]
+En países superheavy.
+
+[37:57]
+Es re heavy es re heavy y cuando ves lo que impacta en las víctimas y me gustaría aclarar, hay muchos casos en que el agresor contacta al al al menor o la menor.
+
+Hay una claramente un, lamentablemente por por el el sesgo de género, hay muchas más víctimas mujeres que hombres, aunque no es hay un montón de pibes que son víctimas pero estadísticamente.
+
+[38:17]
+Son mucho más las chicas porque obviamente mucho más hombres, agresores, muchos amigos que me han acercado casos reales, o sea investigaciones reales, se ve que los agresores de.
+
+Contacta con muchos chicos, pero que no quede que el grooming es solamente el contacto físico.
+
+O sea, hay una situación en donde el agresor con contacta a la menor de edad y busca que encontrarse bien.
+
+[38:35]
+De hecho, hubo un caso muy.
+
+[38:36]
+Común que es el contacto, el contacto.
+
+[38:38]
+Con el contacto digital se alcanza porque a mí me ha tocado ver de cerca y de última hora hablábamos.
+
+Hace poco hubo una serie muy conocida, atrapados que el tipo busca encontrarse con la chica en un hotel en Buenos Aires.
+
+Ahora si quieres lo hablamos, pero me gusta dejar la salvedad de que en muchos casos simplemente les pide fotos, les piden videos, hacen que se desnuden o que se masturben o que se besen un.
+
+[38:57]
+Amigo de una nena.
+
+[38:59]
+Con discapacidad y jamás buscan ese encuentro físico y says se dio el grooming.
+
+O sea, ya ahí hay un delito, no es porque nosotros que estamos con el chip analógico, o sea, y a mí me ha tocado ver víctimas de de de grooming en donde no hubo contacto físico.
+
+[39:14]
+¿Y bobe que esa gente fue abusada, por supuesto que no, un abuso físico, pero a veces el abuso psíquico y vos te te das cuenta, estás hablando con víctimas que fueron abusadas?
+
+No, no hace falta llegar al encuentro físico que obviamente eventualmente maximiza ese.
+
+[39:27]
+Dolor me parece muy zarpado, lo que lo que contás en realidad, cuando yo trabajé ahí lo veía permanentemente.
+
+Y era una de las cosas que más me dañaban cuando me sucedía algo así, no me cabía mirarlo porque me hacía mal de verdad boluda, pero me hacía, me hacía muy mal.
+
+[39:41]
+Eh te hace mal, yo le digo transcripciones de chats, o sea, habrá visto mucho más cerca y se te pone la te angustias.
+
+[39:47]
+Y después estaban, es que nosotros logramos así y por ahí la gente no toma conciencia.
+
+Pero las imágenes.
+
+[39:57]
+Oh soiza fe yo he visto poco.
+
+[39:59]
+Yo vi poco porque yo me encargaba solamente de grabar los mensajes y te iba, yo no era hecho un mirar tanto, la verdad que no chuleaba yo simplemente de grabar mensajes.
+
+El que investigaba son mensajes, era la la del.
+
+[40:09]
+Cuerpo no, no es mágico.
+
+[40:10]
+Quien investigaba la causa pero sí había gente que se encargaba en las computadoras que ponían las imágenes.
+
+Y una pasé y le digo de ahito, le digo dieguito, no entiendo cómo haces con esto y me dice y me dice, aus ya tengo un chip que es no mirar más allá, es como.
+
+[40:27]
+Un amigo trabaja en meta.
+
+[40:29]
+¿Ay cómo hacer por Dios?
+
+[40:32]
+Sabes que antes te mencionaba la serie y si no la vieron menelao una muy muy buena producción Argentina.
+
+YY me gustaría hacer una salvedad de algo muy positivo de cómo tratan el grooming y una pequeña salida no es negativo, pero que está bueno para para para ser papás y mamás mirándolo.
+
+[40:48]
+Lo importante que está muy pero muy bien descrito el caso, o sea lo lo que se ve en la serie es está muy bien mostrado.
+
+Una situación de gruming muy real.
+
+Viste que a veces 1 que Laura en tecnología se encuentra con que a veces en en el cine se se se cuentan las cosas muy exageradamente, la lo lo preciso que está contada la situación con casos reales que 1 conoce ese espectacular, pero si hay una hay un mensaje importante para las familias que en este caso la peli en la serie.
+
+[41:14]
+La víctima es una chica de 1617 años y vale aclarar que hay víctimas de grooming a partir de los 910 años y que estadísticamente más de la mitad son víctimas entre los 9 y los 13 años.
+
+Digo esto desde el punto de vista de que no pase algo que me pasó unos años en el día nacional de la lucha contra el grooming, el 13 de noviembre me invita a una actividad con centros de estudiantes.
+
+[41:33]
+Era virtual, plena pandemia, año 2020 con centros de estudiantes, un encuentro por zoom de centros de estudiantes de la ciudad Bahía Blanca.
+
+¿En mi ciudad natal sale a decirlo y una chica me dice no, a mí me dieron una clase de grooming y le digo, cuando el año pasado, cuántos años tenés?
+
+17 tarde.
+
+[41:49]
+Tarde si te hablaron de iluminar 16 es tarde porque por ahí te han ayudado y De hecho ellas me decían los los pies, azagaya más o menos se dan cuenta si las o sea te puede pasar.
+
+De hecho, la serie trata muy bien, pero obviamente ya tienes otra capacidad.
+
+El tema cuando te llega grooming a los 11 a los 12, a los 13, que son mucho más chicas, entonces vale aclarar que por un lado, la precisión con lo que lo tratan, pero ojo que hay que trabajarlo antes en grumi.
+
+[42:14]
+Seba 1 de los mayores problemas son de las redes sociales y los juegos en línea.
+
+[42:20]
+Uf lo que está pasando es una.
+
+[42:22]
+Locura es una locura.
+
+Se saben cuidar solos.
+
+[42:27]
+Y lo que estamos viendo con los adolescentes YY las apuestas online y las ludopatías es que no o sea.
+
+[42:32]
+¿A ver niños, adolescentes y los adultos con respecto a ese tema se pueden hacer que?
+
+[42:36]
+Totalmente, o sea, está bien que no se van a quedar solos porque el poder de la herramienta estuve en contacto con con víctimas.
+
+Hace poco tuve la suerte de conocer a Valentina sorda, un fenómeno, un pibe que que estuvo recontra adicto a las apuestas.
+
+YY están recuperación hace casi 1 año y medio que no apuesta.
+
+[42:52]
+¿Sí YY vos los escuchabas YY realmente?
+
+La tecnología está armada para capturarlo de una forma, o sea.
+
+[42:59]
+Bueno redes.
+
+[43:00]
+Sociales no no y claro eso totalmente y la gamification que le dieron las apuestas el pie me decía a veces viendo un partido que duró 90 minutos y faltan 2 minutos y te la app te saco una notificación y dice che queres sumándose 100 pesos que el es tremendo en los próximos 2 minutos va a haber un córner, entonces te lo pinta como un jueguito y vos en el fondo te está fundiendo, entendés, o sea te estás, entonces no es tipo el pro de viste, gana, gana, empata, pierde, voy a ver el partido entero.
+
+[43:29]
+Es durante el partido, el precio no disfrutaba de disfrutar el deporte pide un fanático del rugby, dejé de disfrutar el deporte porque todo pasaba por la apuesta totalmente capturado.
+
+Entonces primero hay un tema de por cómo está la tecnología, son muy difíciles de no caer en la trampa porque voy bien, lo decías ya los adultos y encima la adolescencia y es, o sea en un contexto de de de de de riesgos, de digamos, de de revolución, y encima en un contexto donde le estamos dando tanto valor a la guita que es, ahí está la base del problema, no o sea yo a los 15 años no quería ganar plata.
+
+[44:01]
+Yo quería ir a bailar, quería, no sé.
+
+[44:03]
+¿Hay vida, ahí está la base de problema y también hay algo de la educación red, no?
+
+[44:08]
+¿Totalmente, o sea no, yo no entiendo o sea cómo, por qué los pies están pensando en quitar los 15?
+
+[44:12]
+Yo conozco pendejo que juegan y los padres no le dicen nada.
+
+[44:15]
+No, no es que De hecho a ver yo yo conocí a la mamá de Valentino.
+
+La Valentino está dando una charla, eso le había causado y la madre estaba al lado mío llorando.
+
+O sea vi el dolor de esa familia para ayudar a ese chico, digo, ay no y ello, pero los dos me contaba, esta familia lo recontra, ayudó y él él no podría haber salido sin la contención.
+
+[44:32]
+Su familia le robó, no sé cuánta guita.
+
+¿Como 1000 dólares abuela y cuando le fue a confesar que había sido el abuela el hijo, cómo te puedo ayudar?
+
+O sea, la familia es fundamental, pero si me emociono porque la vez te pide es un día pero, pero una base que me lo contaba tanto él como su madre es que cuando él empezó en la familia se reían.
+
+[44:47]
+Era el nene que apuesta.
+
+No, no se no se dieron cuenta hasta dónde podía llegar, que no o sea no YY sabiendo que es una familia bien intencionada que puso todo su amor para que el pie se cure.
+
+Cuando esto empezó no se dieron cuenta hasta dónde podía llegar y hay que tener mucho cuidado con su subestimar y reírnos estas cositas.
+
+[45:05]
+Y.
+
+¿Para ir terminando Xavi te pregunto cómo la tenía?
+
+¿Cómo la tecnología también puede ser parte de la solución de la crianza?
+
+[45:15]
+Bueno yo hace 4 años tengo una empresa que nos dedicamos a enseñar tecnología en la infancia y la adolescencia, les enseñamos a los chicos a programar leseamos robótica, ahora les enseñamos inteligencia artificial, tu para mí fue un aire poder poder empezar este proyecto de Tecno kids, porque yo hace 15 años que hablo de lo malo de la tecnología, es como desde el punto de vista personal, todo El Mundo me relaciona con eso y para mí fue un aire, porque yo siempre lo decía desde la teoría.
+
+[45:39]
+De que si la.
+
+[45:40]
+¿Tecnología?
+
+No creo que sea lo malo, en realidad es el cuidado.
+
+[45:42]
+Bueno son los peligros, pero lo que yo siempre desde la teoría mis charlas hace años que digo si la tecnología fuera solo mala, mi charla será fácil.
+
+Sería apagar el celular y ya está todo el tema resuelto, pero como tiene un montón de cosas positivas es que la solución es compleja porque nuestro desafío es cómo hacemos para transitar esa pantalla, sacándole el jugo a lo positivo y cuidándonos de lo negativo e.
+
+[46:03]
+YY la verdad que hace ya 4 o 5 años que me toca experimentar en primera persona lo que pasa cuando lo usas para bien.
+
+Y coincide tanto la empresa como con mi hijo, no sé, yo te voy a dar un ejemplo.
+
+El otro día hice mi hijo me dice quiero mirar.
+
+[46:18]
+¿Youtube tiene 5 años y medio, miramos miramos youtube kids, pero no es la plataforma de base porque obviamente, o sea, no es algo que lo usa cotidianamente porque tienes todo el incentivo de terminé de ver un video de este tema y me sugiere otro otro tema y de golpe y un video de 8 minutos voy a pasar un video de 1 entonces lo hacemos pero lo hacemos curado como tiene que ser a esta edad no, entonces yo le digo o k, pero qué quieres ver?
+
+[46:38]
+Él sabe que cuando quiere ver youtube tenemos que elegir un tema y buscar un canal que nos guste, no no, no, no me gusta caer a mirar vídeos random, viste como que eso creo que tiene que llegar más adelante.
+
+¿Y no los 5 años y él me dijo, quiero ver algo de Egipto, por qué?
+
+Porque había visto un capítulo de scooby doo.
+
+[46:54]
+Que transcurría en Egipto, estaba re fanatizado.
+
+¿Entonces genial, ahora vos me diste una línea, vamos a ir a buscar eso y si él me dijo, quiero ver algo de Egipto y yo abro youtube y hay un video de los power Rangers?
+
+¿No, no, hoy entramos a Egipto, está para mí importante que vos desarrolles previo en esta edad no?
+
+[47:10]
+¿Bueno buscamos, encontramos un canal espectacular que tiene un estudio de la historia de Egipto y cómo se construyó la dibujo?
+
+Sí es dibujitos tipo un canal de youtube para chicos espectacular super pedagógico.
+
+Vimos el video de Egipto.
+
+[47:26]
+Eh después empezamos a ver y ese canal tenía una playlist de mitología griega para chicos lo puse mi hijo fanatizado, pero totalmente estuvo un montón de tiempo y varios días mirando esos videos y como me pedía esos videos ya no me decía quiero ver youtube, me decía quiero ver los vídeos de mitología para chicos vamos tipo yo lo que quiero evitar es el estímulo corto intermitente, no vamos, vamos lo vimos.
+
+[47:48]
+R contra fanatizó un día lo llevo de paso a la casa de mi socio había un libro de mitología griega, se re copó mi socio le dice llevátelo unos días a tu casa, no paramos de leerlo, ya salimos del mundo digital y caímos al mundo analógico.
+
+Gracias al mundo digital para que tu sigue.
+
+Unos días después, mi querido socio Pablo, cuando le devuelvo el libro le había comprado a mi hijo el mismo y se te lo te lo te lo dejo para que te lo quedes.
+
+[48:09]
+No paramos de leerlo hace varias semanas en el medio me quedó un video de un almuerzo que estábamos con mi mujer y mi hijo en las vacaciones y mi hijo estoy aburrido y le dijimos, contámela la historia de Zeus y lo firmamos sin que lo sepa y yo caí que luego se me cae la baba, mi hijo 5 minutos contándote la historia de Zeus con un nivel de detalle, o sea con lo cual El Mundo digital nos trajo un momento, otro momento analógico de placer, que es un momento de que él nos cuente una historia.
+
+[48:32]
+Nosotros.
+
+Hace años que le contamos historias nosotros a él esto sigue.
+
+Después se enganchó, le gusta mucho dibujar y un día me dijo quiero que me imprimas para pintar, entonces empezamos a buscar dibujos de dioses griegos, se los imprimo y el de golpe está un rato pintando concentración analógico, todo gracias al mundo digital.
+
+[48:50]
+El otro día me dijo, quiero que me dibujes y este dibujo HP.
+
+Gorda estamos en un lugar que no hay impresora, podíamos salir de vacaciones y el dibujo era muy difícil para dibujar para mí, entonces se lo di a la inteligencia artificial y le digo, che me ayudas, me das una versión.
+
+Este dibujo más fácil para dibujar me la devolvió la dibujé y después mi hijo, mi hijo lo quiero dibujar yo, así que le pedí que me haga una versión aún más fácil, entonces yo dibujé un dibujo de Zeus, por ejemplo, más sencillo y a mi hijo le hizo un dibujito que era como la la silueta de él con el tridente.
+
+[49:20]
+Y entonces fíjate cómo empezamos a combinar El Mundo en digital con El Mundo analógico.
+
+Bueno, mi hijo ya está haciendo jueguitos promocionales, digamos, de de lógica.
+
+¿Tipo cuando quiso empezar a jugar con con la tablet, le dijo, qué juegos quieres?
+
+Elegimos al azar 7 y 8, me sentía jugarlos con él y al final le dije, estos 3 me gustaron, estos dos son pagos YY estos 3 y hay un jueguito de lógica que lo pagamos y él le encanta.
+
+[49:43]
+Entonces lo malo no es jugar en el celular, lo malo es que jugar a cualquier cosa indiscriminadamente todo el tiempo que quieras hay cosas espectaculares con la tecnología, fíjate cómo engranamos te estoy contando las últimas 3 cuatro semanas con mi hijo, así tendré 10 historias como engranó, El Mundo digital con analógico y se mezcló el consumo en youtube con que él esté pintando. 1 hora en un restaurante cuando tanto los pies mirando pavadas en en videítos porque el momento digital fue un
+
+[50:08]
+momento consciente, curado, con propósito, entonces ahí están las esto lo que buscamos esto te aplica a mi hijo de 5 a 1 en pre adolescente 9 a 1 adolescente de 15 o a nosotros adultos que es que la tecnología tengo ese componentes sea buscar ese espacio digital con propósito, te doy un ejemplo de adultos, a mí me encantan los animales que se cazan, viste me encanta, soy muchos años, vi un documental en Netflix de hunt de cómo se casan los animales y me volvió fanático del morbo viste me gusta,
+
+[50:35]
+me gusta mucho vértigo, un video, un León que se come un.
+
+Las hebritas saber si está loco, bueno, me gustó.
+
+Me resultó muy interesante de lo natural, me recontra enganche y varias cosas en en cosas.
+
+¿Claro, ahora Instagram lo sabe y me muestra reales todo el tiempo, eso no permanentemente, pero qué pasa ahora?
+
+¿A veces me doy cuenta que tengo ganas de ver eso y en lugar de ir a buscar una una serie en alguna plataforma, un canal de youtube que se ocupe de eso o una cuenta de Instagram que se ocupe eso me pongo a barriles a ver en qué momento me muestra lo que yo quiero es un delirio, entiendes?
+
+[51:04]
+Entonces yo ahí le estoy quitando el propósito, agarro el celular para verlas en lugar de agarro el celular para ver un tema que me interesa.
+
+Esos son los usos que está malo el riels es que está mal que sea tan central.
+
+[51:15]
+La vida claro.
+
+[51:17]
+Está mal si 10 minutos por día, barril, 20 minutos por día barril.
+
+Ahora cuando golpe me doy cuenta que tengo sueño y me me me robé 45 minutos de dormir para mirarla sin ningún tipo de sentido.
+
+Ahí está el problema, entonces no es que está mal el Real, De hecho yo hago rilsi la gente, ojalá la gente vea mis reales, o sea el el tema es qué lugar le damos y qué propósito le damos a la tecnología para sacarle el jugo, pero no, no concibo ni un futuro ni un futuro mejor sin tecnología.
+
+[51:45]
+Es más ni siquiera consigue un futuro mejor donde la tecnología no cumpla un rol importante en que ese futuro sea mejor, pero depende de nosotros, de cómo la usemos.
+
+¿YY qué lugar le demos?
+
+También obvio.
+
+[51:55]
+Seba sos un crack de verdad muy bueno como llámame me todo el tiempo, estoy atento ahí.
+
+Gracias por estar de verdad, gracias.
+
+[52:04]
+Por yo las chicas la producción lo saben desde que ustedes sacaron sus primeros reales.
+
+A mí me encantó el espíritu este de esta conversación y enseguida le escribí por redes, dije che me encanta lo que están haciendo y me alegra muchísimo estar acá porque vi prácticamente todas las entrevistas que hicieron y me encanta cómo comunican y el lugar que le dan algo que he visto.
+
+[52:24]
+Me atraviesa profesionalmente, pero me atraviesa personalmente que es la paternidad o la maternidad http me encanta.
+
+Que que haya papás y mamás hablando y como el lugar que le dan para que hablen, así que yo yo la miraba, la admiración es mía por.
+
+[52:36]
+¿Favor qué capo?
+
+Gracias de verdad.
+
+[52:39]
+A.
