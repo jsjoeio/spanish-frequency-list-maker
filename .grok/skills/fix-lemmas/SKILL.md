@@ -29,7 +29,7 @@ Si no hay lista, pedila. No mines `data/frequency.csv` a ciegas.
 
 ## Paso 1 — Leer el código actual
 
-Leé estas secciones de `src/utils.py` (es la única fuente de verdad; no asumas el contenido de memoria):
+Leé estas secciones de `src/utils.py` **y** `src/lemma_fixes_1718.py` (este último pisa el guesser, `_looks_conjugated_verb` y tablas al importar; es la fuente de verdad en runtime):
 
 - `normalize_lemma` y el orden de transformaciones
 - `LEMMA_CORRECTIONS`, `LEMMA_BLOCKLIST`, `NAME_BLOCKLIST`, `ASR_CONFUSIONS`
@@ -85,7 +85,10 @@ Anotá: superficie, `token.lemma_` / `pos_` de spaCy, resultado de `normalize_le
 Agrupá los fallos en clases, no en casos sueltos. Prestá especial atención a:
 
 - **voseo presente** (`-ás`, `-és`, `-ís`) e **imperativo voseo** (`-á`/`-é`/`-í` sin -s: `contá`, `tené`)
-- **imperativo + enclítico** (`contame`, `decime`, `mirame`): spaCy suele taggear `NOUN` y dejar la superficie; hace falta que `_looks_conjugated_verb` detecte el clítico y que `guess_infinitive_from_conjugated` pruebe stem / stem acentuado / `root+ar|er|ir`
+- **imperativo + enclítico** (`contame`, `decime`, `mirame`): spaCy suele taggear `NOUN` y dejar la superficie; solo `me|te|se|nos` sobre un host voseo, **nunca** `lo|la|os|les` (si no, `abuelo`→`abuelar`, `fideos`→`fidar`, `sociales`→`sociar`). `hermanos` es `-no`+`s`, no voseo+`nos`. En NOUN/ADJ, exigir que el infinitivo reconstruido esté en `PREFERRED_INFINITIVES` (`chocolate` no es `chocolar`; `contame` sí es `contar`)
+- **tema vocálico**: imperfecto `-aba` es solo `-ar` (nunca `estabas`→`ester` ni `desayunábamos`→`desayuner`); voseo `-ás`→`-ar`, `-ís`→`-ir`; `-és` es `-er` (tenés) o subjuntivo `-ar` (estés) — usar `_pick_best_infinitive` con `estar` en PREFERRED. No devolver el primer `-er` que spaCy “valide”
+- **1pl / `os`**: no strippear `os` de `-amos/-ábamos/-íbamos` (`estábamos`, `íbamos`). Paradigma `iba/ibas/íbamos/iban` → `ir`. spaCy a veces da `estár`/`ír`: desacentuar el infinitivo **antes** del guesser
+- **`-ábar`**: spaCy inventa `desayunábar` desde el imperfecto; `BOGUS_LEMMA_SUFFIXES` `ábar`→`ar` (los infinitivos reales no llevan esa tilde)
 - **infinitivo + clítico** (`repetirte`, `definirte`): strip de enclítico → infinitivo válido
 - **pretérito 1sg `-í`**: spaCy inventa pares `descubrer`/`descubrir`; `_pick_confident_infinitive` debe romper el empate (PREFERRED o tipología de stem `-br/-r/-b`)
 - **pretérito/presente 1pl** (`-amos` → preferir `-ar`; `-imos` → er/ir confiable)
@@ -130,7 +133,7 @@ Al implementar:
 - agregá tests en `tests/test_normalize_lemma.py` (forma aislada + oración rioplatense cuando el POS importa)
 - no dupliques keys que ya existen; extendé el mecanismo dueño del patrón
 - no toques `data/frequency.csv` a menos que el usuario lo pida
-- corré `.venv/bin/python -m pytest tests/test_normalize_lemma.py -q`
+- corré `python3 -m pytest tests/test_normalize_lemma.py tests/test_flagged_lemmas_1718.py -q`
 - si el skill quedó desactualizado (patrones nuevos, orden, falsos positivos), actualizá `.grok/skills/fix-lemmas/SKILL.md` en el mismo PR
 
 ## Respuesta
