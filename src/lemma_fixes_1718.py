@@ -43,9 +43,14 @@ def apply_to_module(ns: dict[str, Any]) -> None:
     ns["PREFERRED_INFINITIVES"] = PREFERRED_INFINITIVES | frozenset({
         "descubrir", "escribir", "abrir", "cubrir", "sufrir", "traer", "devolver",
         "arrepentir", "enojar", "contar", "esperar", "perder", "volver", "mostrar",
-        "mirar", "dejar", "llamar", "amar", "hablar", "escuchar",
+        "mirar", "dejar", "llamar", "amar", "hablar", "escuchar", "estar",
+        "ayudar", "preguntar", "sacar", "quedar", "fijar", "olvidar", "pasar",
+        "acordar",
     })
     PREFERRED_INFINITIVES = ns["PREFERRED_INFINITIVES"]
+
+    # spaCy invents -ábar from -ar imperfect (desayunábamos → desayunábar)
+    ns["BOGUS_LEMMA_SUFFIXES"] = (("ábar", ("ar",)),) + ns["BOGUS_LEMMA_SUFFIXES"]
 
     LEMMA_CORRECTIONS.update({
         "repetirtir": "repetir",
@@ -91,10 +96,55 @@ def apply_to_module(ns: dict[str, Any]) -> None:
                     return ir
         return None
 
+    _1PL_PERSON_RE = re.compile(r"(ábamos|íbamos|íamos|amos|emos|imos)$")
+    _VOSEO_CLITIC_RE = re.compile(r"(me|te|se|nos)$")
+    _EXPLICIT_FINITE_RE = re.compile(
+        r"[éó]|(?:íamos|íais|ías|emos|áis|ís|ás|és|aste|iste|"
+        r"ábamos|abais|aban|abas|aba|imos|amos|éi|íbamos|í)$"
+    )
+
+    def _ir_imperfect(stem: str) -> bool:
+        return bool(re.fullmatch(r"í?ba(?:s|mos|is|n)?", stem))
+
+    def _voseo_enclitic_host(text: str) -> str | None:
+        """conta+me / deci+me, not noun endings (paquete, abuelo, fideos, sociales)."""
+        m = _VOSEO_CLITIC_RE.search(text)
+        if not m:
+            return None
+        host = text[: m.start()]
+        if len(host) < 4:
+            return None
+        # hermanos/humanos: -no + s plural, not voseo + nos
+        if m.group(1) == "nos" and text.endswith("nos") and text[:-1].endswith("no"):
+            return None
+        if host[-1] in "aá":
+            return host
+        if host[-1] in "ei":
+            mapped = host[:-1] + {"e": "er", "i": "ir"}[host[-1]]
+            if mapped in PREFERRED_INFINITIVES or (host + "r") in PREFERRED_INFINITIVES:
+                return host
+        if host[-1] in "éí":
+            mapped = host[:-1] + {"é": "er", "í": "ir"}[host[-1]]
+            if mapped in PREFERRED_INFINITIVES:
+                return host
+        return None
+
+    def _infinitive_from_voseo_host(host: str) -> str | None:
+        if host[-1] in "aá":
+            return host[:-1] + "ar"
+        if host[-1] in "eé":
+            return host[:-1] + "er"
+        if host[-1] in "ií":
+            return host[:-1] + "ir"
+        return None
+
     def _guess_from_stem(stem: str, nlp: spacy.Language) -> str | None:
         gerund = gerund_to_infinitive(stem, nlp)
         if gerund and _validate_infinitive(gerund, nlp):
             return gerund
+
+        if _ir_imperfect(stem):
+            return "ir"
 
         # ASR trailing vowel on voseo imperative: tenéi → tené → tener
         if stem.endswith("éi") and len(stem) > 4:
@@ -135,9 +185,19 @@ def apply_to_module(ns: dict[str, Any]) -> None:
                     if _validate_infinitive(candidate, nlp):
                         return candidate
 
-        for suffix in (
-            "íamos", "íais", "ías", "ía", "ábamos", "abais", "aban", "abas", "aba"
-        ):
+        # -ar imperfect is -aba; -er/-ir imperfect is -ía. Never try ester from estaba.
+        for suffix in ("ábamos", "abais", "aban", "abas", "aba"):
+            if stem.endswith(suffix) and len(stem) > len(suffix):
+                matches = [
+                    variant + "ar"
+                    for variant in _stem_variants(stem[: -len(suffix)])
+                    if _validate_infinitive(variant + "ar", nlp)
+                ]
+                picked = _pick_best_infinitive(matches)
+                if picked:
+                    return picked
+
+        for suffix in ("íamos", "íais", "ías", "ía"):
             if stem.endswith(suffix) and len(stem) > len(suffix):
                 root = stem[: -len(suffix)]
                 matches: list[str] = []
@@ -176,18 +236,27 @@ def apply_to_module(ns: dict[str, Any]) -> None:
         for suffix in ("emos", "áis", "an"):
             if stem.endswith(suffix) and len(stem) > len(suffix) + 2:
                 root = stem[: -len(suffix)]
-                for ending in ("ar", "er", "ir"):
-                    candidate = root + ending
-                    if _validate_infinitive(candidate, nlp):
-                        return candidate
+                matches = [
+                    root + ending
+                    for ending in ("ar", "er", "ir")
+                    if _validate_infinitive(root + ending, nlp)
+                ]
+                picked = _pick_best_infinitive(matches)
+                if picked:
+                    return picked
 
-        for suffix in ("és", "ás", "ís"):
+        # voseo present: -ás → -ar, -ís → -ir. -és is -er (tenés) or -ar subjunctive (estés).
+        for suffix, endings in (("ás", ("ar",)), ("és", ("er", "ar")), ("ís", ("ir",))):
             if stem.endswith(suffix) and len(stem) > len(suffix) + 1:
                 root = stem[: -len(suffix)]
-                for ending in ("er", "ir", "ar"):
-                    candidate = root + ending
-                    if _validate_infinitive(candidate, nlp):
-                        return candidate
+                matches = [
+                    root + ending
+                    for ending in endings
+                    if _validate_infinitive(root + ending, nlp)
+                ]
+                picked = _pick_best_infinitive(matches)
+                if picked:
+                    return picked
 
         if stem.endswith("í") and len(stem) > 3:
             root = stem[:-1]
@@ -221,39 +290,38 @@ def apply_to_module(ns: dict[str, Any]) -> None:
             return LEMMA_CORRECTIONS.get(stripped, stripped)
 
         stems = [text]
-        if stripped and stripped != text:
-            stems.append(stripped)
-            if stripped[-1] in "aei" and len(stripped) >= 4:
-                accented = stripped[:-1] + {"a": "á", "e": "é", "i": "í"}[stripped[-1]]
-                stems.append(accented)
+        if not _1PL_PERSON_RE.search(text):
+            host = _voseo_enclitic_host(text)
+            if host:
+                stems.append(host)
+                if host[-1] in "aei":
+                    stems.append(host[:-1] + {"a": "á", "e": "é", "i": "í"}[host[-1]])
+            elif (
+                stripped
+                and stripped != text
+                and INFINITIVE_RE.match(stripped)
+            ):
+                stems.append(stripped)
         for stem in stems:
             if not stem:
                 continue
             guessed = _guess_from_stem(stem, nlp)
             if guessed:
                 return guessed
-
-        if stripped and stripped != text and stripped.endswith("a") and len(stripped) >= 4:
-            root = stripped[:-1]
-            candidate = root + "ar"
-            if _validate_infinitive(candidate, nlp) and (
-                len(root) >= 4 or candidate in PREFERRED_INFINITIVES
-            ):
-                return LEMMA_CORRECTIONS.get(candidate, candidate)
         return None
 
-    def _looks_conjugated_verb(text: str) -> bool:
-        if re.search(r"[éó]", text):
+    def _looks_conjugated_verb(text: str, token: Any | None = None) -> bool:
+        if _EXPLICIT_FINITE_RE.search(text):
             return True
-        if re.search(
-            r"(íamos|íais|ías|emos|áis|ís|ás|és|aste|iste|ábamos|abais|aban|abas|aba|imos|amos|éi|í)$",
-            text,
-        ):
-            return True
-        stem = ENCLITIC_SUFFIX_RE.sub("", text)
-        if stem != text and len(stem) >= 4 and stem[-1] in "aeiáéí":
-            return True
-        return False
+        host = _voseo_enclitic_host(text)
+        if host is None:
+            return False
+        # chocolate/tomate: NOUN ending in -te, host ends in -a, but not a real voseo verb
+        if token is not None and token.pos_ in {"NOUN", "ADJ"}:
+            inf = _infinitive_from_voseo_host(host)
+            if inf not in PREFERRED_INFINITIVES:
+                return False
+        return True
 
     ns["_pick_confident_infinitive"] = _pick_confident_infinitive
     ns["_guess_from_stem"] = _guess_from_stem

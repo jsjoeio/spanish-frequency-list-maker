@@ -3,7 +3,13 @@ __pycache__/
 .venv/
 venv/
 .env
-subtitles/
+# Keep Spotify transcripts tracked; ignore everything else under subtitles/
+subtitles/*
+!subtitles/spotify/
+subtitles/spotify/*
+!subtitles/spotify/*.txt
+*.mp3
+*:Zone.Identifier
 yt-dlp
 test_data/
 spanish_frequency.csv

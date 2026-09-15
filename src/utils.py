@@ -692,8 +692,9 @@ def apply_lemma_corrections(lemma: str, text: str) -> str:
     return LEMMA_CORRECTIONS.get(lemma) or LEMMA_CORRECTIONS.get(text) or lemma
 
 
-def _looks_conjugated_verb(text: str) -> bool:
+def _looks_conjugated_verb(text: str, token: Token | None = None) -> bool:
     """detect finite verb surface forms spaCy often mis-tags as ADJ/NOUN."""
+    del token
     return bool(
         re.search(r"[éó]", text)
         or re.search(r"(íamos|íais|ías|emos|áis|ís|ás|és|aste|iste|aba|aban|í)$", text)
@@ -715,7 +716,7 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
     if (
         token.pos_ == "PROPN"
         and len(text) <= 5
-        and not _looks_conjugated_verb(text)
+        and not _looks_conjugated_verb(text, token)
         and text not in LEMMA_CORRECTIONS
     ):
         return None
@@ -765,14 +766,25 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
 
     lemma = apply_lemma_corrections(lemma, text)
 
+    # spaCy sometimes returns an accented infinitive (estár, ír)
+    unaccented_lemma = unaccent_infinitive(lemma, nlp)
+    if unaccented_lemma:
+        lemma = unaccented_lemma
+
     # gerund + clitic: mirándolo → mirar
     if lemma == text or not INFINITIVE_RE.match(lemma):
         gerund = gerund_to_infinitive(text, nlp)
         if gerund:
             lemma = gerund
 
-    # recover bogus spaCy lemmas (veíar, sentíar, caístir, charler, etc.)
-    if not INFINITIVE_RE.match(lemma) or lemma == text:
+    # recover bogus spaCy lemmas (veíar, sentíar, caístir, charler, desayunábar, etc.)
+    # Accented bogus suffixes never occur on real infinitives, so recover even when
+    # the invented form already looks like an infinitive (desayunábamos → desayunábar).
+    if (
+        not INFINITIVE_RE.match(lemma)
+        or lemma == text
+        or any(ch in lemma[-5:] for ch in "áéíóú")
+    ):
         recovered = recover_from_bogus_lemma(lemma, nlp)
         if recovered:
             lemma = recovered
@@ -780,7 +792,7 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
     # finite verb forms spaCy fails on: hablé, tenías, nacés, saqué, etc.
     needs_guess = not INFINITIVE_RE.match(lemma) or lemma == text
     can_guess = token.pos_ in {"VERB", "AUX"} or (
-        token.pos_ in {"ADJ", "NOUN", "PROPN"} and _looks_conjugated_verb(text)
+        token.pos_ in {"ADJ", "NOUN", "PROPN"} and _looks_conjugated_verb(text, token)
     )
     if needs_guess and can_guess:
         guessed = guess_infinitive_from_conjugated(text, nlp)
