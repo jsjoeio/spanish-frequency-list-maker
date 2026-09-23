@@ -1,4 +1,4 @@
-"""Issue #17/#18 lemma fixes applied onto src.utils at import time.
+"""Issue #17/#18/#21 lemma fixes applied onto src.utils at import time.
 
 Keeps the large heuristic/table updates in a focused module so they can be
 reviewed and shipped without rewriting all of utils.py in one MCP payload.
@@ -46,6 +46,8 @@ def apply_to_module(ns: dict[str, Any]) -> None:
         "mirar", "dejar", "llamar", "amar", "hablar", "escuchar", "estar",
         "ayudar", "preguntar", "sacar", "quedar", "fijar", "olvidar", "pasar",
         "acordar",
+        # issue #21: -es 2sg / -er→-ar theme / 1sg -í tie
+        "llegar", "compartir", "cuidar", "redondear",
     })
     PREFERRED_INFINITIVES = ns["PREFERRED_INFINITIVES"]
 
@@ -67,6 +69,20 @@ def apply_to_module(ns: dict[str, Any]) -> None:
         "mamás": "mamá",
         "tenéi": "tener",
         "miramir": "mirar",
+        # issue #21
+        "mangua": "manga",
+        "sentiar": "sentir",
+        "lleguer": "llegar",
+        "obviir": "obvio",
+        "satanar": "satanás",
+        "laurar": "laburar",
+        "chiquitar": "chico",
+        "potenciado": "potenciar",
+        "cuid": "cuidar",
+        "cuidir": "cuidar",
+        "cuidser": "cuidar",
+        "cuides": "cuidar",
+        "des": "dar",
     })
 
     def _pick_confident_infinitive(candidates: list[str]) -> str | None:
@@ -100,7 +116,7 @@ def apply_to_module(ns: dict[str, Any]) -> None:
     _VOSEO_CLITIC_RE = re.compile(r"(me|te|se|nos)$")
     _EXPLICIT_FINITE_RE = re.compile(
         r"[éó]|(?:íamos|íais|ías|emos|áis|ís|ás|és|aste|iste|"
-        r"ábamos|abais|aban|abas|aba|imos|amos|éi|íbamos|í)$"
+        r"ábamos|abais|aban|abas|aba|imos|amos|éi|íbamos|í|ee)$"
     )
 
     def _ir_imperfect(stem: str) -> bool:
@@ -258,6 +274,25 @@ def apply_to_module(ns: dict[str, Any]) -> None:
                 if picked:
                     return picked
 
+        # -ear present subjunctive: redondee → redondear (not lee → lar)
+        if stem.endswith("ee") and len(stem) > 4:
+            candidate = stem[:-1] + "ar"
+            if _validate_infinitive(candidate, nlp):
+                return LEMMA_CORRECTIONS.get(candidate, candidate)
+
+        # tú/subjunctive -es: caes → caer, escuches → escuchar.
+        # only PREFERRED infinitives so padres/veces/nombres stay nouns.
+        if stem.endswith("es") and not stem.endswith("és") and len(stem) >= 3:
+            root = stem[:-2]
+            matches = [
+                root + ending
+                for ending in ("ar", "er", "ir")
+                if _validate_infinitive(root + ending, nlp)
+            ]
+            picked = _pick_best_infinitive(matches)
+            if picked and picked in PREFERRED_INFINITIVES:
+                return picked
+
         if stem.endswith("í") and len(stem) > 3:
             root = stem[:-1]
             matches = [
@@ -278,7 +313,13 @@ def apply_to_module(ns: dict[str, Any]) -> None:
 
         return None
 
+    recover_enclitic_verb = ns["recover_enclitic_verb"]
+
     def guess_infinitive_from_conjugated(text: str, nlp: spacy.Language) -> str | None:
+        recovered = recover_enclitic_verb(text, nlp)
+        if recovered:
+            return recovered
+
         stripped = ENCLITIC_SUFFIX_RE.sub("", text)
         if (
             stripped
@@ -313,6 +354,12 @@ def apply_to_module(ns: dict[str, Any]) -> None:
     def _looks_conjugated_verb(text: str, token: Any | None = None) -> bool:
         if _EXPLICIT_FINITE_RE.search(text):
             return True
+        # tú/subjunctive -es only when the reconstructed infinitive is preferred
+        # (caes→caer, escuches→escuchar; never padres/veces)
+        if text.endswith("es") and not text.endswith("és") and len(text) >= 3:
+            root = text[:-2]
+            if any(root + ending in PREFERRED_INFINITIVES for ending in ("ar", "er", "ir")):
+                return True
         host = _voseo_enclitic_host(text)
         if host is None:
             return False

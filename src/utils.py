@@ -510,15 +510,18 @@ def _pick_confident_infinitive(candidates: list[str]) -> str | None:
 
 
 def prefer_irregular_theme(lemma: str) -> str:
-    """tenar/hacar → tener/hacer when the -er/-ir form is a known irregular."""
+    """tenar→tener, llamer/lleguer→llamar/llegar when another theme is preferred."""
     if lemma in LEMMA_BLOCKLIST:
         return lemma
-    if lemma.endswith("ar") and len(lemma) > 4:
-        stem = lemma[:-2]
-        for ending in ("er", "ir"):
-            candidate = stem + ending
-            if candidate in PREFERRED_INFINITIVES:
-                return candidate
+    if len(lemma) <= 4 or lemma[-2:] not in {"ar", "er", "ir"}:
+        return lemma
+    if lemma in PREFERRED_INFINITIVES:
+        return lemma
+    stem = lemma[:-2]
+    for ending in ("ar", "er", "ir"):
+        candidate = stem + ending
+        if candidate in PREFERRED_INFINITIVES:
+            return candidate
     return lemma
 
 
@@ -532,14 +535,70 @@ def unaccent_infinitive(word: str, nlp: spacy.Language) -> str | None:
     return None
 
 
+_G_UITA_SUFFIXES = frozenset({"uita", "uito", "uitas", "uitos"})
+
+
 def diminutive_base(text: str, nlp: spacy.Language) -> str | None:
-    """galletita → galleta when the base is a real noun. Identity corrections keep patita/bebita."""
-    for suffix, vowel in (("itas", "a"), ("itos", "o"), ("ita", "a"), ("ito", "o")):
-        if len(text) > len(suffix) + 2 and text.endswith(suffix):
-            base = text[: -len(suffix)] + vowel
-            parsed = nlp(base)
-            if parsed and parsed[0].pos_ == "NOUN" and parsed[0].lemma_.lower() == base:
-                return base
+    """galletita → galleta; manguita → manga; fideíto → fideo.
+
+    g+uita keeps /g/ before /i/ (manga → manguita). Accented íto is a spoken
+    diminutive. Refuse bases that still end in qu+vowel (chiquo, mosquo).
+    Identity corrections keep patita/bebita.
+    """
+    suffixes = (
+        ("uitas", "a"),
+        ("uitos", "o"),
+        ("uita", "a"),
+        ("uito", "o"),
+        ("ítas", "a"),
+        ("ítos", "o"),
+        ("íta", "a"),
+        ("íto", "o"),
+        ("itas", "a"),
+        ("itos", "o"),
+        ("ita", "a"),
+        ("ito", "o"),
+    )
+    for suffix, vowel in suffixes:
+        if len(text) <= len(suffix) + 2 or not text.endswith(suffix):
+            continue
+        stem = text[: -len(suffix)]
+        if suffix in _G_UITA_SUFFIXES and not stem.endswith("g"):
+            continue
+        base = stem + vowel
+        # chiquito → chiquo, mosquito → mosquo: failed c→qu undo
+        if re.search(r"qu[aeiouáéíóú]$", base):
+            continue
+        parsed = nlp(base)
+        if not parsed:
+            continue
+        token = parsed[0]
+        if token.lemma_.lower() == base and token.pos_ in {"NOUN", "PROPN"}:
+            return base
+    return None
+
+
+def recover_enclitic_verb(text: str, nlp: spacy.Language) -> str | None:
+    """sacármelo → sacar; dámela → dar; prepararme → preparar.
+
+    Strips stacked enclitics (melo/sela/…) then recovers an infinitive or the
+    short irregular imperative dá. Does not strip lo/la/os from nouns: the
+    remainder must be a real (possibly accented) infinitive or dá.
+    """
+    stripped = ENCLITIC_SUFFIX_RE.sub("", text)
+    if not stripped or stripped == text:
+        return None
+    unacc = unaccent_infinitive(stripped, nlp)
+    if unacc:
+        return unacc
+    if (
+        len(stripped) >= 5
+        and INFINITIVE_RE.match(stripped)
+        and _validate_infinitive(stripped, nlp)
+    ):
+        return LEMMA_CORRECTIONS.get(stripped, stripped)
+    if stripped == "dá":
+        return "dar"
     return None
 
 
@@ -772,10 +831,15 @@ def normalize_lemma(token: Token, nlp: spacy.Language) -> str | None:
         lemma = unaccented_lemma
 
     # gerund + clitic: mirándolo → mirar
+    # infinitive/imperative + enclitic: sacármelo → sacar, dámela → dar
     if lemma == text or not INFINITIVE_RE.match(lemma):
         gerund = gerund_to_infinitive(text, nlp)
         if gerund:
             lemma = gerund
+        else:
+            enclitic = recover_enclitic_verb(text, nlp)
+            if enclitic:
+                lemma = enclitic
 
     # recover bogus spaCy lemmas (veíar, sentíar, caístir, charler, desayunábar, etc.)
     # Accented bogus suffixes never occur on real infinitives, so recover even when

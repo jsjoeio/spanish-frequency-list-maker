@@ -1,5 +1,7 @@
 """Tests for lemma normalization."""
 
+from __future__ import annotations
+
 import spacy
 
 from src.utils import (
@@ -910,3 +912,131 @@ def test_vetamadre_rejected():
 
 def test_obse_rejected():
     assert lemma_for("obse") is None
+
+
+# ============================================================
+# Flagged lemmas (issue #21)
+# ============================================================
+
+
+def test_manguitas_to_manga():
+    """g+uita diminutive: manguita, not the failed mangua reconstruction."""
+    assert lemma_for("manguita") == "manga"
+    assert lemma_for("manguitas") == "manga"
+    assert lemma_for("mangua") == "manga"
+    assert lemma_in_sentence("primero con manguitas claro", "manguitas") == "manga"
+
+
+def test_sacármelo_to_sacar():
+    """stacked enclitics on an accented infinitive."""
+    assert lemma_for("sacármelo") == "sacar"
+    assert lemma_in_sentence(
+        "estoy trabajando en sacármelo el bolsillo", "sacármelo"
+    ) == "sacar"
+
+
+def test_dámela_to_dar():
+    """voseo/tú imperative dá + stacked clitics."""
+    assert lemma_for("dámela") == "dar"
+    assert lemma_for("dámelas") == "dar"
+    assert lemma_in_sentence("vamos tipo dámelas me las quedo", "dámelas") == "dar"
+
+
+def test_sentiar_to_sentir():
+    """unaccented twin of sentíar from imperfect sentías."""
+    assert lemma_for("sentiar") == "sentir"
+    assert lemma_in_sentence("ese miedo que sentías ahí", "sentías") == "sentir"
+
+
+def test_satanás_not_satanar():
+    """Satanás is a name/noun; spaCy + -ás guesser invents satanar."""
+    assert lemma_for("satanar") == "satanás"
+    assert lemma_in_sentence(
+        "la leche de fórmula no son satanás", "satanás"
+    ) == "satanás"
+
+
+def test_lleguer_llamer_to_ar():
+    """spaCy -er invention from -ar preterite; reverse of prefer_irregular_theme."""
+    assert lemma_for("lleguer") == "llegar"
+    assert lemma_for("llamer") == "llamar"
+    assert lemma_in_sentence("yo llamé a la ginecóloga", "llamé") == "llamar"
+
+
+def test_rozar_kept():
+    """rozar is a real verb (rozaba → rozar); do not block or rewrite."""
+    assert lemma_for("rozar") == "rozar"
+    assert lemma_in_sentence("todo me rozaba todo", "rozaba") == "rozar"
+
+
+def test_laurar_to_laburar():
+    """ASR 'Laura' in a verb slot (uno que labura en tecnología)."""
+    assert lemma_for("laurar") == "laburar"
+    assert lemma_in_sentence("uno que laura en tecnología", "laura") == "laburar"
+
+
+def test_des_to_dar():
+    """2sg subjunctive of dar, often tagged ADP/VERB."""
+    assert lemma_for("des") == "dar"
+    assert lemma_in_sentence("lo que le des en la mano", "des") == "dar"
+
+
+def test_escuches_to_escuchar():
+    assert lemma_for("escuches") == "escuchar"
+    assert lemma_in_sentence("que pase y que escuches sí pasa", "escuches") == "escuchar"
+
+
+def test_caes_to_caer():
+    assert lemma_for("caes") == "caer"
+    assert lemma_in_sentence("de repente caes en esa", "caes") == "caer"
+
+
+def test_padres_not_verbed_via_es():
+    """-es 2sg recovery must not turn noun plurals into verbs."""
+    assert lemma_in_sentence("los padres vienen", "padres") == "padre"
+
+
+def test_chiquitar_to_chico():
+    assert lemma_for("chiquitar") == "chico"
+
+
+def test_chiquito_not_chiquo():
+    """failed c→qu undo must not leak chiquo/mosquo."""
+    assert lemma_for("chiquito") == "chiquito"
+    assert lemma_for("mosquito") == "mosquito"
+    assert lemma_in_sentence("es de chiquito me pasa", "chiquito") == "chiquito"
+
+
+def test_compartí_to_compartir():
+    assert lemma_for("compartí") == "compartir"
+    assert lemma_in_sentence("la compartí de una pediatra", "compartí") == "compartir"
+
+
+def test_potenciado_to_potenciar():
+    assert lemma_for("potenciado") == "potenciar"
+    assert lemma_in_sentence(
+        "potenciado por la tecnología", "potenciado"
+    ) == "potenciar"
+
+
+def test_redondee_to_redondear():
+    """-ear present subjunctive: redondee → redondear."""
+    assert lemma_for("redondee") == "redondear"
+    assert lemma_in_sentence("perdón que redondee y como valga", "redondee") == "redondear"
+
+
+def test_obviir_to_obvio():
+    """discourse obvio, not the verb obviar."""
+    assert lemma_for("obviir") == "obvio"
+    assert lemma_in_sentence("sí obvio que lo dijo", "obvio") == "obvio"
+
+
+def test_cuid_family_to_cuidar():
+    assert lemma_for("cuid") == "cuidar"
+    assert lemma_for("cuides") == "cuidar"
+    assert lemma_in_sentence("te cuides porque puedes quedar", "cuides") == "cuidar"
+
+
+def test_fideíto_to_fideo():
+    assert lemma_for("fideíto") == "fideo"
+    assert lemma_in_sentence("probar con un fideíto", "fideíto") == "fideo"
