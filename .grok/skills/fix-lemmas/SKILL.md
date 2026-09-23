@@ -34,7 +34,7 @@ Leé estas secciones de `src/utils.py` **y** `src/lemma_fixes_1718.py` (este úl
 - `normalize_lemma` y el orden de transformaciones
 - `LEMMA_CORRECTIONS`, `LEMMA_BLOCKLIST`, `NAME_BLOCKLIST`, `ASR_CONFUSIONS`
 - `BOGUS_LEMMA_SUFFIXES`, `PREFERRED_INFINITIVES`
-- `recover_from_bogus_lemma`, `guess_infinitive_from_conjugated`, `_guess_from_stem`, `_pick_confident_infinitive`, `_pick_best_infinitive`
+- `recover_from_bogus_lemma`, `recover_enclitic_verb`, `guess_infinitive_from_conjugated`, `_guess_from_stem`, `_pick_confident_infinitive`, `_pick_best_infinitive`
 - `gerund_to_infinitive`, `is_garbage_lemma`, `apply_lemma_corrections`, `_looks_conjugated_verb`
 - `prefer_irregular_theme`, `unaccent_infinitive`, `diminutive_base`
 
@@ -78,14 +78,20 @@ show('esperabas', 'vos no esperabas eso')
 
 Anotá: superficie, `token.lemma_` / `pos_` de spaCy, resultado de `normalize_lemma`, y dónde se corta el pipeline (clíticos, bogus suffix, guess, corrections, ASR, garbage).
 
-**Importante:** hipótesis del issue (`tenéi → tener?`) no son verdad — verificá siempre con reproducción. Algunos “fallos” ya están resueltos (`quemastar` vía `-astar`, `repetirte` vía corrections) o son lemas válidos (`arder`, `combo`).
+**Importante:** hipótesis del issue (`tenéi → tener?`) no son verdad — verificá siempre con reproducción. Algunos “fallos” ya están resueltos (`quemastar` vía `-astar`, `repetirte` vía corrections) o son lemas válidos (`arder`, `combo`, `rozar`).
 
 ## Paso 3 — Diagnosticar patrones
 
 Agrupá los fallos en clases, no en casos sueltos. Prestá especial atención a:
 
 - **voseo presente** (`-ás`, `-és`, `-ís`) e **imperativo voseo** (`-á`/`-é`/`-í` sin -s: `contá`, `tené`)
-- **imperativo + enclítico** (`contame`, `decime`, `mirame`): spaCy suele taggear `NOUN` y dejar la superficie; solo `me|te|se|nos` sobre un host voseo, **nunca** `lo|la|os|les` (si no, `abuelo`→`abuelar`, `fideos`→`fidar`, `sociales`→`sociar`). `hermanos` es `-no`+`s`, no voseo+`nos`. En NOUN/ADJ, exigir que el infinitivo reconstruido esté en `PREFERRED_INFINITIVES` (`chocolate` no es `chocolar`; `contame` sí es `contar`)
+- **imperativo + enclítico** (`contame`, `decime`, `mirame`): spaCy suele taggear `NOUN` y dejar la superficie; solo `me|te|se|nos` sobre un host voseo, **nunca** `lo|la|os|les` sueltos (si no, `abuelo`→`abuelar`, `fideos`→`fidar`, `sociales`→`sociar`). `hermanos` es `-no`+`s`, no voseo+`nos`. En NOUN/ADJ, exigir que el infinitivo reconstruido esté en `PREFERRED_INFINITIVES` (`chocolate` no es `chocolar`; `contame` sí es `contar`)
+- **infinitivo/imperativo + clíticos apilados** (`sacármelo`, `dámela`, `dámelas`): spaCy tagea `NOUN` y deja la superficie. `recover_enclitic_verb` strippea `me|te|se|lo|la|…` en bloque y exige que el resto sea un infinitivo real (desacentuado: `sacár`→`sacar`) o el imperativo corto `dá`→`dar`. No adivinar un verbo si el resto es un sustantivo (`fideos`→`fide`)
+- **tema vocálico inverso**: spaCy inventa `-er` desde pretéritos `-ar` (`llamer`, `lleguer`, `charler`). `prefer_irregular_theme` ahora también mapea `-er/-ir` → el otro tema si está en `PREFERRED_INFINITIVES` (`llamar`, `llegar`). No añadir `-iar` a `BOGUS_LEMMA_SUFFIXES` (`cambiar`/`estudiar` son infinitivos reales); `sentiar` (sin tilde) va a `LEMMA_CORRECTIONS` como `sentíar`
+- **tú/subjuntivo `-es`**: `caes`→`caer`, `escuches`→`escuchar`, `des`→`dar`. Solo si el infinitivo reconstruido está en `PREFERRED`; si no, `padres`/`veces`/`nombres` se vuelven verbos
+- **subjuntivo `-ear`**: `redondee`→`redondear` (`-ee`, `len>4` para no tocar `lee`)
+- **diminutivos**: `g+uita` (manga→manguita, no `mangua`); `íto` acentuado (`fideíto`→`fideo`, aceptar `PROPN` porque spaCy tagea `fideo` mal). Rechazar bases que queden en `qu+vowel` (`chiquito`↛`chiquo`, `mosquito`↛`mosquo`). `chiquitar` es un infinitivo inventado → `chico` por dict
+- **`obviir`**: spaCy inventa un `-ir` desde el marcador discursivo `obvio`. Corregir a `obvio`, **nunca** a `obviar`
 - **tema vocálico**: imperfecto `-aba` es solo `-ar` (nunca `estabas`→`ester` ni `desayunábamos`→`desayuner`); voseo `-ás`→`-ar`, `-ís`→`-ir`; `-és` es `-er` (tenés) o subjuntivo `-ar` (estés) — usar `_pick_best_infinitive` con `estar` en PREFERRED. No devolver el primer `-er` que spaCy “valide”
 - **1pl / `os`**: no strippear `os` de `-amos/-ábamos/-íbamos` (`estábamos`, `íbamos`). Paradigma `iba/ibas/íbamos/iban` → `ir`. spaCy a veces da `estár`/`ír`: desacentuar el infinitivo **antes** del guesser
 - **`-ábar`**: spaCy inventa `desayunábar` desde el imperfecto; `BOGUS_LEMMA_SUFFIXES` `ábar`→`ar` (los infinitivos reales no llevan esa tilde)
@@ -101,7 +107,7 @@ Agrupá los fallos en clases, no en casos sueltos. Prestá especial atención a:
 - nombres propios, marcas, productos (`picasso`, `xiaomi`, `siri`, `twitter`) → `NAME_BLOCKLIST`
 - inglés / neologismos / ruido (`mapping`, `sharenting`, `cheno`) → `LEMMA_BLOCKLIST`
 - formas finitas que spaCy tagea como `NOUN`/`ADJ` y el guesser no corre sin `_looks_conjugated_verb`
-- **no tocar** verbos reales ni préstamos asentados solo porque aparecieron en la lista (`arder`, `combo`)
+- **no tocar** verbos reales ni préstamos asentados solo porque aparecieron en la lista (`arder`, `combo`, `rozar`)
 
 ## Paso 4 — Proponer (este orden)
 

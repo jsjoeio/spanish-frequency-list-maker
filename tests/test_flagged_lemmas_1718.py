@@ -1,5 +1,7 @@
 """Flagged-lemma coverage for issues #17 and #18."""
 
+from __future__ import annotations
+
 import spacy
 
 from src.utils import normalize_lemma, recover_from_bogus_lemma
